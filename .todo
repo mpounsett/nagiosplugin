@@ -1,18 +1,21 @@
 <?xml version="1.0"?>
 <todo version="0.1.20">
-    <note priority="medium" time="1277547962">
-        OptParser Subclass
-    </note>
-    <note priority="medium" time="1277547985">
+    <note priority="medium" time="1277547985" done="1277705365">
         multi-line output as array
     </note>
     <note priority="medium" time="1277548013">
         state.reduce
     </note>
-    <note priority="medium" time="1277548680">
+    <note priority="medium" time="1277703299">
+        Range
+    </note>
+    <note priority="low" time="1277547962">
+        OptParser Subclass
+    </note>
+    <note priority="low" time="1277548680">
         help should exit with code 3
     </note>
-    <note priority="medium" time="1277548693">
+    <note priority="low" time="1277548693">
         unknown option/invalid arg should exit with code 3
     </note>
 </todo>

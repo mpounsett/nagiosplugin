@@ -4,42 +4,48 @@
 
 class State(object):
     code = None
-    text = None
+    word = None
 
-    def __init__(self, message=None):
-        self.message = message
+    def __init__(self, messages=[]):
+        if not isinstance(messages, list):
+            messages = [messages]
+        self.messages = messages
 
     def __str__(self):
-        if self.code is None or self.text is None:
+        if self.code is None or self.word is None:
             raise NotImplementedError
-        if self.message:
-            return u'%s - %s' % (self.text, self.message)
-        return self.text
+        return self.word
 
     def __int__(self):
-        if self.code is None or self.text is None:
+        if self.code is None or self.word is None:
             raise NotImplementedError
         return self.code
 
     def __cmp__(self, other):
         return self.code.__cmp__(other.code)
 
+    def firstline(self):
+        return self.messages[0]
+
+    def longoutput(self):
+        return self.messages[1:]
+
 
 class Ok(State):
     code = 0
-    text = u'OK'
+    word = u'OK'
 
 
 class Warning(State):
     code = 1
-    text = u'WARNING'
+    word = u'WARNING'
 
 
 class Critical(State):
     code = 2
-    text = u'CRITICAL'
+    word = u'CRITICAL'
 
 
 class Unknown(State):
     code = 3
-    text = u'UNKNOWN'
+    word = u'UNKNOWN'

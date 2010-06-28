@@ -21,6 +21,7 @@ class Controller(object):
         # XXX: subclass OptionParser and handle help, version and error
         # differently
         (self.opts, self.args) = self.optparser.parse_args(argv)
+        # XXX: this should go into the OptionParser subclass
         if self.opts.help:
             io = cStringIO.StringIO()
             self.optparser.print_help(io)
@@ -37,7 +38,8 @@ class Controller(object):
             self.states = filter(bool, [m.state() for m in self.measurements])
             self.performances = filter(bool, [m.performance()
                                               for m in self.measurements])
-            self.states.append(nagiosplugin.state.Ok(self.check.default_message))
+            self.states.append(nagiosplugin.state.Ok(
+                self.check.default_message))
         except Exception as e:
             self.states.append(nagiosplugin.state.Unknown(str(e)))
             self.stderr += traceback.format_exc() + u'\n'
