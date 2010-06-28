@@ -28,6 +28,19 @@ class MeasureTest(unittest.TestCase):
         self.assertEqual(u'm1 value 9.5s exceeds critical range 9.4',
                          s.headline())
 
+    def test_performance(self):
+        m = measure.Measure(u'm2', 75, u'MB', warning=u'33:80',
+                            critical=u'31:82', min=10, max=100)
+        self.assertEqual(u'm2=75MB;33:80;31:82;10;100',
+                         m.performance())
+
+    def test_short_performance(self):
+        m = measure.Measure(u'm3', 4)
+        self.assertEqual(u'm3=4', m.performance())
+
+    def test_performance_show_zero_min(self):
+        m = measure.Measure(u'm4', 15, u's', min=0)
+        self.assertEqual(u'm4=15s;;;0', m.performance())
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(MeasureTest)

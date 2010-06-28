@@ -5,6 +5,13 @@ import nagiosplugin.range
 import nagiosplugin.state
 
 
+def silent_str(value):
+    """Return `value` as string but u'' if `value` is None."""
+    if value is None:
+        return u''
+    return str(value)
+
+
 class Measure(object):
 
     def __init__(self, name, value, uom=None, warning=None, critical=None,
@@ -27,4 +34,7 @@ class Measure(object):
         return nagiosplugin.state.Ok()
 
     def performance(self):
-        return None
+        p = [u'%s=%s%s' % (self.name, self.value, silent_str(self.uom)),
+             str(self.warning), str(self.critical),
+             silent_str(self.min), silent_str(self.max)]
+        return u';'.join(p).rstrip(u';')
