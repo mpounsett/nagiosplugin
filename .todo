@@ -6,8 +6,20 @@
     <note priority="medium" time="1277548013" done="1277706529">
         state.reduce
     </note>
-    <note priority="medium" time="1277703299">
+    <note priority="medium" time="1277703299" done="1277714255">
         Range
+    </note>
+    <note priority="medium" time="1277710742">
+        timeouts
+    </note>
+    <note priority="medium" time="1277714272">
+        fix Measure logic
+    </note>
+    <note priority="medium" time="1277714281">
+        process long output
+    </note>
+    <note priority="medium" time="1277714287">
+        performance data
     </note>
     <note priority="low" time="1277547962">
         OptParser Subclass
