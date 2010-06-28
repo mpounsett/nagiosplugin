@@ -2,7 +2,19 @@
 # See also LICENSE.txt
 
 
+def reduce(state1, state2):
+    pass
+
+
 class State(object):
+    """Represents the logical outcome of checks.
+
+    A State has a numeric state code and a status word denoting the result. In
+    addition a state carries one or more message lines. The first message line
+    goes into Nagios' main status message and the remaining lines go into
+    Nagios' long output (introduced with Nagios 3).
+    """
+
     code = None
     word = None
 
@@ -12,11 +24,13 @@ class State(object):
         self.messages = messages
 
     def __str__(self):
+        """Numeric status code."""
         if self.code is None or self.word is None:
             raise NotImplementedError
         return self.word
 
     def __int__(self):
+        """Textual status code."""
         if self.code is None or self.word is None:
             raise NotImplementedError
         return self.code
@@ -24,10 +38,12 @@ class State(object):
     def __cmp__(self, other):
         return self.code.__cmp__(other.code)
 
-    def firstline(self):
+    def mainoutput(self):
+        """Main status message (the only one supported with Nagios 1 and 2)."""
         return self.messages[0]
 
     def longoutput(self):
+        """Additional status messages."""
         return self.messages[1:]
 
 

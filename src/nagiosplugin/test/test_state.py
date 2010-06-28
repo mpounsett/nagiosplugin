@@ -27,7 +27,7 @@ class StateTest(unittest.TestCase):
 
     def test_firstline(self):
         s = state.Ok([u'first line', u'more lines 1', u'more lines 2'])
-        self.assertEqual(u'first line', s.firstline())
+        self.assertEqual(u'first line', s.mainoutput())
 
     def test_longoutput(self):
         s = state.Ok([u'first line', u'more lines 1', u'more lines 2'])
