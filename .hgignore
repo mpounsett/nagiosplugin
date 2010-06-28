@@ -1,3 +1,5 @@
 syntax: glob
-*.egg-info
 build
+*.egg-info
+*.pyc
+*.pyo

@@ -15,5 +15,5 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    test_suite="nagiosplugin.test"
+    test_suite='nagiosplugin.test'
 )
