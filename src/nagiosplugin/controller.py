@@ -43,7 +43,7 @@ class Controller(object):
         except Exception as e:
             self.states.append(nagiosplugin.state.Unknown(str(e)))
             self.stderr += traceback.format_exc() + u'\n'
-        self.dominant_state = max(self.states)
+        self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
         self.exitcode = self.dominant_state.code
         self.format()
 
@@ -57,6 +57,8 @@ class Controller(object):
 
     def firstline(self):
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
+        if self.dominant_state.mainoutput():
+            out += u' - ' + self.dominant_state.mainoutput()
         p = 0
         length = len(out) + 3
         while p < len(self.performances) and length <= 80:
@@ -65,7 +67,7 @@ class Controller(object):
         if p == 0:
             return (out, p)
         perf = u' '.join(self.performances[0:p])
-        return (u' | '.join([out, perf]), p)
+        return (out + u' | ' + perf, p)
 
     def longoutput(self):
         return ''

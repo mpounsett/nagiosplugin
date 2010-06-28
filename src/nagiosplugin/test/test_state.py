@@ -38,6 +38,22 @@ class StateTest(unittest.TestCase):
         self.assertEqual([u'bare message'],
                          state.Ok(u'bare message').messages)
 
+    def test_reduce_should_discard_minor_status(self):
+        s_crit = state.Critical(u'problem')
+        s_ok = state.Ok(u'no problem')
+        self.assertEqual(s_crit, state.reduce(s_crit, s_ok))
+
+    def test_reduce_should_not_concant_messages_of_minor_state(self):
+        s1 = state.Warning([u'msg 1', u'msg 2'])
+        s2 = state.Unknown([u'msg 3', u'msg 4'])
+        self.assertEqual([u'msg 3', u'msg 4'], state.reduce(s1, s2).messages)
+
+    def test_reduct_should_concat_messages_of_equal_states(self):
+        s1 = state.Warning([u'msg 1', u'msg 2'])
+        s2 = state.Warning([u'msg 3', u'msg 4'])
+        self.assertEqual([u'msg 1', u'msg 2', u'msg 3', u'msg 4'],
+                         state.reduce(s1, s2).messages)
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(StateTest)

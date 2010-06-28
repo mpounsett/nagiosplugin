@@ -3,7 +3,12 @@
 
 
 def reduce(state1, state2):
-    pass
+    if state1 == state2:
+        state1.messages.extend(state2.messages)
+        return state1
+    elif state1 > state2:
+        return state1
+    return state2
 
 
 class State(object):
