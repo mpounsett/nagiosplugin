@@ -2,8 +2,19 @@
 # See also LICENSE.txt
 
 class Range(object):
+    """Represents a threshold range.
+
+    The general format is `[@][start:][end]`. `start:` may be omitted if
+    start==0. `~:` means that start is negative infinity. If `end` is omitted,
+    infinity is assumed. To invert the match condition, prefix the range
+    expression with `@`.
+
+    See http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+    for details.
+    """
 
     def __init__(self, spec=u''):
+        """Create a Range object according to `spec`."""
         self.spec = spec
         if spec.startswith(u'@'):
             self.invert = True
@@ -26,12 +37,14 @@ class Range(object):
         self.verify()
 
     def verify(self):
+        """Throw ValueError if the range is not consistent."""
         if (self.start is not None and self.end is not None and
             self.start > self.end):
             raise ValueError(u'start %f must not be greater than end %f' % (
                              self.start, self.end))
 
     def match(self, value):
+        """Decide if `value` is inside/outside the bounds."""
         if self.start is not None and value < self.start:
             return False ^ self.invert
         if self.end is not None and value > self.end:
@@ -39,6 +52,7 @@ class Range(object):
         return True ^ self.invert
 
     def __str__(self):
+        """Return a human-readable range specification."""
         result = []
         if self.invert:
             result.append(u'@')
