@@ -24,4 +24,4 @@ class Check(object):
 
     @property
     def shortname(self):
-        return self.name.split()[0].capitalize()
+        return self.name.split()[0].upper()

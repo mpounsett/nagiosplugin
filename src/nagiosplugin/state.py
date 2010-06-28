@@ -43,7 +43,7 @@ class State(object):
     def __cmp__(self, other):
         return self.code.__cmp__(other.code)
 
-    def mainoutput(self):
+    def headline(self):
         """Main status message (the only one supported with Nagios 1 and 2)."""
         return self.messages[0]
 

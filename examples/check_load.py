@@ -39,8 +39,9 @@ For --warning and --critical, either three comma separated range specifications
         if len(crit) < 3:
             crit.extend([crit[-1], crit[-1]])
         self.obtain_load()
-        return [nagiosplugin.Measure(u'load%i' % t,
-                                     self.load[i], warn[i], crit[i])
+        return [nagiosplugin.Measure(u'load%i' % t, self.load[i],
+                                     warning=warn[i], critical=crit[i],
+                                     min=0)
                 for (i, t) in [(0, 1), (1, 5), (2, 15)]]
 
     @property

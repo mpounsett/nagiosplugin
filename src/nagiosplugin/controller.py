@@ -57,8 +57,8 @@ class Controller(object):
 
     def firstline(self):
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
-        if self.dominant_state.mainoutput():
-            out += u' - ' + self.dominant_state.mainoutput()
+        if self.dominant_state.headline():
+            out += u' - ' + self.dominant_state.headline()
         p = 0
         length = len(out) + 3
         while p < len(self.performances) and length <= 80:
@@ -70,6 +70,7 @@ class Controller(object):
         return (out + u' | ' + perf, p)
 
     def longoutput(self):
+        # XXX: insufficient
         return ''
 
     def longperformance(self, min_p):

@@ -18,11 +18,11 @@ class Measure(object):
         uom = self.uom or u''
         if not self.critical.match(self.value):
             return nagiosplugin.state.Critical([
-                    u'%s value %s%s is out of critical range %s' % (
+                    u'%s value %s%s exceeds critical range %s' % (
                     self.name, self.value, uom, self.critical)])
         if not self.warning.match(self.value):
             return nagiosplugin.state.Warning([
-                    u'%s value %s%s is out of warning range %s' % (
+                    u'%s value %s%s exceeds warning range %s' % (
                     self.name, self.value, uom, self.warning)])
         return nagiosplugin.state.Ok()
 

@@ -15,10 +15,18 @@ class MeasureTest(unittest.TestCase):
         self.assertEqual(u'OK', str(m.state()))
 
     def test_warn(self):
-        m = measure.Measure(u'm1', 9, warning=u'8', critical=u'9.4')
+        m = measure.Measure(u'm1', 9, u's', warning=u'8', critical=u'9.4')
         s = m.state()
         self.assertEqual(u'WARNING', str(s))
-        self.assertEqual(u'm1 value 9 is out of warning range 8', s.mainoutput())
+        self.assertEqual(u'm1 value 9s exceeds warning range 8',
+                         s.headline())
+
+    def test_crit(self):
+        m = measure.Measure(u'm1', 9.5, u's', warning=u'8', critical=u'9.4')
+        s = m.state()
+        self.assertEqual(u'CRITICAL', str(s))
+        self.assertEqual(u'm1 value 9.5s exceeds critical range 9.4',
+                         s.headline())
 
 
 def suite():

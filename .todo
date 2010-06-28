@@ -1,5 +1,8 @@
 <?xml version="1.0"?>
 <todo version="0.1.20">
+    <note priority="high" time="1277714272" done="1277732688">
+        fix Measure logic
+    </note>
     <note priority="medium" time="1277547985" done="1277705365">
         multi-line output as array
     </note>
@@ -9,9 +12,6 @@
     <note priority="medium" time="1277703299" done="1277714255">
         Range
     </note>
-    <note priority="high" time="1277714272">
-        fix Measure logic
-    </note>
     <note priority="high" time="1277714287">
         performance data
     </note>
@@ -20,6 +20,9 @@
     </note>
     <note priority="medium" time="1277714281">
         process long output
+    </note>
+    <note priority="medium" time="1277732706">
+        unittests for controller
     </note>
     <note priority="low" time="1277547962">
         OptParser Subclass
