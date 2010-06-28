@@ -13,8 +13,9 @@ class Range(object):
     for details.
     """
 
-    def __init__(self, spec=u''):
+    def __init__(self, spec=None):
         """Create a Range object according to `spec`."""
+        spec = spec or u''
         self.spec = spec
         if spec.startswith(u'@'):
             self.invert = True
@@ -63,3 +64,17 @@ class Range(object):
         if self.end is not None:
             result.append((u'%20g' % self.end).strip())
         return u''.join(result)
+
+    def __repr__(self):
+        """Return a parseable range specification."""
+        return u'Range(%r)' % str(self)
+
+    def __eq__(self, other):
+        """True if both objects represent the same value range."""
+        return all(map(lambda a: getattr(self, a) == getattr(other, a),
+                       self.__dict__.keys()))
+
+    def __ne__(self, other):
+        """True if the value ranges of both objects differ."""
+        return any(map(lambda a: getattr(self, a) != getattr(other, a),
+                       self.__dict__.keys()))

@@ -16,6 +16,9 @@ class RangeParseTest(unittest.TestCase):
         self.failUnless(r.match(0))
         self.failUnless(r.match(1000000))
 
+    def test_none_range(self):
+        self.assertEqual(range.Range(None), range.Range(u''))
+
     def test_explicit_start_end(self):
         r = range.Range('0.5:4')
         self.failIf(r.match(0.4))
@@ -51,6 +54,21 @@ class RangeParseTest(unittest.TestCase):
         self.failIf(r.match(-9.1))
         self.failIf(r.match(2.6))
         self.failUnless(r.match(2.7))
+
+    def test_compare_invert(self):
+        (a, b) = (u'', u'@')
+        self.failIf(range.Range(a) == range.Range(b))
+        self.failUnless(range.Range(a) != range.Range(b))
+
+    def test_compare_start(self):
+        (a, b) = (u'2.2:', u'4:')
+        self.failIf(range.Range(a) == range.Range(b))
+        self.failUnless(range.Range(a) != range.Range(b))
+
+    def test_compare_end(self):
+        (a, b) = (u'9.7', u'4.2')
+        self.failIf(range.Range(a) == range.Range(b))
+        self.failUnless(range.Range(a) != range.Range(b))
 
 
 class RangeStrTest(unittest.TestCase):
