@@ -42,6 +42,7 @@ class MeasureTest(unittest.TestCase):
         m = measure.Measure(u'm4', 15, u's', min=0)
         self.assertEqual(u'm4=15s;;;0', m.performance())
 
+
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(MeasureTest)
     return suite

@@ -10,14 +10,14 @@ import traceback
 
 class Controller(object):
 
-    def __init__(self, check, argv=None):
+    def __init__(self, check_cls, argv=None):
         self.stdout = u''
         self.stderr = u''
         self.exitcode = 0
         self.optparser = optparse.OptionParser(add_help_option=False)
         self.optparser.add_option(u'-h', u'--help', action='store_true',
                 help='show this help message and exit')
-        self.check = check(self.optparser)
+        self.check = check_cls(self.optparser)
         # XXX: subclass OptionParser and handle help, version and error
         # differently
         (self.opts, self.args) = self.optparser.parse_args(argv)
@@ -38,12 +38,16 @@ class Controller(object):
             self.states = filter(bool, [m.state() for m in self.measurements])
             self.performances = filter(bool, [m.performance()
                                               for m in self.measurements])
-            self.states.append(nagiosplugin.state.Ok(
-                self.check.default_message))
+            if self.check.default_message:
+                self.states.append(nagiosplugin.state.Ok(
+                    self.check.default_message))
         except Exception as e:
             self.states.append(nagiosplugin.state.Unknown(str(e)))
             self.stderr += traceback.format_exc() + u'\n'
-        self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
+        try:
+            self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
+        except TypeError:
+            self.dominant_state = nagiosplugin.state.Unknown(u'no output')
         self.exitcode = self.dominant_state.code
         self.format()
 

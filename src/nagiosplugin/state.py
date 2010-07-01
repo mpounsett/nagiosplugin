@@ -45,11 +45,15 @@ class State(object):
 
     def headline(self):
         """Main status message (the only one supported with Nagios 1 and 2)."""
-        return self.messages[0]
+        if self.messages:
+            return self.messages[0]
 
     def longoutput(self):
         """Additional status messages."""
         return self.messages[1:]
+
+    def __repr__(self):
+        return u'%s(%r)' % (self.__class__.__name__, self.messages)
 
 
 class Ok(State):
