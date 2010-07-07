@@ -33,11 +33,9 @@ class Controller(object):
         self.states = []
         self.performances = []
         try:
-            self.check.verify_arguments(self.opts, self.args)
-            self.measurements = self.check.measure(self.opts, self.args)
-            self.states = filter(bool, [m.state() for m in self.measurements])
-            self.performances = filter(bool, [m.performance()
-                                              for m in self.measurements])
+            self.check.obtain_data(self.opts, self.args)
+            self.states = self.check.states()
+            self.performances = self.check.performances()
             if self.check.default_message:
                 self.states.append(nagiosplugin.state.Ok(
                     self.check.default_message))

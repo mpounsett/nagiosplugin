@@ -16,13 +16,18 @@ class Check(object):
         """
         pass
 
-    def verify_arguments(self, opts, args):
+    def obtain_data(self, opts, args):
+        """Do whatever is necessary to measure data points from the system."""
         if args:
             raise optparse.OptParseError(u'superfluous arguments: %s' % args)
 
-    def measure(self, opts, args):
-        """Return array of Measure objects to create plugin output."""
-        raise NotImplementedError
+    def states(self):
+        """Return list of State objects from measured data."""
+        return []
+
+    def performances(self):
+        """Return list of performance data strings from measured data."""
+        return []
 
     @property
     def shortname(self):

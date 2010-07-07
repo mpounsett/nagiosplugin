@@ -17,6 +17,9 @@
     </note>
     <note priority="high" time="1277732706">
         unittests for controller
+        <note priority="medium" time="1278479786">
+            refactor: keep measurements inside check
+        </note>
     </note>
     <note priority="medium" time="1277710742">
         timeouts

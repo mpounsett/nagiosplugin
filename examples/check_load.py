@@ -24,25 +24,28 @@ class LoadCheck(nagiosplugin.Check):
 For --warning and --critical, either three comma separated range specifications
 (1, 5, 15 minutes) or one range specification covering all are accepted."""
 
-    def obtain_load(self):
-        with file(self.loadavg) as f:
-            line = f.readline()
-        self.load = map(float, line.split(u' ')[0:3])
-        if len(self.load) != 3:
-            raise ValueError(u'Cannot parse loadavg: %s' % line)
-
-    def measure(self, opts, args):
+    def obtain_data(self, opts, args):
         warn = opts.warning.split(u',')
         if len(warn) < 3:
             warn.extend([warn[-1], warn[-1]])
         crit = opts.critical.split(u',')
         if len(crit) < 3:
             crit.extend([crit[-1], crit[-1]])
-        self.obtain_load()
-        return [nagiosplugin.Measure(u'load%i' % t, self.load[i],
-                                     warning=warn[i], critical=crit[i],
-                                     min=0)
-                for (i, t) in [(0, 1), (1, 5), (2, 15)]]
+        with file(self.loadavg) as f:
+            line = f.readline()
+        self.load = map(float, line.split(u' ')[0:3])
+        if len(self.load) != 3:
+            raise ValueError(u'Cannot parse loadavg: %s' % line)
+        self.data = [nagiosplugin.Measure(u'load%i' % t, self.load[i],
+                                          warning=warn[i], critical=crit[i],
+                                          min=0)
+                     for (i, t) in [(0, 1), (1, 5), (2, 15)]]
+
+    def measures(self):
+        return self.data
+
+    def performances(self):
+        return [m.performance() for m in self.data]
 
     @property
     def default_message(self):

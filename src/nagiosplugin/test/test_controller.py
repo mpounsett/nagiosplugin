@@ -11,13 +11,7 @@ from nagiosplugin import controller
 
 class MockCheck(nagiosplugin.check.Check):
 
-    def __init__(self, op):
-        self.measures = []
-
-    def measure(self, opts, args):
-        return self.measures
-
-    def verify_arguments(self, *args):
+    def obtain_data(self, opts, args):
         pass
 
 
