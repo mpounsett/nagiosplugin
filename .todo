@@ -15,9 +15,9 @@
     <note priority="medium" time="1277703299" done="1277714255">
         Range
     </note>
-    <note priority="high" time="1277732706">
+    <note priority="high" time="1277732706" done="1278483221">
         unittests for controller
-        <note priority="medium" time="1278479786">
+        <note priority="medium" time="1278479786" done="0">
             refactor: keep measurements inside check
         </note>
     </note>
@@ -52,6 +52,6 @@
         catch exceptions and return UNKNOWN
     </note>
     <note priority="low" time="1277732775">
-        long output
+        cumulate long outputs in state.reduce()
     </note>
 </todo>

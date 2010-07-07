@@ -11,13 +11,15 @@ import traceback
 class Controller(object):
 
     def __init__(self, check_cls, argv=None):
-        self.stdout = u''
         self.stderr = u''
         self.exitcode = 0
         self.optparser = optparse.OptionParser(add_help_option=False)
         self.optparser.add_option(u'-h', u'--help', action='store_true',
                 help='show this help message and exit')
         self.check = check_cls(self.optparser)
+        self.states = []
+        self.performances = []
+        self.dominant_state = nagiosplugin.state.Unknown(u'no output')
         # XXX: subclass OptionParser and handle help, version and error
         # differently
         (self.opts, self.args) = self.optparser.parse_args(argv)
@@ -45,17 +47,8 @@ class Controller(object):
         try:
             self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
         except TypeError:
-            self.dominant_state = nagiosplugin.state.Unknown(u'no output')
+            pass
         self.exitcode = self.dominant_state.code
-        self.format()
-
-    def format(self):
-        (first, p_processed) = self.firstline()
-        long = u' | '.join(filter(bool, (
-            self.longoutput(), self.longperformance(p_processed))))
-        self.stdout += first + u'\n' + long
-        if not self.stdout.endswith(u'\n'):
-            self.stdout += u'\n'
 
     def firstline(self):
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
@@ -72,14 +65,22 @@ class Controller(object):
         return (out + u' | ' + perf, p)
 
     def longoutput(self):
-        # XXX: insufficient
-        return ''
+        return u'\n'.join(self.dominant_state.longoutput())
 
     def longperformance(self, min_p):
         return u'\n'.join(self.performances[min_p:])
 
+    def format(self):
+        (first, p_processed) = self.firstline()
+        long = u' | '.join(filter(bool, (
+            self.longoutput(), self.longperformance(p_processed))))
+        out = first + u'\n' + long
+        if not out.endswith(u'\n'):
+            out += u'\n'
+        return out
+
     def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
-        stdout.write(self.stdout)
+        stdout.write(self.format())
         stderr.write(self.stderr)
         if exit:
             sys.exit(self.exitcode)
