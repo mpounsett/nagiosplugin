@@ -8,6 +8,10 @@ import sys
 import traceback
 
 
+class TimeoutError(RuntimeError):
+    pass
+
+
 class Controller(object):
 
     def __init__(self, check_cls, argv=None):
@@ -16,6 +20,9 @@ class Controller(object):
         self.optparser = optparse.OptionParser(add_help_option=False)
         self.optparser.add_option(u'-h', u'--help', action='store_true',
                 help='show this help message and exit')
+        self.optparser.add_option(u'-t', u'--timeout', metavar=u'TIMEOUT',
+                default=15, help=u'abort execution after TIMEOUT seconds '
+                '(default: %default)')
         self.check = check_cls(self.optparser)
         self.states = []
         self.performances = []
@@ -30,6 +37,10 @@ class Controller(object):
             self.stderr = io.getvalue()
         else:
             self.run()
+
+    @staticmethod
+    def timeout_handler():
+        raise TimeoutError()
 
     def run(self):
         self.states = []
@@ -50,6 +61,23 @@ class Controller(object):
             pass
         self.exitcode = self.dominant_state.code
 
+    def format(self):
+        (first, p_processed) = self.firstline()
+        long = u' | '.join(filter(bool, (
+            self.longoutput(), self.longperformance(p_processed))))
+        out = first + u'\n' + long
+        if not out.endswith(u'\n'):
+            out += u'\n'
+
+        return out
+
+    def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
+        stdout.write(self.format())
+        stderr.write(self.stderr)
+        if exit:
+            sys.exit(self.exitcode)
+        return self.exitcode
+
     def firstline(self):
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
         if self.dominant_state.headline():
@@ -69,19 +97,3 @@ class Controller(object):
 
     def longperformance(self, min_p):
         return u'\n'.join(self.performances[min_p:])
-
-    def format(self):
-        (first, p_processed) = self.firstline()
-        long = u' | '.join(filter(bool, (
-            self.longoutput(), self.longperformance(p_processed))))
-        out = first + u'\n' + long
-        if not out.endswith(u'\n'):
-            out += u'\n'
-        return out
-
-    def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
-        stdout.write(self.format())
-        stderr.write(self.stderr)
-        if exit:
-            sys.exit(self.exitcode)
-        return self.exitcode

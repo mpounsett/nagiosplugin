@@ -56,6 +56,10 @@ class ControllerTest(unittest.TestCase):
         self.assertEqual(u'CHECK WARNING - yellow | perf=4\nlong1\nlong2\n',
                          c.format())
 
+    def test_sigalarm_should_raise_TimeoutError(self):
+        c = controller.Controller(MockCheck)
+        self.assertRaises(controller.TimeoutError, c.timeout_handler)
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(ControllerTest)

@@ -6,6 +6,12 @@
     <note priority="high" time="1277714287" done="1277733671">
         performance data
     </note>
+    <note priority="high" time="1277732706" done="1278483221">
+        unittests for controller
+        <note priority="medium" time="1278479786" done="0">
+            refactor: keep measurements inside check
+        </note>
+    </note>
     <note priority="medium" time="1277547985" done="1277705365">
         multi-line output as array
     </note>
@@ -15,14 +21,11 @@
     <note priority="medium" time="1277703299" done="1277714255">
         Range
     </note>
-    <note priority="high" time="1277732706" done="1278483221">
-        unittests for controller
-        <note priority="medium" time="1278479786" done="0">
-            refactor: keep measurements inside check
-        </note>
-    </note>
     <note priority="medium" time="1277710742">
         timeouts
+        <note priority="low" time="1278483978">
+            say timeout value in timeout error message
+        </note>
     </note>
     <note priority="medium" time="1277714281">
         process long output
