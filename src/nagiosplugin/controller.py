@@ -43,7 +43,7 @@ class Controller(object):
 
     @staticmethod
     def timeout_handler(signum, frame):
-        raise TimeoutError()
+        raise TimeoutError(u'timeout exceeded')
 
     def run_with_timeout(self):
         self.states = []
