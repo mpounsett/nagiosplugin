@@ -58,7 +58,16 @@ class ControllerTest(unittest.TestCase):
 
     def test_sigalarm_should_raise_TimeoutError(self):
         c = controller.Controller(MockCheck)
-        self.assertRaises(controller.TimeoutError, c.timeout_handler)
+        self.assertRaises(controller.TimeoutError,
+                          c.timeout_handler, None, None)
+
+    def test_process_timeouterror(self):
+        class TimeoutCheck(MockCheck):
+            def obtain_data(self, *args):
+                raise controller.TimeoutError()
+        c = controller.Controller(TimeoutCheck)
+        self.assertEqual(u'CHECK UNKNOWN - timeout of 15s exceeded\n',
+                         c.format())
 
 
 def suite():

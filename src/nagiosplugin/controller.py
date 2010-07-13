@@ -4,6 +4,8 @@
 import cStringIO
 import nagiosplugin.state
 import optparse
+import os
+import signal
 import sys
 import traceback
 
@@ -21,7 +23,8 @@ class Controller(object):
         self.optparser.add_option(u'-h', u'--help', action='store_true',
                 help='show this help message and exit')
         self.optparser.add_option(u'-t', u'--timeout', metavar=u'TIMEOUT',
-                default=15, help=u'abort execution after TIMEOUT seconds '
+                default=15, type='int',
+                help=u'abort execution after TIMEOUT seconds '
                 '(default: %default)')
         self.check = check_cls(self.optparser)
         self.states = []
@@ -36,22 +39,23 @@ class Controller(object):
             self.optparser.print_help(io)
             self.stderr = io.getvalue()
         else:
-            self.run()
+            self.run_with_timeout()
 
     @staticmethod
-    def timeout_handler():
+    def timeout_handler(signum, frame):
         raise TimeoutError()
 
-    def run(self):
+    def run_with_timeout(self):
         self.states = []
         self.performances = []
         try:
-            self.check.obtain_data(self.opts, self.args)
-            self.states = self.check.states()
-            self.performances = self.check.performances()
-            if self.check.default_message:
-                self.states.append(nagiosplugin.state.Ok(
-                    self.check.default_message))
+            signal.signal(signal.SIGALRM, self.timeout_handler)
+            signal.alarm(self.opts.timeout)
+            self.run()
+            signal.alarm(0)
+        except TimeoutError:
+            self.states.append(nagiosplugin.state.Unknown(
+                u'timeout of %is exceeded' % self.opts.timeout))
         except Exception as e:
             self.states.append(nagiosplugin.state.Unknown(str(e)))
             self.stderr += traceback.format_exc() + u'\n'
@@ -60,6 +64,14 @@ class Controller(object):
         except TypeError:
             pass
         self.exitcode = self.dominant_state.code
+
+    def run(self):
+        self.check.obtain_data(self.opts, self.args)
+        self.states = self.check.states()
+        self.performances = self.check.performances()
+        if self.check.default_message:
+            self.states.append(nagiosplugin.state.Ok(
+                self.check.default_message))
 
     def format(self):
         (first, p_processed) = self.firstline()
