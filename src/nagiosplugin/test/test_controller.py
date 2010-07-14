@@ -41,10 +41,16 @@ class ControllerTest(unittest.TestCase):
         self.assert_(isinstance(c.check, MockCheck),
                      u'%r is not an instance of MockCheck' % c.check)
 
-    def test_dominant_state_is_created_from_dormant_check(self):
+    def test_dormant_check_results_is_unknown(self):
         c = controller.Controller(MockCheck)
         self.assert_(isinstance(c.dominant_state, nagiosplugin.state.Unknown))
 
+    def test_exception_results_in_unknown(self):
+        class FailingCheck(MockCheck):
+            def obtain_data(self, *args):
+                raise RuntimeError(u'unhandled error')
+        c = controller.Controller(FailingCheck)
+        self.assertEqual(u'CHECK UNKNOWN - unhandled error\n', c.format())
 
     def test_format_with_default_message(self):
         class DefaultMessageCheck(MockCheck):
