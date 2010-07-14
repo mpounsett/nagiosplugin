@@ -33,28 +33,31 @@
             say timeout value in timeout error message
         </note>
     </note>
+    <note priority="medium" time="1277964183" done="1279083061">
+        Add option to Measure to suppress performance data
+    </note>
     <note priority="medium" time="1277966242" done="1279048503">
         check.states()
     </note>
     <note priority="medium" time="1277966248" done="1279048506">
         check.performances()
     </note>
-    <note priority="medium" time="1277964183" done="1279083061">
-        Add option to Measure to suppress performance data
+    <note priority="high" time="1277732775" done="1279083405">
+        cumulate long outputs in state.reduce()
+        <comment>
+            already solved
+        </comment>
     </note>
-    <note priority="low" time="1277547962">
+    <note priority="medium" time="1277547962">
         OptParser Subclass
+    </note>
+    <note priority="medium" time="1277732758">
+        catch exceptions and return UNKNOWN
     </note>
     <note priority="low" time="1277548680">
         help should exit with code 3
     </note>
     <note priority="low" time="1277548693">
         unknown option/invalid arg should exit with code 3
-    </note>
-    <note priority="low" time="1277732758">
-        catch exceptions and return UNKNOWN
-    </note>
-    <note priority="low" time="1277732775">
-        cumulate long outputs in state.reduce()
     </note>
 </todo>

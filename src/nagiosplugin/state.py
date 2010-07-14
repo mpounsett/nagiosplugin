@@ -3,6 +3,11 @@
 
 
 def reduce(state1, state2):
+    """Prune non-dominant states and concat messages of dominant states.
+
+    The set of dominant states is constructed from all states which share the
+    highest status code.
+    """
     if state1 == state2:
         state1.messages.extend(state2.messages)
         return state1
@@ -41,6 +46,7 @@ class State(object):
         return self.code
 
     def __cmp__(self, other):
+        """Numerical status code comparision."""
         return self.code.__cmp__(other.code)
 
     def headline(self):

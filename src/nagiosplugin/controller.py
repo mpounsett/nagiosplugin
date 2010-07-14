@@ -103,6 +103,7 @@ class Controller(object):
                 self.check.default_message))
 
     def format(self):
+        """Compile and format output according to Nagios 3 plugin API."""
         (first, p_processed) = self.firstline()
         long = self.longoutput().rstrip(u'\n')
         longperf = self.longperformance(p_processed)
@@ -113,14 +114,8 @@ class Controller(object):
             out += u'\n'
         return out
 
-    def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
-        stdout.write(self.format())
-        stderr.write(self.stderr)
-        if exit:
-            sys.exit(self.exitcode)
-        return self.exitcode
-
     def firstline(self):
+        """Return check status and performance data (not more than 80 chars)."""
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
         if self.dominant_state.headline():
             out += u' - ' + self.dominant_state.headline()
@@ -137,6 +132,7 @@ class Controller(object):
         return (out + u' | ' + perf, p)
 
     def longoutput(self):
+        """Accumulate additional output and performance lines."""
         out = self.dominant_state.longoutput()
         if self.logstream.getvalue():
             out.append(self.logstream.getvalue())
@@ -144,3 +140,11 @@ class Controller(object):
 
     def longperformance(self, min_p):
         return u'\n'.join(self.performances[min_p:])
+
+    def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
+        """Emit cumulated output to `stdout` and `stderr`."""
+        stdout.write(self.format())
+        stderr.write(self.stderr)
+        if exit:
+            sys.exit(self.exitcode)
+        return self.exitcode
