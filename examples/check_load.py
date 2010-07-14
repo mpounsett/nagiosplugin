@@ -7,10 +7,10 @@ import nagiosplugin
 class LoadCheck(nagiosplugin.Check):
 
     name = u'Load average'
+    loadavg = '/proc/loadavg'
+    cpuinfo = '/proc/cpuinfo'
 
-    def __init__(self, op):
-        self.loadavg = '/proc/loadavg'
-        self.cpuinfo = '/proc/cpuinfo'
+    def __init__(self, op, log):
         op.description = 'Check the current system load average.'
         op.add_option(u'-w', u'--warning', metavar=u'RANGES', default=u'1',
                 help=u'warning if load<n> is out of RANGE<n> '
@@ -23,16 +23,20 @@ class LoadCheck(nagiosplugin.Check):
         op.epilog = u"""\
 For --warning and --critical, either three comma separated range specifications
 (1, 5, 15 minutes) or one range specification covering all are accepted."""
+        self.log = log
 
     def obtain_data(self, opts, args):
         warn = opts.warning.split(u',')
         if len(warn) < 3:
-            warn.extend([warn[-1], warn[-1]])
+            warn.extend([warn[-1], warn[-1]][0:3-len(warn)])
+            self.log.warning(u'extending warn thresholds=%s' % u' '.join(warn))
         crit = opts.critical.split(u',')
         if len(crit) < 3:
             crit.extend([crit[-1], crit[-1]])
+            self.log.warning(u'extending crit thresholds=%s' % u' '.join(crit))
         with file(self.loadavg) as f:
             line = f.readline()
+            self.log.info(u'reading %s: %s' % (self.loadavg, line))
         self.load = map(float, line.split(u' ')[0:3])
         if len(self.load) != 3:
             raise ValueError(u'Cannot parse loadavg: %s' % line)

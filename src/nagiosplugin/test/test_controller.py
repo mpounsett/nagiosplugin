@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import logging
 import nagiosplugin.check
 import nagiosplugin.state
 import nagiosplugin.test
@@ -10,8 +11,12 @@ from nagiosplugin import controller
 
 class MockCheck(nagiosplugin.check.Check):
 
+    def __init__(self, optparser, logger):
+        (self.op, self.log) = (optparser, logger)
+
     def obtain_data(self, opts, args):
         self.data = 4
+
 
 class StatePerformanceCheck(MockCheck):
 
@@ -20,6 +25,13 @@ class StatePerformanceCheck(MockCheck):
 
     def performances(self):
         return [u'perf=4']
+
+class DebugLogCheck(MockCheck):
+
+    def obtain_data(self, *args):
+        self.log.debug(u'debug')
+        self.log.info(u'info')
+        self.log.warning(u'warning')
 
 
 class ControllerTest(unittest.TestCase):
@@ -68,6 +80,19 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(TimeoutCheck)
         self.assertEqual(u'CHECK UNKNOWN - timeout of 15s exceeded\n',
                          c.format())
+
+    def test_logger_init(self):
+        c = controller.Controller(MockCheck)
+        self.assert_(isinstance(c.check.log, logging.Logger),
+                     u'%r is not a Logger instance' % c.check.log)
+
+    def test_logger_debug(self):
+        c = controller.Controller(DebugLogCheck, ['-vvv'])
+        self.assertEqual(u'debug\ninfo\nwarning\n', c.logstream.getvalue())
+
+    def test_logger_warning(self):
+        c = controller.Controller(DebugLogCheck, ['-v'])
+        self.assertEqual(u'warning\n', c.logstream.getvalue())
 
 
 def suite():
