@@ -39,6 +39,9 @@
             say timeout value in timeout error message
         </note>
     </note>
+    <note priority="medium" time="1277732758" done="1279084803">
+        catch exceptions and return UNKNOWN
+    </note>
     <note priority="medium" time="1277964183" done="1279083061">
         Add option to Measure to suppress performance data
     </note>
@@ -57,8 +60,8 @@
             unknown option/invalid arg should exit with code 3
         </note>
     </note>
-    <note priority="medium" time="1277732758" done="1279084803">
-        catch exceptions and return UNKNOWN
+    <note priority="medium" time="1279084888">
+        ensure that stack traces go into the long output
     </note>
     <note priority="low" time="1279084762">
         implement check_load -r

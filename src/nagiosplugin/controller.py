@@ -4,7 +4,7 @@
 import cStringIO
 import logging
 import nagiosplugin.state
-import optparse
+import nagiosplugin.pluginoptparse
 import os
 import signal
 import sys
@@ -30,23 +30,16 @@ class Controller(object):
         self.states = []
         self.performances = []
         self.dominant_state = nagiosplugin.state.Unknown(u'no output')
-        # XXX: subclass OptionParser and handle help, version and error
-        # differently
         (self.opts, self.args) = self.optparser.parse_args(argv)
-        # XXX: this should go into the OptionParser subclass
-        if self.opts.help:
-            io = cStringIO.StringIO()
-            self.optparser.print_help(io)
-            self.stderr = io.getvalue()
+        if self.optparser.exit():
+            (self.exitcode, self.stderr) = self.optparser.exit()
         else:
             self.setup_logger()
             self.run_with_timeout()
 
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""
-        self.optparser = optparse.OptionParser(add_help_option=False)
-        self.optparser.add_option(u'-h', u'--help', action='store_true',
-                help='show this help message and exit')
+        self.optparser = nagiosplugin.pluginoptparse.PluginOptionParser()
         self.optparser.add_option(u'-v', u'--verbose', action='count',
                 default=0, help='increase output verbosity (up to 3 times)')
         self.optparser.add_option(u'-t', u'--timeout', metavar=u'TIMEOUT',

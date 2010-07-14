@@ -26,6 +26,7 @@ class StatePerformanceCheck(MockCheck):
     def performances(self):
         return [u'perf=4']
 
+
 class DebugLogCheck(MockCheck):
 
     def obtain_data(self, *args):
