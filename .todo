@@ -24,6 +24,15 @@
     <note priority="high" time="1277732784" done="1279083055">
         logging infrastructure
     </note>
+    <note priority="medium" time="1277547962" done="1279093078">
+        OptParser Subclass
+        <note priority="low" time="1277548680" done="1279093076">
+            help should exit with code 3
+        </note>
+        <note priority="low" time="1277548693" done="1279090211">
+            unknown option/invalid arg should exit with code 3
+        </note>
+    </note>
     <note priority="medium" time="1277547985" done="1277705365">
         multi-line output as array
     </note>
@@ -51,22 +60,19 @@
     <note priority="medium" time="1277966248" done="1279048506">
         check.performances()
     </note>
-    <note priority="medium" time="1277547962" done="1279093078">
-        OptParser Subclass
-        <note priority="low" time="1277548680" done="1279093076">
-            help should exit with code 3
-        </note>
-        <note priority="low" time="1277548693" done="1279090211">
-            unknown option/invalid arg should exit with code 3
-        </note>
-    </note>
-    <note priority="medium" time="1279084888">
+    <note priority="medium" time="1279084888" done="1279115051">
         ensure that stack traces go into the long output
+    </note>
+    <note priority="high" time="1279084775">
+        move examples under src
+    </note>
+    <note priority="medium" time="1279115105">
+        tests for example plugin
     </note>
     <note priority="low" time="1279084762">
         implement check_load -r
     </note>
-    <note priority="low" time="1279084775">
-        move examples under src
+    <note priority="low" time="1279115077">
+        check_load: extract option checking out of obtain_data
     </note>
 </todo>
