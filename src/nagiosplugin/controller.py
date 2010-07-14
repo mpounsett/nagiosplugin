@@ -41,12 +41,14 @@ class Controller(object):
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""
         self.optparser = nagiosplugin.pluginoptparse.PluginOptionParser()
+        self.optparser.add_option(u'-V', u'--version', action='version',
+                help=u'print version and exit')
         self.optparser.add_option(u'-v', u'--verbose', action='count',
-                default=0, help='increase output verbosity (up to 3 times)')
+                default=0, help=u'increase output verbosity (up to 3 times)')
         self.optparser.add_option(u'-t', u'--timeout', metavar=u'TIMEOUT',
                 default=15, type='int',
-                help=u'abort execution after TIMEOUT seconds '
-                '(default: %default)')
+                help=(u'abort execution after TIMEOUT seconds '
+                      u'(default: %default)'))
         self.logger = logging.getLogger(u'nagiosplugin')
         self.logger.setLevel(logging.DEBUG)
         self.logstream = cStringIO.StringIO()

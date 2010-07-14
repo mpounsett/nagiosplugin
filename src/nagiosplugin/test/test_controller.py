@@ -105,6 +105,10 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(MockCheck, ['-x'])
         self.assertEqual(3, c.exitcode)
 
+    def test_help_option_should_exit_unknown(self):
+        c = controller.Controller(MockCheck, ['-h'])
+        self.assertEqual(3, c.exitcode)
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(ControllerTest)

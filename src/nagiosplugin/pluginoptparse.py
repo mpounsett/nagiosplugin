@@ -17,11 +17,29 @@ class PluginOptionParser(optparse.OptionParser):
         self.stderr = u''
 
     def exit(self, status=0, msg=None):
-        """Override exit() to do nothing."""
+        """Overridden to do nothing."""
         pass
 
-    def error(self, msg):
-        """Override error() to append `msg` to self.stderr."""
+    def _print_stderr(self, msg):
+        """Append `msg` to self.stderr. Add newline if necessary."""
+        if not msg.endswith(u'\n'):
+            msg += u'\n'
         self.stderr += msg
-        if not self.stderr.endswith(u'\n'):
-            self.stderr += u'\n'
+
+    def error(self, msg):
+        """Overridden to append `msg` to self.stderr."""
+        self.print_usage()
+        self._print_stderr(u'%s: error: %s' % (self.get_prog_name(), msg))
+
+    def print_usage(self, file=None):
+        """Overridden to append usage to self.stderr."""
+        if self.usage:
+            self._print_stderr(self.get_usage())
+
+    def print_version(self, file=None):
+        """Overridden to append version to self.stderr."""
+        if self.version:
+            self._print_stderr(self.get_version())
+
+    def print_help(self, file=None):
+        self._print_stderr(self.format_help())

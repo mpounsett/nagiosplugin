@@ -7,11 +7,13 @@ import nagiosplugin
 class LoadCheck(nagiosplugin.Check):
 
     name = u'Load average'
+    version = u'0.1'
     loadavg = '/proc/loadavg'
     cpuinfo = '/proc/cpuinfo'
 
     def __init__(self, op, log):
         op.description = 'Check the current system load average.'
+        op.version = self.version
         op.add_option(u'-w', u'--warning', metavar=u'RANGES', default=u'1',
                 help=u'warning if load<n> is out of RANGE<n> '
                 u'(default: %default)')

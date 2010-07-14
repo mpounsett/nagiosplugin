@@ -51,9 +51,9 @@
     <note priority="medium" time="1277966248" done="1279048506">
         check.performances()
     </note>
-    <note priority="medium" time="1277547962">
+    <note priority="medium" time="1277547962" done="1279093078">
         OptParser Subclass
-        <note priority="low" time="1277548680">
+        <note priority="low" time="1277548680" done="1279093076">
             help should exit with code 3
         </note>
         <note priority="low" time="1277548693" done="1279090211">
