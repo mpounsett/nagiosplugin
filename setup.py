@@ -7,10 +7,10 @@ from setuptools import setup, find_packages
 setup(
     name='nagiosplugin',
     version='0.1dev',
-    description='Framework for creating Nagios plugins',
+    description='Object-oriented Python framework easy Nagios plugin creation',
     author='Christian Kauhaus',
     author_email='kc@gocept.com',
-    license='GPL-3',
+    license='ZPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,

@@ -63,7 +63,7 @@
     <note priority="medium" time="1279084888" done="1279115051">
         ensure that stack traces go into the long output
     </note>
-    <note priority="high" time="1279084775">
+    <note priority="high" time="1279084775" done="1279116195">
         move examples under src
     </note>
     <note priority="medium" time="1279115105">
