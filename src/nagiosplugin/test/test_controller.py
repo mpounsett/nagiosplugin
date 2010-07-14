@@ -101,6 +101,10 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(DebugLogCheck, ['-v'])
         self.assertEqual(u'warning\n', c.logstream.getvalue())
 
+    def test_invalid_option_should_exit_unknown(self):
+        c = controller.Controller(MockCheck, ['-x'])
+        self.assertEqual(3, c.exitcode)
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(ControllerTest)

@@ -56,7 +56,7 @@
         <note priority="low" time="1277548680">
             help should exit with code 3
         </note>
-        <note priority="low" time="1277548693">
+        <note priority="low" time="1277548693" done="1279090211">
             unknown option/invalid arg should exit with code 3
         </note>
     </note>

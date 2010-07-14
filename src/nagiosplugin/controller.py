@@ -29,10 +29,11 @@ class Controller(object):
         self.exitcode = 0
         self.states = []
         self.performances = []
-        self.dominant_state = nagiosplugin.state.Unknown(u'no output')
+        self.dominant_state = nagiosplugin.state.Unknown()
         (self.opts, self.args) = self.optparser.parse_args(argv)
-        if self.optparser.exit():
-            (self.exitcode, self.stderr) = self.optparser.exit()
+        if self.optparser.stderr:
+            self.stderr = self.optparser.stderr
+            self.exitcode = 3
         else:
             self.setup_logger()
             self.run_with_timeout()
