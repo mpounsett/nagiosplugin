@@ -46,7 +46,7 @@ For --warning and --critical, either three comma separated range specifications
                                           warning=warn[i], critical=crit[i],
                                           min=0)
                      for (i, t) in [(0, 1), (1, 5), (2, 15)]]
-        self.log.info(u'resulting measures: %r' % self.data)
+        self.log.info(u'measures: %r' % self.data)
 
     def performances(self):
         return [m.performance() for m in self.data]

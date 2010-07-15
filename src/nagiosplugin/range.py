@@ -15,8 +15,7 @@ class Range(object):
 
     def __init__(self, spec=None):
         """Create a Range object according to `spec`."""
-        spec = spec or u''
-        self.spec = spec
+        self.spec = spec = (spec or u'')
         if spec.startswith(u'@'):
             self.invert = True
             spec = spec[1:]
@@ -60,9 +59,9 @@ class Range(object):
         if self.start is None:
             result.append(u'~:')
         elif self.start != 0:
-            result.append((u'%.20g:' % self.start).strip())
+            result.append((u'%g:' % self.start))
         if self.end is not None:
-            result.append((u'%20g' % self.end).strip())
+            result.append((u'%g' % self.end))
         return u''.join(result)
 
     def __repr__(self):

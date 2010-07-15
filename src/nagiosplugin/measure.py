@@ -40,6 +40,6 @@ class Measure(object):
         return u';'.join(p).rstrip(u';')
 
     def __repr__(self):
-        return u'Measure(%r, %r, %r, %r, %r, %r, %r)' % (
+        return u'Measure(%r, %g, %r, %r, %r, %r, %r)' % (
             self.name, self.value, self.uom, self.warning, self.critical,
             self.min, self.max)

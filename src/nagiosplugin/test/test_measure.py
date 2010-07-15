@@ -42,8 +42,8 @@ class MeasureTest(unittest.TestCase):
         self.assertEqual(u'm4=15s;;;0', m.performance())
 
     def test_repr(self):
-        m = Measure(u'm5', 16.5, u'kB', '10:16', '32', 0, 4096)
-        self.assertEqual(u"Measure(u'm5', 16.5, u'kB', Range('10:16'), "
+        m = Measure(u'm5', 16.1, u'kB', '10:16', '32', 0, 4096)
+        self.assertEqual(u"Measure(u'm5', 16.1, u'kB', Range('10:16'), "
                          u"Range('32'), 0, 4096)",
                          repr(m))
 

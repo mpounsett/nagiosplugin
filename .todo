@@ -69,7 +69,7 @@
     <note priority="medium" time="1279115105" done="1279188785">
         tests for example plugin
     </note>
-    <note priority="medium" time="1279188779">
+    <note priority="medium" time="1279188779" done="1279191163">
         improve decimal string representation of float values - e.g. 0.1
     </note>
     <note priority="low" time="1279084762">

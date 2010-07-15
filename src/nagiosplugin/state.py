@@ -28,10 +28,13 @@ class State(object):
     code = None
     word = None
 
-    def __init__(self, messages=[]):
-        if not isinstance(messages, list):
-            messages = [messages]
-        self.messages = messages
+    def __init__(self, messages=None):
+        if not messages:
+            self.messages = []
+        elif not isinstance(messages, list):
+            self.messages = [messages]
+        else:
+            self.messages = messages
 
     def __str__(self):
         """Numeric status code."""

@@ -8,6 +8,9 @@ from nagiosplugin import state
 
 class StateTest(unittest.TestCase):
 
+    def test_messages_is_list_on_empty_params(self):
+        self.assertEqual([], state.Unknown().messages)
+
     def test_str(self):
         self.assertEqual(u'OK', str(state.Ok()))
 

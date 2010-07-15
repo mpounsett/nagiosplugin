@@ -18,6 +18,7 @@ Usage: ...
 Check the current system load average.
 ...
 
+
 Basic plugin usage
 ------------------
 
@@ -41,12 +42,31 @@ Invoking `check_load` without parameters, it reports the current load values::
 >>> print c.format()
 LOAD OK - system load average is 0.14 0.91 0.85 ...
 
-Warning and critical thresholds may be specified as usual with the `-w` and `-c`
-options::
+Warning and critical thresholds may be specified as usual. `-w` sets the warning
+range::
 
->>> c = nagiosplugin.Controller(LoadCheck, ['-w', '0.125:0.75'])
+>>> c = nagiosplugin.Controller(LoadCheck, ['-w', '0.1:0.75'])
 >>> print c.format()
-LOAD WARNING - load5 value 0.91 exceeds warning range 0.125:0.75 ...
+LOAD WARNING - load5 value 0.91 exceeds warning range 0.1:0.75 ...
 
+`-c` sets the critical range. It is ok to specify several values for the 1, 5,
+and 15 minutes load average::
+
+>>> c = nagiosplugin.Controller(LoadCheck, ['-c', '2,1,0.5'])
+>>> print c.format()
+LOAD CRITICAL - load15 value 0.85 exceeds critical range 0.5 ...
+
+
+Performance data
+----------------
+
+check_load gives the expected performance data. The 5 and 15 minutes averages
+are given as performance expressions in the long output::
+
+>>> c = nagiosplugin.Controller(LoadCheck, [])
+>>> print c.format()
+LOAD OK ... | load1=0.14;1;2;0
+| load5=0.91;1;2;0
+load15=0.85;1;2;0
 
 .. vim: set ft=rst:
