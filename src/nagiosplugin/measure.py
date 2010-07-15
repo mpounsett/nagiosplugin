@@ -38,3 +38,8 @@ class Measure(object):
              str(self.warning), str(self.critical),
              silent_str(self.min), silent_str(self.max)]
         return u';'.join(p).rstrip(u';')
+
+    def __repr__(self):
+        return u'Measure(%r, %r, %r, %r, %r, %r, %r)' % (
+            self.name, self.value, self.uom, self.warning, self.critical,
+            self.min, self.max)
