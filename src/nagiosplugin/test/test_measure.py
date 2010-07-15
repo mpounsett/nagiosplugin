@@ -6,8 +6,6 @@ import nagiosplugin.test
 import nagiosplugin.measure
 from nagiosplugin.measure import Measure
 
-nagiosplugin.test.path_setup()
-
 
 class MeasureTest(unittest.TestCase):
 

@@ -5,8 +5,6 @@ import unittest
 import nagiosplugin.test
 from nagiosplugin import range
 
-nagiosplugin.test.path_setup()
-
 
 class RangeParseTest(unittest.TestCase):
 

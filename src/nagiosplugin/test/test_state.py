@@ -5,8 +5,6 @@ import unittest
 import nagiosplugin.test
 from nagiosplugin import state
 
-nagiosplugin.test.path_setup()
-
 
 class StateTest(unittest.TestCase):
 

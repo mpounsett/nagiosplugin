@@ -24,6 +24,9 @@
     <note priority="high" time="1277732784" done="1279083055">
         logging infrastructure
     </note>
+    <note priority="high" time="1279084775" done="1279116195">
+        move examples under src
+    </note>
     <note priority="medium" time="1277547962" done="1279093078">
         OptParser Subclass
         <note priority="low" time="1277548680" done="1279093076">
@@ -63,16 +66,19 @@
     <note priority="medium" time="1279084888" done="1279115051">
         ensure that stack traces go into the long output
     </note>
-    <note priority="high" time="1279084775" done="1279116195">
-        move examples under src
-    </note>
-    <note priority="medium" time="1279115105">
+    <note priority="medium" time="1279115105" done="1279188785">
         tests for example plugin
+    </note>
+    <note priority="medium" time="1279188779">
+        improve decimal string representation of float values - e.g. 0.1
     </note>
     <note priority="low" time="1279084762">
         implement check_load -r
     </note>
     <note priority="low" time="1279115077">
         check_load: extract option checking out of obtain_data
+    </note>
+    <note priority="low" time="1279185064">
+        better formatting for invalid float/range literals (e.g., -w 0.0.1)
     </note>
 </todo>
