@@ -23,18 +23,14 @@ Basic plugin usage
 ------------------
 
 To demonstrate the plugin, we need to ensure repeatable load values. Therefore,
-we overwrite the location of `/proc` files with faked ones for `loadavg` and
-`cpuinfo`::
+we overwrite the location of `/proc` files with a fake version of `loadavg` to
+give repeatable test results::
 
 >>> import tempfile
 >>> loadavg = tempfile.NamedTemporaryFile(prefix='loadavg')
 >>> print >>loadavg, '0.14 0.91 0.85 1/255 13507\n'
 >>> loadavg.flush()
 >>> LoadCheck.loadavg = loadavg.name
->>> cpuinfo = tempfile.NamedTemporaryFile(prefix='cpuinfo')
->>> print >>cpuinfo, 'processor : 0\nvendor_id : fake\n\nprocessor : 1\nvendor_id : fake\n'
->>> cpuinfo.flush()
->>> LoadCheck.cpuinfo = cpuinfo.name
 
 Invoking `check_load` without parameters, it reports the current load values::
 
@@ -68,5 +64,25 @@ are given as performance expressions in the long output::
 LOAD OK ... | load1=0.14;1;2;0
 | load5=0.91;1;2;0
 load15=0.85;1;2;0
+
+
+Per-CPU load
+------------
+
+When the `-r` option is given, the load values are normalized by the number of
+cpus. To test this, we first set up a fake `cpuinfo` file which emulates two
+cpus::
+
+>>> cpuinfo = tempfile.NamedTemporaryFile(prefix='cpuinfo')
+>>> print >>cpuinfo, 'processor : 0\nvendor_id : fake\n\nprocessor : 1\nvendor_id : fake\n'
+>>> cpuinfo.flush()
+>>> LoadCheck.cpuinfo = cpuinfo.name
+
+Since we have two processors, the load values half the ones reported
+previously::
+
+>>> c = nagiosplugin.Controller(LoadCheck, ['-r'])
+>>> print c.format()
+LOAD OK - system load average is 0.07 0.46 0.42 ...
 
 .. vim: set ft=rst:

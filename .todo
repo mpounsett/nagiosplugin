@@ -72,8 +72,11 @@
     <note priority="medium" time="1279188779" done="1279191163">
         improve decimal string representation of float values - e.g. 0.1
     </note>
-    <note priority="low" time="1279084762">
+    <note priority="high" time="1279084762" done="1279479668">
         implement check_load -r
+    </note>
+    <note priority="medium" time="1279479277">
+        provide helper function to extend single threshold specs into array
     </note>
     <note priority="low" time="1279115077">
         check_load: extract option checking out of obtain_data

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import nagiosplugin
+import re
 
 
 class LoadCheck(nagiosplugin.Check):
@@ -40,6 +41,9 @@ For --warning and --critical, either three comma separated range specifications
             line = f.readline()
             self.log.info(u'reading %s: %s' % (self.loadavg, line.strip()))
         self.load = map(float, line.split(u' ')[0:3])
+        if opts.percpu:
+            cpus = self.count_cpus()
+            self.load = [l / cpus for l in self.load]
         if len(self.load) != 3:
             raise ValueError(u'Cannot parse loadavg: %s' % line)
         self.data = [nagiosplugin.Measure(u'load%i' % t, self.load[i],
@@ -47,6 +51,18 @@ For --warning and --critical, either three comma separated range specifications
                                           min=0)
                      for (i, t) in [(0, 1), (1, 5), (2, 15)]]
         self.log.info(u'measures: %r' % self.data)
+
+    def count_cpus(self):
+        cpus = 0
+        r_processor_start = re.compile(r'^processor\s*:\s*[0-9]+$')
+        with file(self.cpuinfo) as f:
+            for line in f:
+                if r_processor_start.match(line):
+                    cpus += 1
+        if cpus == 0:
+            raise ValueError(u'cannot parse /proc/cpuinfo contents: '
+                             u'no processors found')
+        return cpus
 
     def performances(self):
         return [m.performance() for m in self.data]
