@@ -79,7 +79,8 @@ class Controller(object):
                 u'timeout of %is exceeded' % self.opts.timeout))
         except Exception as e:
             self.states.append(nagiosplugin.state.Unknown(str(e)))
-            self.stderr += traceback.format_exc() + u'\n'
+            if self.opts.verbose > 0:
+                self.stderr += traceback.format_exc()
         try:
             self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
         except TypeError:

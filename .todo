@@ -81,7 +81,7 @@
     <note priority="low" time="1279115077" done="1279483494">
         check_load: extract option checking out of obtain_data
     </note>
-    <note priority="low" time="1279185064">
+    <note priority="low" time="1279185064" done="1279483630">
         better formatting for invalid float/range literals (e.g., -w 0.0.1)
     </note>
     <note priority="low" time="1279481066">
