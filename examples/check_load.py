@@ -44,7 +44,7 @@ For --warning and --critical, either three comma separated range specifications
             raise ValueError(u'Cannot parse loadavg: %s' % line)
         self.data = nagiosplugin.Measure.array(
                 3, [u'load1', u'load5', u'load15'], self.load,
-                warnings=self.warn, criticals=self.crit, mins=[0])
+                warnings=self.warn, criticals=self.crit, minimums=[0])
         self.log.info(u'measures: %r' % self.data)
 
     def count_cpus(self):

@@ -9,6 +9,12 @@ from nagiosplugin.measure import Measure
 
 class MeasureTest(unittest.TestCase):
 
+    def test_value_outside_minmax(self):
+        self.assertRaises(ValueError, Measure,
+                u'm1', 10, minimum=20)
+        self.assertRaises(ValueError, Measure,
+                u'm2', 10, maximum=0)
+
     def test_ok(self):
         m = Measure(u'm1', 8, warning=u'8', critical=u'9.4')
         self.assertEqual(u'OK', str(m.state()))
@@ -29,7 +35,7 @@ class MeasureTest(unittest.TestCase):
 
     def test_performance(self):
         m = Measure(u'm2', 75, u'MB', warning=u'33:80',
-                            critical=u'31:82', min=10, max=100)
+                            critical=u'31:82', minimum=10, maximum=100)
         self.assertEqual(u'm2=75MB;33:80;31:82;10;100',
                          m.performance())
 
@@ -38,7 +44,7 @@ class MeasureTest(unittest.TestCase):
         self.assertEqual(u'm3=4', m.performance())
 
     def test_performance_show_zero_min(self):
-        m = Measure(u'm4', 15, u's', min=0)
+        m = Measure(u'm4', 15, u's', minimum=0)
         self.assertEqual(u'm4=15s;;;0', m.performance())
 
     def test_repr(self):

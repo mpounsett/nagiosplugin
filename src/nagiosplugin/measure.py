@@ -25,7 +25,7 @@ def _silent_str(value):
 class Measure(object):
 
     def __init__(self, name, value, uom=None, warning=None, critical=None,
-                 min=None, max=None):
+                 minimum=None, maximum=None):
         """Create Measure instance.
 
         name - short name that identifies this measure
@@ -33,17 +33,21 @@ class Measure(object):
         uom - unit of measure, used mainly for graphing
         warning - textual representation of warning range
         critical - textual representation of critical range
-        min - minimal allowed value
-        max - maximal allowed value
+        minimum - minimal allowed value
+        maximum - maximal allowed value
         """
+        if (minimum is not None and (value < minimum) or
+                maximum is not None and (value > maximum)):
+            raise ValueError(u'value %r is outside min/max interval [%r,%r]' % (
+                value, minimum, maximum))
         (self.name, self.value, self.uom) = (name, value, uom)
         (self.warning, self.critical) = map(nagiosplugin.range.Range,
                                             (warning, critical))
-        (self.min, self.max) =  (min, max)
+        (self.minimum, self.maximum) =  (minimum, maximum)
 
     @classmethod
     def array(cls, num, names, values, uoms=None, warnings=None, criticals=None,
-            mins=None, maxs=None):
+            minimums=None, maximums=None):
         """Create array of `num` measures.
 
         The usual Measure init parameters need to be given as arrays. If these
@@ -51,10 +55,10 @@ class Measure(object):
         specified value.
         """
         fill = functools.partial(_fill, num)
-        (names, values, uoms, warnings, criticals, mins, maxs) = map(
-                fill, (names, values, uoms, warnings, criticals, mins, maxs))
+        (names, values, uoms, warnings, criticals, minimums, maximums) = map(
+                fill, (names, values, uoms, warnings, criticals, minimums, maximums))
         return [cls(names[i], values[i], uoms[i], warnings[i], criticals[i],
-            mins[i], maxs[i]) for i in range(0, num)]
+            minimums[i], maximums[i]) for i in range(0, num)]
 
     def state(self):
         """Return the state according to value, warning, and critical."""
@@ -73,13 +77,13 @@ class Measure(object):
         """Return performance data string."""
         p = [u'%s=%s%s' % (self.name, self.value, _silent_str(self.uom)),
              str(self.warning), str(self.critical),
-             _silent_str(self.min), _silent_str(self.max)]
+             _silent_str(self.minimum), _silent_str(self.maximum)]
         return u';'.join(p).rstrip(u';')
 
     def __repr__(self):
         return u'Measure(%r, %g, %r, %r, %r, %r, %r)' % (
             self.name, self.value, self.uom, self.warning, self.critical,
-            self.min, self.max)
+            self.minimum, self.maximum)
 
     def __eq__(self, other):
         """Determine equality by comparing all attributes."""
