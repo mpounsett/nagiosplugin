@@ -28,9 +28,11 @@ For --warning and --critical, either three comma separated range specifications
 (1, 5, 15 minutes) or one range specification covering all are accepted."""
         self.log = log
 
+    def check_args(self, opts, args):
+        self.warn = opts.warning.split(u',')
+        self.crit = opts.critical.split(u',')
+
     def obtain_data(self, opts, args):
-        warn = opts.warning.split(u',')
-        crit = opts.critical.split(u',')
         with file(self.loadavg) as f:
             line = f.readline()
             self.log.info(u'%s: %s' % (self.loadavg, line.strip()))
@@ -42,7 +44,7 @@ For --warning and --critical, either three comma separated range specifications
             raise ValueError(u'Cannot parse loadavg: %s' % line)
         self.data = nagiosplugin.Measure.array(
                 3, [u'load1', u'load5', u'load15'], self.load,
-                warnings=warn, criticals=crit, mins=[0])
+                warnings=self.warn, criticals=self.crit, mins=[0])
         self.log.info(u'measures: %r' % self.data)
 
     def count_cpus(self):

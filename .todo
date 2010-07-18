@@ -78,7 +78,7 @@
     <note priority="medium" time="1279479277" done="1279483361">
         provide helper function to extend single threshold specs into array
     </note>
-    <note priority="low" time="1279115077">
+    <note priority="low" time="1279115077" done="1279483494">
         check_load: extract option checking out of obtain_data
     </note>
     <note priority="low" time="1279185064">
