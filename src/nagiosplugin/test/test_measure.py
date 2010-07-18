@@ -47,6 +47,36 @@ class MeasureTest(unittest.TestCase):
                          u"Range('32'), 0, 4096)",
                          repr(m))
 
+    def test_eq(self):
+        self.assert_(
+                Measure(u'name', 42, u'unit', u'0:100', u'0:200', 0, 200) ==
+                Measure(u'name', 42, u'unit', u'0:100', u'0:200', 0, 200),
+                u'Two Measures with same values should be equal')
+
+    def test_fill1(self):
+        self.assertEqual([1], nagiosplugin.measure._fill(1, [1]))
+
+    def test_fill4(self):
+        self.assertEqual([2, 3, 3, 3], nagiosplugin.measure._fill(4, [2, 3]))
+
+    def test_fill_already_larger(self):
+        self.assertEqual([1, 2, 3], nagiosplugin.measure._fill(2, [1, 2, 3]))
+
+    def test_array(self):
+        m = Measure.array(
+                2, [u'm1', u'm2'], [1, 2], [u'u1', u'u2'], [u'0:1', u'0:2'],
+                [u'0:2', u'0:3'], [0, 0], [10, 20])
+        self.assertEqual([
+            Measure(u'm1', 1, u'u1', u'0:1', u'0:2', 0, 10),
+            Measure(u'm2', 2, u'u2', u'0:2', u'0:3', 0, 20)], m)
+
+    def test_array_expand(self):
+        m = Measure.array(
+                2, [u'name'], [21], [u'uom'], [u'-10:10'], [u'-20:20'], [-50])
+        self.assertEqual([
+            Measure(u'name', 21, u'uom', u'-10:10', u'-20:20', -50),
+            Measure(u'name', 21, u'uom', u'-10:10', u'-20:20', -50)], m)
+
 
 def suite():
     suite = unittest.TestLoader().loadTestsFromTestCase(MeasureTest)

@@ -30,26 +30,19 @@ For --warning and --critical, either three comma separated range specifications
 
     def obtain_data(self, opts, args):
         warn = opts.warning.split(u',')
-        if len(warn) < 3:
-            warn.extend([warn[-1], warn[-1]][0:3-len(warn)])
-            self.log.info(u'extending warn thresholds=%s' % u' '.join(warn))
         crit = opts.critical.split(u',')
-        if len(crit) < 3:
-            crit.extend([crit[-1], crit[-1]])
-            self.log.info(u'extending crit thresholds=%s' % u' '.join(crit))
         with file(self.loadavg) as f:
             line = f.readline()
-            self.log.info(u'reading %s: %s' % (self.loadavg, line.strip()))
+            self.log.info(u'%s: %s' % (self.loadavg, line.strip()))
         self.load = map(float, line.split(u' ')[0:3])
         if opts.percpu:
             cpus = self.count_cpus()
             self.load = [l / cpus for l in self.load]
         if len(self.load) != 3:
             raise ValueError(u'Cannot parse loadavg: %s' % line)
-        self.data = [nagiosplugin.Measure(u'load%i' % t, self.load[i],
-                                          warning=warn[i], critical=crit[i],
-                                          min=0)
-                     for (i, t) in [(0, 1), (1, 5), (2, 15)]]
+        self.data = nagiosplugin.Measure.array(
+                3, [u'load1', u'load5', u'load15'], self.load,
+                warnings=warn, criticals=crit, mins=[0])
         self.log.info(u'measures: %r' % self.data)
 
     def count_cpus(self):
@@ -59,9 +52,12 @@ For --warning and --critical, either three comma separated range specifications
             for line in f:
                 if r_processor_start.match(line):
                     cpus += 1
+                self.log.debug(u'%s (cpus=%i): %s' % (
+                    self.cpuinfo, cpus, line.strip()))
         if cpus == 0:
             raise ValueError(u'cannot parse /proc/cpuinfo contents: '
                              u'no processors found')
+        self.log.info(u'%s: %i cpus' % (self.cpuinfo, cpus))
         return cpus
 
     def performances(self):

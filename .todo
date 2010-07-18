@@ -24,6 +24,9 @@
     <note priority="high" time="1277732784" done="1279083055">
         logging infrastructure
     </note>
+    <note priority="high" time="1279084762" done="1279479668">
+        implement check_load -r
+    </note>
     <note priority="high" time="1279084775" done="1279116195">
         move examples under src
     </note>
@@ -72,10 +75,7 @@
     <note priority="medium" time="1279188779" done="1279191163">
         improve decimal string representation of float values - e.g. 0.1
     </note>
-    <note priority="high" time="1279084762" done="1279479668">
-        implement check_load -r
-    </note>
-    <note priority="medium" time="1279479277">
+    <note priority="medium" time="1279479277" done="1279483361">
         provide helper function to extend single threshold specs into array
     </note>
     <note priority="low" time="1279115077">
@@ -83,5 +83,8 @@
     </note>
     <note priority="low" time="1279185064">
         better formatting for invalid float/range literals (e.g., -w 0.0.1)
+    </note>
+    <note priority="low" time="1279481066">
+        check that value is inside [min,max]
     </note>
 </todo>
