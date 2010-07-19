@@ -4,14 +4,27 @@
 
 class Check(object):
 
-    name = u'check'
-
     def __init__(self, optparser, logger):
         u"""Create new check plugin instance.
 
         Call the usual optparse methods (like `add_option`) on `optparser` to
         define custom options. `logger` is a logging object.
         """
+        pass
+
+    @property
+    def name(self):
+        """Full name of this check."""
+        return u'check'
+
+    @property
+    def shortname(self):
+        """Short check name for the headline. Override if necessary."""
+        return self.name.split()[0].upper()
+
+    @property
+    def version(self):
+        """Program version (if any) - shows up when calling with `-V`."""
         pass
 
     def check_args(self, opts, args):
@@ -32,11 +45,6 @@ class Check(object):
     def performances(self):
         """Return list of performance data strings from measured data."""
         return []
-
-    @property
-    def shortname(self):
-        """Short check name for the headline. Override if necessary."""
-        return self.name.split()[0].upper()
 
     @property
     def default_message(self):

@@ -30,6 +30,9 @@
     <note priority="high" time="1279084775" done="1279116195">
         move examples under src
     </note>
+    <note priority="high" time="1279546665" done="1279553340">
+        introduce Controller.__call__
+    </note>
     <note priority="medium" time="1277547962" done="1279093078">
         OptParser Subclass
         <note priority="low" time="1277548680" done="1279093076">
@@ -87,13 +90,10 @@
     <note priority="low" time="1279481066" done="1279484457">
         check that value is inside [min,max]
     </note>
-    <note priority="high" time="1279546665" done="1279553340">
-        introduce Controller.__call__
-    </note>
-    <note priority="low" time="1279546691">
+    <note priority="low" time="1279546691" done="1279553858">
         refactor check: use properties instead of class attributes
     </note>
-    <note priority="low" time="1279546703">
+    <note priority="low" time="1279546703" done="1279553860">
         rename count_cpus in check_load
     </note>
 </todo>

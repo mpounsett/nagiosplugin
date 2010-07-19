@@ -7,8 +7,6 @@ import re
 
 class LoadCheck(nagiosplugin.Check):
 
-    name = u'Load average'
-    version = u'0.1'
     loadavg = '/proc/loadavg'
     cpuinfo = '/proc/cpuinfo'
 
@@ -28,6 +26,14 @@ For --warning and --critical, either three comma separated range specifications
 (1, 5, 15 minutes) or one range specification covering all are accepted."""
         self.log = log
 
+    @property
+    def name(self):
+        return u'Load average'
+
+    @property
+    def version(self):
+        return u'0.1'
+
     def check_args(self, opts, args):
         self.warn = opts.warning.split(u',')
         self.crit = opts.critical.split(u',')
@@ -38,7 +44,7 @@ For --warning and --critical, either three comma separated range specifications
             self.log.info(u'%s: %s' % (self.loadavg, line.strip()))
         self.load = map(float, line.split(u' ')[0:3])
         if opts.percpu:
-            cpus = self.count_cpus()
+            cpus = self._count_cpus()
             self.load = [l / cpus for l in self.load]
         if len(self.load) != 3:
             raise ValueError(u'Cannot parse loadavg: %s' % line)
@@ -47,7 +53,7 @@ For --warning and --critical, either three comma separated range specifications
                 warnings=self.warn, criticals=self.crit, minimums=[0])
         self.log.info(u'measures: %r' % self.data)
 
-    def count_cpus(self):
+    def _count_cpus(self):
         cpus = 0
         r_processor_start = re.compile(r'^processor\s*:\s*[0-9]+$')
         with file(self.cpuinfo) as f:
