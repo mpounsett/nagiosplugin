@@ -15,7 +15,10 @@ class Check(object):
         pass
 
     def check_args(self, opts, args):
-        """Return error message if `opts` or `args` fail consistency check."""
+        """Return error message if `opts` or `args` fail consistency check.
+
+        If anything is not acceptable, raise a ValueError exception.
+        """
         pass
 
     def obtain_data(self, opts, args):

@@ -26,17 +26,15 @@ class Controller(object):
         self.prepare()
         self.check = check_cls(self.optparser, self.logger)
         self.stderr = u''
-        self.exitcode = 0
+        self.exitcode = None
         self.states = []
         self.performances = []
         self.dominant_state = nagiosplugin.state.Unknown()
         (self.opts, self.args) = self.optparser.parse_args(argv)
+        self.setup_logger()
         if self.optparser.stderr:
             self.stderr = self.optparser.stderr
             self.exitcode = 3
-        else:
-            self.setup_logger()
-            self.run_with_timeout()
 
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""
@@ -61,18 +59,19 @@ class Controller(object):
         level = max((40 - self.opts.verbose * 10, 10))
         self.logger.setLevel(level)
 
-    @staticmethod
-    def timeout_handler(signum, frame):
-        raise TimeoutError(u'timeout exceeded')
+    def __call__(self):
+        if self.exitcode is None:
+            self.run()
+        self.print_output()
 
-    def run_with_timeout(self):
+    def run(self):
         """Interrupt check action if it runs longer than the timeout."""
         self.states = []
         self.performances = []
         try:
             signal.signal(signal.SIGALRM, self.timeout_handler)
             signal.alarm(self.opts.timeout)
-            self.run()
+            self.run_inner()
             signal.alarm(0)
         except TimeoutError:
             self.states.append(nagiosplugin.state.Unknown(
@@ -86,8 +85,13 @@ class Controller(object):
         except TypeError:
             pass
         self.exitcode = self.dominant_state.code
+        return self
 
-    def run(self):
+    @staticmethod
+    def timeout_handler(signum, frame):
+        raise TimeoutError(u'timeout exceeded')
+
+    def run_inner(self):
         """Perform check action."""
         error = self.check.check_args(self.opts, self.args)
         if error:
@@ -138,10 +142,9 @@ class Controller(object):
     def longperformance(self, min_p):
         return u'\n'.join(self.performances[min_p:])
 
-    def output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
-        """Emit cumulated output to `stdout` and `stderr`."""
+    def print_output(self, stdout=sys.stdout, stderr=sys.stderr, exit=True):
+        """Emit cumulated output to `stdout` and `stderr`, and exit."""
         stdout.write(self.format())
         stderr.write(self.stderr)
         if exit:
             sys.exit(self.exitcode)
-        return self.exitcode

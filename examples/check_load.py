@@ -75,6 +75,6 @@ For --warning and --critical, either three comma separated range specifications
         return u'system load average is %.2f %.2f %.2f' % tuple(self.load)
 
 
+main = nagiosplugin.Controller(LoadCheck)
 if __name__ == '__main__':
-    c = nagiosplugin.Controller(LoadCheck)
-    c.output()
+    main()

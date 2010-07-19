@@ -50,7 +50,7 @@ class ControllerTest(unittest.TestCase):
         class FailingCheck(MockCheck):
             def obtain_data(self, *args):
                 raise RuntimeError(u'unhandled error')
-        c = controller.Controller(FailingCheck)
+        c = controller.Controller(FailingCheck).run()
         self.assertEqual(u'CHECK UNKNOWN - unhandled error\n', c.format())
 
     def test_format_with_default_message(self):
@@ -58,25 +58,25 @@ class ControllerTest(unittest.TestCase):
             @property
             def default_message(self):
                 return u'default message'
-        c = controller.Controller(DefaultMessageCheck)
+        c = controller.Controller(DefaultMessageCheck).run()
         self.assertEqual(u'CHECK OK - default message\n', c.format())
 
     def test_controller_should_call_obtain_data(self):
-        c = controller.Controller(MockCheck)
+        c = controller.Controller(MockCheck).run()
         self.assertEqual(c.check.data, 4)
 
     def test_controller_should_call_states_and_performances(self):
-        c = controller.Controller(StatePerformanceCheck)
+        c = controller.Controller(StatePerformanceCheck).run()
         self.assert_(isinstance(c.states[0], nagiosplugin.state.Warning))
         self.assertEqual(u'perf=4', c.performances[0])
 
     def test_format(self):
-        c = controller.Controller(StatePerformanceCheck)
+        c = controller.Controller(StatePerformanceCheck).run()
         self.assertEqual(u'CHECK WARNING - yellow | perf=4\nlong1\nlong2\n',
                          c.format())
 
     def test_sigalarm_should_raise_TimeoutError(self):
-        c = controller.Controller(MockCheck)
+        c = controller.Controller(MockCheck).run()
         self.assertRaises(controller.TimeoutError,
                           c.timeout_handler, None, None)
 
@@ -84,7 +84,7 @@ class ControllerTest(unittest.TestCase):
         class TimeoutCheck(MockCheck):
             def obtain_data(self, *args):
                 raise controller.TimeoutError()
-        c = controller.Controller(TimeoutCheck)
+        c = controller.Controller(TimeoutCheck).run()
         self.assertEqual(u'CHECK UNKNOWN - timeout of 15s exceeded\n',
                          c.format())
 
@@ -94,11 +94,11 @@ class ControllerTest(unittest.TestCase):
                      u'%r is not a Logger instance' % c.check.log)
 
     def test_logger_debug(self):
-        c = controller.Controller(DebugLogCheck, ['-vvv'])
+        c = controller.Controller(DebugLogCheck, ['-vvv']).run()
         self.assertEqual(u'debug\ninfo\nwarning\n', c.logstream.getvalue())
 
     def test_logger_warning(self):
-        c = controller.Controller(DebugLogCheck, ['-v'])
+        c = controller.Controller(DebugLogCheck, ['-v']).run()
         self.assertEqual(u'warning\n', c.logstream.getvalue())
 
     def test_invalid_option_should_exit_unknown(self):
