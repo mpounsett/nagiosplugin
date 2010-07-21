@@ -35,8 +35,7 @@ For --warning and --critical, either three comma separated range specifications
         return u'0.1'
 
     def process_args(self, opts, args):
-        if args:
-            return u'invalid extra arguments: %s' % (u' '.join(args))
+        nagiosplugin.Check.process_args(self, opts, args)
         self.warn = opts.warning.split(u',')
         self.crit = opts.critical.split(u',')
 

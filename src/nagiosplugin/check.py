@@ -33,7 +33,8 @@ class Check(object):
         Return error message if `opts` or `args` have errors or are
         inconsistent. Return None if everything is ok.
         """
-        return None
+        if args:
+            return u'invalid trailing arguments: %s' % (u' '.join(args))
 
     def obtain_data(self, opts, args):
         """Do whatever is necessary to measure data points from the system."""

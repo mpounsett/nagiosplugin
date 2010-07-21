@@ -35,6 +35,8 @@ class Controller(object):
         if self.optparser.stderr:
             self.stderr = self.optparser.stderr
             self.exitcode = 3
+            self.dominant_state = nagiosplugin.state.Unknown(
+                self.optparser.error_message)
 
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""

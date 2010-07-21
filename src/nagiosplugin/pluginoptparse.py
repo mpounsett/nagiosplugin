@@ -15,6 +15,7 @@ class PluginOptionParser(optparse.OptionParser):
     def __init__(self, *args, **kwargs):
         optparse.OptionParser.__init__(self, *args, **kwargs)
         self.stderr = u''
+        self.error_message = None
 
     def exit(self, status=0, msg=None):
         """Overridden to do nothing."""
@@ -30,6 +31,7 @@ class PluginOptionParser(optparse.OptionParser):
         """Overridden to append `msg` to self.stderr."""
         self.print_usage()
         self._print_stderr(u'%s: error: %s' % (self.get_prog_name(), msg))
+        self.error_message = msg
 
     def print_usage(self, file=None):
         """Overridden to append usage to self.stderr."""

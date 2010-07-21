@@ -46,6 +46,10 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(MockCheck)
         self.assert_(isinstance(c.dominant_state, nagiosplugin.state.Unknown))
 
+    def test_invalid_option(self):
+        c = controller.Controller(MockCheck, [u'-X'])
+        self.assertEqual(u'CHECK UNKNOWN - no such option: -X\n', c.format())
+
     def test_process_args_error(self):
         class FailingCheck(MockCheck):
             def process_args(self, *args):
@@ -57,7 +61,7 @@ class ControllerTest(unittest.TestCase):
         class FailingCheck(MockCheck):
             def obtain_data(self, *args):
                 raise RuntimeError(u'unhandled error')
-        c = controller.Controller(FailingCheck).run()
+        c = controller.Controller(FailingCheck, []).run()
         self.assertEqual(u'CHECK UNKNOWN - unhandled error\n', c.format())
 
     def test_format_with_default_message(self):
@@ -65,20 +69,20 @@ class ControllerTest(unittest.TestCase):
             @property
             def default_message(self):
                 return u'default message'
-        c = controller.Controller(DefaultMessageCheck).run()
+        c = controller.Controller(DefaultMessageCheck, []).run()
         self.assertEqual(u'CHECK OK - default message\n', c.format())
 
     def test_controller_should_call_obtain_data(self):
-        c = controller.Controller(MockCheck).run()
+        c = controller.Controller(MockCheck, []).run()
         self.assertEqual(c.check.data, 4)
 
     def test_controller_should_call_states_and_performances(self):
-        c = controller.Controller(StatePerformanceCheck).run()
+        c = controller.Controller(StatePerformanceCheck, []).run()
         self.assert_(isinstance(c.states[0], nagiosplugin.state.Warning))
         self.assertEqual(u'perf=4', c.performances[0])
 
     def test_format(self):
-        c = controller.Controller(StatePerformanceCheck).run()
+        c = controller.Controller(StatePerformanceCheck, []).run()
         self.assertEqual(u'CHECK WARNING - yellow | perf=4\nlong1\nlong2\n',
                          c.format())
 
@@ -91,7 +95,7 @@ class ControllerTest(unittest.TestCase):
         class TimeoutCheck(MockCheck):
             def obtain_data(self, *args):
                 raise controller.TimeoutError()
-        c = controller.Controller(TimeoutCheck).run()
+        c = controller.Controller(TimeoutCheck, []).run()
         self.assertEqual(u'CHECK UNKNOWN - timeout of 15s exceeded\n',
                          c.format())
 

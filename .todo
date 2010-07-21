@@ -84,6 +84,12 @@
     <note priority="medium" time="1279621167" done="1279692082">
         check_args in process_args umbennen
     </note>
+    <note priority="medium" time="1279621190" done="1279692497">
+        process_args sollte eventuelle Fehlermeldung per return zurückliefern
+    </note>
+    <note priority="medium" time="1279621208" done="1279693489">
+        korrektes Verhalten, wenn fehlerhafte Optionen angegeben werden
+    </note>
     <note priority="low" time="1279115077" done="1279483494">
         check_load: extract option checking out of obtain_data
     </note>
@@ -99,13 +105,7 @@
     <note priority="low" time="1279546703" done="1279553860">
         rename count_cpus in check_load
     </note>
-    <note priority="medium" time="1279621190" done="1279692497">
-        process_args sollte eventuelle Fehlermeldung per return zurückliefern
-    </note>
-    <note priority="low" time="1279621208">
-        korrektes Verhalten, wenn fehlerhafte Optionen angegeben werden
-    </note>
-    <note priority="low" time="1279691977">
+    <note priority="medium" time="1279691977" done="1279694042">
         check for trailing args in default process_args
     </note>
     <note priority="low" time="1279692032">
@@ -113,5 +113,8 @@
     </note>
     <note priority="low" time="1279692327">
         make format() return (stdout, stderr) pair
+    </note>
+    <note priority="low" time="1279693181">
+        output %prog {VERSION} on -V
     </note>
 </todo>
