@@ -34,7 +34,9 @@ For --warning and --critical, either three comma separated range specifications
     def version(self):
         return u'0.1'
 
-    def check_args(self, opts, args):
+    def process_args(self, opts, args):
+        if args:
+            return u'invalid extra arguments: %s' % (u' '.join(args))
         self.warn = opts.warning.split(u',')
         self.crit = opts.critical.split(u',')
 

@@ -46,7 +46,14 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(MockCheck)
         self.assert_(isinstance(c.dominant_state, nagiosplugin.state.Unknown))
 
-    def test_exception_results_in_unknown(self):
+    def test_process_args_error(self):
+        class FailingCheck(MockCheck):
+            def process_args(self, *args):
+                return u'error message'
+        c = controller.Controller(FailingCheck).run()
+        self.assertEqual(u'CHECK UNKNOWN - error message\n', c.format())
+
+    def test_obtain_data_exception(self):
         class FailingCheck(MockCheck):
             def obtain_data(self, *args):
                 raise RuntimeError(u'unhandled error')

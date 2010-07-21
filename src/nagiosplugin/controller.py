@@ -93,9 +93,9 @@ class Controller(object):
 
     def run_inner(self):
         """Perform check action."""
-        error = self.check.check_args(self.opts, self.args)
-        if error:
-            self.optparser.error(error)
+        msg = self.check.process_args(self.opts, self.args)
+        if msg:
+            raise RuntimeError(msg)
         self.check.obtain_data(self.opts, self.args)
         self.states = self.check.states()
         self.performances = self.check.performances()

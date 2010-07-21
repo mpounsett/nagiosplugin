@@ -27,12 +27,13 @@ class Check(object):
         """Program version (if any) - shows up when calling with `-V`."""
         pass
 
-    def check_args(self, opts, args):
-        """Return error message if `opts` or `args` fail consistency check.
+    def process_args(self, opts, args):
+        """Parse options and arguments for plugin use.
 
-        If anything is not acceptable, raise a ValueError exception.
+        Return error message if `opts` or `args` have errors or are
+        inconsistent. Return None if everything is ok.
         """
-        pass
+        return None
 
     def obtain_data(self, opts, args):
         """Do whatever is necessary to measure data points from the system."""
