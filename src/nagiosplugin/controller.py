@@ -32,8 +32,11 @@ class Controller(object):
         self.dominant_state = nagiosplugin.state.Unknown()
         (self.opts, self.args) = self.optparser.parse_args(argv)
         self.setup_logger()
-        if self.optparser.stderr:
-            self.stderr = self.optparser.stderr
+        if self.optparser.get_stdout():
+            self.format = lambda *args: self.optparser.get_stdout()
+            self.exitcode = 3
+        if self.optparser.get_stderr():
+            self.stderr = self.optparser.get_stderr()
             self.exitcode = 3
             self.dominant_state = nagiosplugin.state.Unknown(
                 self.optparser.error_message)

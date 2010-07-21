@@ -46,10 +46,6 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(MockCheck)
         self.assert_(isinstance(c.dominant_state, nagiosplugin.state.Unknown))
 
-    def test_invalid_option(self):
-        c = controller.Controller(MockCheck, [u'-X'])
-        self.assertEqual(u'CHECK UNKNOWN - no such option: -X\n', c.format())
-
     def test_process_args_error(self):
         class FailingCheck(MockCheck):
             def process_args(self, *args):
@@ -111,6 +107,10 @@ class ControllerTest(unittest.TestCase):
     def test_logger_warning(self):
         c = controller.Controller(DebugLogCheck, ['-v']).run()
         self.assertEqual(u'warning\n', c.logstream.getvalue())
+
+    def test_invalid_option(self):
+        c = controller.Controller(MockCheck, [u'-X'])
+        self.assertEqual(u'CHECK UNKNOWN - no such option: -X\n', c.format())
 
     def test_invalid_option_should_exit_unknown(self):
         c = controller.Controller(MockCheck, ['-x'])

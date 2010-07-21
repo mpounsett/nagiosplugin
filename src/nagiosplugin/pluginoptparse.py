@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import cStringIO
 import optparse
 
 
@@ -14,34 +15,42 @@ class PluginOptionParser(optparse.OptionParser):
 
     def __init__(self, *args, **kwargs):
         optparse.OptionParser.__init__(self, *args, **kwargs)
-        self.stderr = u''
+        self.stderr = cStringIO.StringIO()
+        self.stdout = cStringIO.StringIO()
         self.error_message = None
 
     def exit(self, status=0, msg=None):
         """Overridden to do nothing."""
         pass
 
-    def _print_stderr(self, msg):
-        """Append `msg` to self.stderr. Add newline if necessary."""
-        if not msg.endswith(u'\n'):
-            msg += u'\n'
-        self.stderr += msg
+    def _print(self, msg, channel=None):
+        """Append `msg` to string buffer `channel`. Add newline if necessary."""
+        if channel is None:
+            channel = self.stderr
+        print >>channel, msg
 
     def error(self, msg):
-        """Overridden to append `msg` to self.stderr."""
+        """Overridden to append error message `msg` to self.stderr."""
         self.print_usage()
-        self._print_stderr(u'%s: error: %s' % (self.get_prog_name(), msg))
+        self._print(u'%s: error: %s' % (self.get_prog_name(), msg))
         self.error_message = msg
 
     def print_usage(self, file=None):
         """Overridden to append usage to self.stderr."""
         if self.usage:
-            self._print_stderr(self.get_usage())
+            self._print(self.get_usage())
 
     def print_version(self, file=None):
         """Overridden to append version to self.stderr."""
         if self.version:
-            self._print_stderr(self.get_version())
+            msg = self.get_prog_name() + u' ' + self.get_version()
+            self._print(msg, self.stdout)
 
     def print_help(self, file=None):
-        self._print_stderr(self.format_help())
+        self._print(self.format_help(), self.stdout)
+
+    def get_stdout(self):
+        return self.stdout.getvalue()
+
+    def get_stderr(self):
+        return self.stderr.getvalue()

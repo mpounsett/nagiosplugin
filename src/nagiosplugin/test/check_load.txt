@@ -13,7 +13,7 @@ Invoking check_load with the `-h` option gives the usual help message::
 
 >>> import nagiosplugin
 >>> c = nagiosplugin.Controller(LoadCheck, ['-h'])
->>> print c.stderr
+>>> print c.format()
 Usage: ...
 Check the current system load average.
 ...
