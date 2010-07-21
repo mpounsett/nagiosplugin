@@ -50,5 +50,9 @@ class Check(object):
 
     @property
     def default_message(self):
-        """Fallback OK message string if nothing special happened."""
+        """Fallback OK message string if nothing special happened.
+
+        default_message() is called after obtain_data() so it is ok to report
+        measured values here.
+        """
         return None

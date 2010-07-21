@@ -1,6 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import copy
+
+
 class Range(object):
     """Represents a threshold range.
 
@@ -14,7 +17,17 @@ class Range(object):
     """
 
     def __init__(self, spec=None):
-        """Create a Range object according to `spec`."""
+        """Create a Range object according to `spec`.
+
+        `spec` may be either a string or another Range object.
+        """
+        if isinstance(spec, Range):
+            self.__dict__ = copy.copy(spec.__dict__)
+        else:
+            self._parse(spec)
+        self.verify()
+
+    def _parse(self, spec):
         self.spec = spec = (spec or u'')
         if spec.startswith(u'@'):
             self.invert = True
@@ -34,7 +47,6 @@ class Range(object):
             self.end = float(end)
         else:
             self.end = None
-        self.verify()
 
     def verify(self):
         """Throw ValueError if the range is not consistent."""

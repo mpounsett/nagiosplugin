@@ -68,6 +68,12 @@ class RangeParseTest(unittest.TestCase):
         self.failIf(range.Range(a) == range.Range(b))
         self.failUnless(range.Range(a) != range.Range(b))
 
+    def test_range_from_range(self):
+        orig = range.Range('@3:5')
+        copy = range.Range(orig)
+        self.assertEqual(copy, orig)
+        self.assertNotEqual(hash(copy), hash(orig))
+
 
 class RangeStrTest(unittest.TestCase):
 
