@@ -21,6 +21,9 @@ class Range(object):
 
         `spec` may be either a string or another Range object.
         """
+        self.invert = False
+        self.start = 0
+        self.end = None
         if isinstance(spec, Range):
             self.__dict__ = copy.copy(spec.__dict__)
         else:
@@ -28,12 +31,10 @@ class Range(object):
         self.verify()
 
     def _parse(self, spec):
-        self.spec = spec = (spec or u'')
+        spec = (spec or u'')
         if spec.startswith(u'@'):
             self.invert = True
             spec = spec[1:]
-        else:
-            self.invert = False
         if spec.find(u':') < 0:
             spec = ':' + spec
         (start, end) = spec.split(u':')
@@ -41,12 +42,8 @@ class Range(object):
             self.start = None
         elif start:
             self.start = float(start)
-        else:
-            self.start = 0
         if len(end):
             self.end = float(end)
-        else:
-            self.end = None
 
     def verify(self):
         """Throw ValueError if the range is not consistent."""
