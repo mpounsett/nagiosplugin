@@ -111,10 +111,13 @@
     <note priority="low" time="1279546703" done="1279553860">
         rename count_cpus in check_load
     </note>
+    <note priority="low" time="1279692032" done="1279724160">
+        also allow Range objects in Range.__init__
+    </note>
     <note priority="low" time="1279692327" done="1279694781">
         make format() return (stdout, stderr) pair
     </note>
-    <note priority="low" time="1279692032" done="1279724160">
-        also allow Range objects in Range.__init__
+    <note priority="medium" time="1280330044">
+        Refactor View class out of Controller
     </note>
 </todo>

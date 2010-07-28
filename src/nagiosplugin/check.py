@@ -36,7 +36,7 @@ class Check(object):
         if args:
             return u'invalid trailing arguments: %s' % (u' '.join(args))
 
-    def obtain_data(self, opts, args):
+    def obtain_data(self):
         """Do whatever is necessary to measure data points from the system."""
         pass
 

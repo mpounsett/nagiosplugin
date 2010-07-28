@@ -14,7 +14,7 @@ class MockCheck(nagiosplugin.check.Check):
     def __init__(self, optparser, logger):
         (self.op, self.log) = (optparser, logger)
 
-    def obtain_data(self, opts, args):
+    def obtain_data(self):
         self.data = 4
 
 
@@ -29,7 +29,7 @@ class StatePerformanceCheck(MockCheck):
 
 class DebugLogCheck(MockCheck):
 
-    def obtain_data(self, *args):
+    def obtain_data(self):
         self.log.debug(u'debug')
         self.log.info(u'info')
         self.log.warning(u'warning')
@@ -55,7 +55,7 @@ class ControllerTest(unittest.TestCase):
 
     def test_obtain_data_exception(self):
         class FailingCheck(MockCheck):
-            def obtain_data(self, *args):
+            def obtain_data(self):
                 raise RuntimeError(u'unhandled error')
         c = controller.Controller(FailingCheck, []).run()
         self.assertEqual(u'CHECK UNKNOWN - unhandled error\n', c.format())
@@ -89,7 +89,7 @@ class ControllerTest(unittest.TestCase):
 
     def test_process_timeouterror(self):
         class TimeoutCheck(MockCheck):
-            def obtain_data(self, *args):
+            def obtain_data(self):
                 raise controller.TimeoutError()
         c = controller.Controller(TimeoutCheck, []).run()
         self.assertEqual(u'CHECK UNKNOWN - timeout of 15s exceeded\n',

@@ -101,7 +101,7 @@ class Controller(object):
         msg = self.check.process_args(self.opts, self.args)
         if msg:
             raise RuntimeError(msg)
-        self.check.obtain_data(self.opts, self.args)
+        self.check.obtain_data()
         self.states = self.check.states()
         self.performances = self.check.performances()
         if self.check.default_message:

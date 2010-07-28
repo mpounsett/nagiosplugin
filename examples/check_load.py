@@ -38,13 +38,14 @@ For --warning and --critical, either three comma separated range specifications
         nagiosplugin.Check.process_args(self, opts, args)
         self.warn = opts.warning.split(u',')
         self.crit = opts.critical.split(u',')
+        self.percpu = opts.percpu
 
-    def obtain_data(self, opts, args):
+    def obtain_data(self):
         with file(self.loadavg) as f:
             line = f.readline()
             self.log.info(u'%s: %s' % (self.loadavg, line.strip()))
         self.load = map(float, line.split(u' ')[0:3])
-        if opts.percpu:
+        if self.percpu:
             cpus = self._count_cpus()
             self.load = [l / cpus for l in self.load]
         if len(self.load) != 3:
