@@ -117,13 +117,19 @@
     <note priority="low" time="1279692327" done="1279694781">
         make format() return (stdout, stderr) pair
     </note>
+    <note priority="low" time="1280663828" done="1280681429">
+        array: test for number/len(values) mismatch
+    </note>
     <note priority="medium" time="1280671169">
         cookie class
     </note>
     <note priority="low" time="1280330044">
         Refactor View class out of Controller
     </note>
-    <note priority="low" time="1280663828">
-        array: test for number/len(values) mismatch
+    <note priority="low" time="1280681473">
+        Basic sphinx documentation
+    </note>
+    <note priority="low" time="1280681479">
+        ebuild
     </note>
 </todo>

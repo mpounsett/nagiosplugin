@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import unittest
-import nagiosplugin.test
 import nagiosplugin.measure
 from nagiosplugin.measure import Measure
 

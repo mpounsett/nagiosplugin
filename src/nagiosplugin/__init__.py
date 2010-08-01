@@ -6,3 +6,5 @@ from controller import Controller
 from measure import Measure
 from range import Range
 from state import State
+
+import cookie
