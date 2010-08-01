@@ -46,17 +46,20 @@ class Measure(object):
         (self.minimum, self.maximum) =  (minimum, maximum)
 
     @classmethod
-    def array(cls, num, names, values, uoms=None, warnings=None, criticals=None,
+    def array(cls, names, values, uoms=None, warnings=None, criticals=None,
             minimums=None, maximums=None):
-        """Create array of `num` measures.
+        """Create array of measures.
 
-        The usual Measure init parameters need to be given as arrays. If these
-        arrays have less than `num` elements, they are filled up with the last
-        specified value.
+        The usual Measure init parameters need to be given as arrays. The number
+        of elements in the names array determines how many measures are created.
+        If these arrays have less than |names| elements, they are filled up with
+        the last specified value.
         """
-        fill = functools.partial(_fill, num)
-        (names, values, uoms, warnings, criticals, minimums, maximums) = map(
-                fill, (names, values, uoms, warnings, criticals, minimums, maximums))
+        num = len(names)
+        fill_num = functools.partial(_fill, num)
+        (values, uoms, warnings, criticals, minimums, maximums) = map(
+                fill_num, (values, uoms, warnings, criticals, minimums,
+                           maximums))
         return [cls(names[i], values[i], uoms[i], warnings[i], criticals[i],
             minimums[i], maximums[i]) for i in range(0, num)]
 

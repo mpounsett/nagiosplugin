@@ -70,7 +70,7 @@ class MeasureTest(unittest.TestCase):
 
     def test_array(self):
         m = Measure.array(
-                2, [u'm1', u'm2'], [1, 2], [u'u1', u'u2'], [u'0:1', u'0:2'],
+                [u'm1', u'm2'], [1, 2], [u'u1', u'u2'], [u'0:1', u'0:2'],
                 [u'0:2', u'0:3'], [0, 0], [10, 20])
         self.assertEqual([
             Measure(u'm1', 1, u'u1', u'0:1', u'0:2', 0, 10),
@@ -78,10 +78,11 @@ class MeasureTest(unittest.TestCase):
 
     def test_array_expand(self):
         m = Measure.array(
-                2, [u'name'], [21], [u'uom'], [u'-10:10'], [u'-20:20'], [-50])
+                [u'name1', u'name2'], [21], [u'uom'], [u'-10:10'], [u'-20:20'],
+                [-50])
         self.assertEqual([
-            Measure(u'name', 21, u'uom', u'-10:10', u'-20:20', -50),
-            Measure(u'name', 21, u'uom', u'-10:10', u'-20:20', -50)], m)
+            Measure(u'name1', 21, u'uom', u'-10:10', u'-20:20', -50),
+            Measure(u'name2', 21, u'uom', u'-10:10', u'-20:20', -50)], m)
 
 
 def suite():
