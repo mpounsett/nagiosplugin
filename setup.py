@@ -1,19 +1,21 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import glob
 from setuptools import setup, find_packages
 
 
 setup(
     name='nagiosplugin',
-    version='0.1b1',
+    version='0.1b2dev',
     description='Class library for Python Nagios plugins',
     author='Christian Kauhaus',
     author_email='kc@gocept.com',
     license='ZPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    include_package_data=True,
+    package_data={'nagiosplugin': ['test/*.txt']},
     zip_safe=False,
-    test_suite='nagiosplugin.test'
+    test_suite='nagiosplugin.test',
+    scripts=glob.glob('examples/*.py')
 )
