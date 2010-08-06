@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='nagiosplugin',
-    version='0.1b2dev',
+    version='0.2_beta_p1',
     description='Class library for Python Nagios plugins',
     author='Christian Kauhaus',
     author_email='kc@gocept.com',
