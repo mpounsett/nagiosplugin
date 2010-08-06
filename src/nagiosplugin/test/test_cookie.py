@@ -11,7 +11,7 @@ from nagiosplugin.cookie import Cookie, store
 class CookieTest(unittest.TestCase):
 
     def test_init_creates_file(self):
-        c = Cookie('cookietest')
+        c = Cookie('cookietest', '.')
         self.assert_(os.path.exists('cookietest'),
                      u"file 'cookietest' does not exist")
         os.unlink('cookietest')
@@ -24,6 +24,12 @@ class CookieTest(unittest.TestCase):
                      u"file 'testdir/cookietest' does not exist")
         os.unlink('testdir/cookietest')
         os.rmdir('testdir')
+
+    def test_dir_defaults_to_home(self):
+        c = Cookie('cookietest')
+        self.assertEqual(os.path.expanduser('~'),
+                         os.path.dirname(c.filename))
+        os.unlink(os.path.expanduser('~/cookietest'))
 
     def test_close_removes_file_if_no_value_set(self):
         try:
@@ -55,20 +61,20 @@ class CookieStoreTest(unittest.TestCase):
     def test_get(self):
         with file('cookietest', 'w') as f:
             print >>f, u'value'
-        with store('cookietest') as c:
+        with store('cookietest', '.') as c:
             self.assertEqual(u'value\n', c.get())
 
     def test_get_defaultvalue(self):
-        with store('cookietest') as c:
+        with store('cookietest', '.') as c:
             self.assertEqual(u'default\n', c.get('default\n'))
 
     def test_set(self):
-        with store('cookietest') as c:
+        with store('cookietest', '.') as c:
             c.set('value1\n')
         self.assertEqual('value1\n', file('cookietest').read())
 
     def test_set_should_append_newline(self):
-        with store('cookietest') as c:
+        with store('cookietest', '.') as c:
             c.set('value2')
         self.assertEqual('value2\n', file('cookietest').read())
 
@@ -76,7 +82,7 @@ class CookieStoreTest(unittest.TestCase):
         with file('cookietest', 'w') as f:
             print >>f, u'value3'
         before = os.stat('cookietest').st_mtime
-        with store('cookietest') as c:
+        with store('cookietest', '.') as c:
             c.set(c.get())
         self.assertEqual(os.stat('cookietest').st_mtime, before)
 
