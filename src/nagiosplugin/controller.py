@@ -31,7 +31,6 @@ class Controller(object):
         self.performances = []
         self.dominant_state = nagiosplugin.state.Unknown()
         (self.opts, self.args) = self.optparser.parse_args(argv)
-        self.setup_logger()
         if self.optparser.get_stdout():
             self.format = lambda *args: self.optparser.get_stdout()
             self.exitcode = 3
@@ -59,18 +58,15 @@ class Controller(object):
         handler.setLevel(logging.DEBUG)
         self.logger.addHandler(handler)
 
-    def setup_logger(self):
-        """Adjust logging level according to verbose option."""
-        level = max((40 - self.opts.verbose * 10, 10))
-        self.logger.setLevel(level)
-
     def __call__(self):
         if self.exitcode is None:
             self.run()
         self.print_output()
 
     def run(self):
-        """Interrupt check action if it runs longer than the timeout."""
+        """Run, but interrupt check action if it takes longer than the timeout."""
+        loglevel = max((40 - self.opts.verbose * 10, 10))
+        self.logger.setLevel(loglevel)
         self.states = []
         self.performances = []
         try:

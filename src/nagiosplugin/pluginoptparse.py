@@ -19,6 +19,14 @@ class PluginOptionParser(optparse.OptionParser):
         self.stdout = cStringIO.StringIO()
         self.error_message = None
 
+    def parse_args(self, args=None, values=None):
+        ret = (None, None)
+        try:
+            ret = optparse.OptionParser.parse_args(self, args, values)
+        except UnboundLocalError as e:
+            self._print(u'invalid option (internal error: %s)' % e)
+        return ret
+
     def exit(self, status=0, msg=None):
         """Overridden to do nothing."""
         pass
