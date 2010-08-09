@@ -33,6 +33,12 @@
     <note priority="high" time="1279546665" done="1279553340">
         introduce Controller.__call__
     </note>
+    <note priority="high" time="1281332787" done="1281339075">
+        check_users example script
+    </note>
+    <note priority="high" time="1281334107" done="1281338673">
+        make default_message() regular method call
+    </note>
     <note priority="high" time="1281334489" done="1281334577">
         Bug: wrong performance format if uom=''
     </note>
@@ -129,14 +135,8 @@
     <note priority="low" time="1280681479" done="1281331302">
         ebuild
     </note>
-    <note priority="high" time="1281332787">
-        check_users example script
-    </note>
     <note priority="high" time="1281332806">
         put examples into doc/examples directory
-    </note>
-    <note priority="high" time="1281334107" done="1281338673">
-        make default_message() regular method call
     </note>
     <note priority="medium" time="1281331514">
         check that all tests are still running in packaged version (e.g,. egg)
@@ -147,7 +147,7 @@
     <note priority="low" time="1280681473">
         Basic sphinx documentation
     </note>
-    <note priority="low" time="1281334403">
+    <note priority="low" time="1281334403" done="1281339082">
         default implementations for states() and performances()
     </note>
     <note priority="low" time="1281338561">

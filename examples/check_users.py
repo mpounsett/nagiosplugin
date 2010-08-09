@@ -36,18 +36,12 @@ class UsersCheck(nagiosplugin.Check):
             raise RuntimeError(u'command "%s" failed: %s' % (cmd, stderr))
         firstline = stdout.split(u'\n')[0]
         self.count = len(firstline.split())
-        self.data = nagiosplugin.Measure(
-            u'usercount', self.count, warning=self.warn, critical=self.crit,
-            minimum=0)
+        self.measures = [nagiosplugin.Measure(
+            u'users', self.count, warning=self.warn, critical=self.crit,
+            minimum=0)]
 
     def default_message(self):
         return u'%i users' % self.count
-
-    def states(self):
-        return [self.data.state()]
-
-    def performances(self):
-        return [self.data.performance()]
 
 
 main = nagiosplugin.Controller(UsersCheck)

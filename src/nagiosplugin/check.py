@@ -42,11 +42,17 @@ class Check(object):
 
     def states(self):
         """Return list of State objects from measured data."""
-        return []
+        try:
+            return [m.state() for m in self.measures]
+        except AttributeError:
+            return []
 
     def performances(self):
         """Return list of performance data strings from measured data."""
-        return []
+        try:
+            return [m.performance() for m in self.measures]
+        except AttributeError:
+            return []
 
     def default_message(self):
         """Fallback OK message string if nothing special happened.
