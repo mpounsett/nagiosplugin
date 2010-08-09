@@ -135,6 +135,9 @@
     <note priority="high" time="1281332806">
         put examples into doc/examples directory
     </note>
+    <note priority="high" time="1281334107" done="1281338673">
+        make default_message() regular method call
+    </note>
     <note priority="medium" time="1281331514">
         check that all tests are still running in packaged version (e.g,. egg)
     </note>
@@ -144,10 +147,10 @@
     <note priority="low" time="1280681473">
         Basic sphinx documentation
     </note>
-    <note priority="low" time="1281334107">
-        make default_message() regular method call
-    </note>
     <note priority="low" time="1281334403">
         default implementations for states() and performances()
+    </note>
+    <note priority="low" time="1281338561">
+        doctest for check_users
     </note>
 </todo>

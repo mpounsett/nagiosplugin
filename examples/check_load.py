@@ -78,7 +78,6 @@ For --warning and --critical, either three comma separated range specifications
         self.log.warning(u'states: %r' % states)
         return states
 
-    @property
     def default_message(self):
         return u'system load average is %.2f %.2f %.2f' % tuple(self.load)
 

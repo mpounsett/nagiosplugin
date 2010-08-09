@@ -40,7 +40,6 @@ class UsersCheck(nagiosplugin.Check):
             u'usercount', self.count, warning=self.warn, critical=self.crit,
             minimum=0)
 
-    @property
     def default_message(self):
         return u'%i users' % self.count
 

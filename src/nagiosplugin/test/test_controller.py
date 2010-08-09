@@ -62,7 +62,6 @@ class ControllerTest(unittest.TestCase):
 
     def test_format_with_default_message(self):
         class DefaultMessageCheck(MockCheck):
-            @property
             def default_message(self):
                 return u'default message'
         c = controller.Controller(DefaultMessageCheck, []).run()

@@ -100,9 +100,9 @@ class Controller(object):
         self.check.obtain_data()
         self.states = self.check.states()
         self.performances = self.check.performances()
-        if self.check.default_message:
+        if self.check.default_message():
             self.states.append(nagiosplugin.state.Ok(
-                self.check.default_message))
+                self.check.default_message()))
 
     def format(self):
         """Compile and format output according to Nagios 3 plugin API."""

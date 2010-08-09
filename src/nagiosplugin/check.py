@@ -48,7 +48,6 @@ class Check(object):
         """Return list of performance data strings from measured data."""
         return []
 
-    @property
     def default_message(self):
         """Fallback OK message string if nothing special happened.
 
