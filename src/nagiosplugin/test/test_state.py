@@ -57,8 +57,9 @@ class StateTest(unittest.TestCase):
 
 
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase(StateTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(StateTest)
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()

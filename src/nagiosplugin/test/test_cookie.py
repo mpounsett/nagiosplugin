@@ -88,9 +88,11 @@ class CookieStoreTest(unittest.TestCase):
 
 
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase(CookieTest)
-    suite.loadTestsFromTestCase(CookieStoreTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(CookieTest)
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(CookieStoreTest))
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()

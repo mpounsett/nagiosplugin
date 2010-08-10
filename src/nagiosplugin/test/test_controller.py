@@ -121,8 +121,9 @@ class ControllerTest(unittest.TestCase):
 
 
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase(ControllerTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(ControllerTest)
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()

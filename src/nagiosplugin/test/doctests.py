@@ -7,7 +7,7 @@ import sys
 import unittest
 
 
-def additional_tests():
+def suite():
     base = os.path.abspath('%s/../..' % os.path.dirname(__file__))
     sys.path[0:0] = [base, os.path.join(base, '../examples')]
     suite = doctest.DocFileSuite(
@@ -17,5 +17,10 @@ def additional_tests():
     return suite
 
 
+# needed for setuptools
+def additional_tests():
+    return suite()
+
+
 if __name__ == '__main__':
-    unittest.TextTestRunner().run(additional_tests())
+    unittest.main(defaultTest='suite')

@@ -105,10 +105,11 @@ class RangeStrTest(unittest.TestCase):
 
 
 def suite():
-    suite = unittest.TestLoader()
-    suite.loadTestsFromTestCase(RangeParseTest)
-    suite.loadTestsFromTestCase(RangeStrTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(RangeParseTest)
+    suite.addTests(
+        unittest.defaultTestLoader.loadTestsFromTestCase(RangeStrTest))
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()

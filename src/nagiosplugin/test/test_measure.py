@@ -85,8 +85,9 @@ class MeasureTest(unittest.TestCase):
 
 
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase(MeasureTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(MeasureTest)
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,6 +17,6 @@ setup(
     package_data={'nagiosplugin': ['test/*.txt']},
     zip_safe=False,
     test_suite='nagiosplugin.test',
-    scripts=glob.glob('examples/*.py'),
-    data_files=[('doc', ['README.txt'])]
+    data_files=[('doc', ['README.txt']),
+                ('doc/examples', glob.glob('examples/*.py'))]
 )

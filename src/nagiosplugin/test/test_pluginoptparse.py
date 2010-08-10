@@ -36,9 +36,12 @@ class PluginOptionParserTest(unittest.TestCase):
         self.op.parse_args(['-r'])
         self.assert_(self.op.stderr.getvalue().find(u'invalid option') >= 0)
 
+
 def suite():
-    suite = unittest.TestLoader().loadTestsFromTestCase(PluginOptionParserTest)
+    suite = unittest.defaultTestLoader.loadTestsFromTestCase(
+        PluginOptionParserTest)
     return suite
+
 
 if __name__ == '__main__':
     unittest.main()
