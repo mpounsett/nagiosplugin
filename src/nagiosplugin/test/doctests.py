@@ -8,8 +8,11 @@ import unittest
 
 
 def suite():
-    base = os.path.abspath('%s/../..' % os.path.dirname(__file__))
-    sys.path[0:0] = [base, os.path.join(base, '../examples')]
+    here = os.path.dirname(__file__)
+    sys.path[0:0] = [here,
+                     os.path.abspath(here + '/../..'),
+                     os.path.abspath(here + '/../../doc/examples'),
+                     os.path.abspath(here + '/../../../examples')]
     suite = doctest.DocFileSuite(
         'check_load.txt',
         optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS |
