@@ -17,7 +17,7 @@ sys.path[0:0] = [os.path.abspath(here + '/../..')]
 def suite():
     suite = unittest.TestSuite()
     for fn in os.listdir(here):
-        if fn.find('test') >= 0 and fn.endswith('.py'):
+        if fn.startswith('test') and fn.endswith('.py'):
             modname = 'nagiosplugin.test.' + fn[:-3]
             __import__(modname)
             module = sys.modules[modname]
