@@ -2,12 +2,12 @@
 # See also LICENSE.txt
 
 import glob
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 setup(
     name='nagiosplugin',
-    version='0.3',
+    version='0.3dev',
     description='Class library for Python Nagios plugins',
     author='Christian Kauhaus',
     author_email='kc@gocept.com',
@@ -16,7 +16,5 @@ setup(
     package_dir={'': 'src'},
     package_data={'nagiosplugin': ['test/*.txt']},
     zip_safe=False,
-    test_suite='nagiosplugin.test',
-    data_files=[('doc', ['README.txt']),
-                ('doc/examples', glob.glob('examples/*.py'))]
+    test_suite='nagiosplugin.test'
 )
