@@ -1,7 +1,7 @@
 nagiosplugin
 ============
 
-:py:mod:`nagiosplugin` is a package which helps writing Nagios/Icinga compatible
+`nagiosplugin` is a package which helps writing Nagios/Icinga compatible
 plugins easily in Python. It cares for much of the boilerplate code and default
 logic commonly found in Nagios checks, including:
 
@@ -15,10 +15,10 @@ logic commonly found in Nagios checks, including:
 * Timeout handling
 * Persistent "cookies" to retain state information between check runs.
 
-To get started writing Nagios plugins, see the examples in the :doc:`examples`
+To get started writing Nagios plugins, see the examples in the `examples`
 subdirectory.
 
-The :py:mod:`nagiosplugin` package is released under a BSD-style Open Source
+The `nagiosplugin` package is released under a BSD-style Open Source
 license (ZPL).
 
-# vim: set ft=rst sts=3:
+.. vim: set ft=rst sts=3:
