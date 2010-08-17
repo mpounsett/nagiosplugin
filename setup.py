@@ -12,7 +12,7 @@ setup(
     author_email='kc@gocept.com',
     url='http://projects.gocept.com/projects/projects/nagiosplugin/wiki',
     description='Class library for writing Nagios/Icinga compatible plugins',
-    longdescription=file('README.txt').read(),
+    long_description=file('README.txt').read(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Plugins',
