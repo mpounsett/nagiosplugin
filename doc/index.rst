@@ -4,13 +4,31 @@
    contain the root `toctree` directive.
    Requires sphinx 1.0 or later.
 
-Welcome to nagiosplugin's documentation!
-========================================
+********************************
+The `nagiosplugin` Class Library
+********************************
+
+:py:mod:`nagiosplugin` is a Python class library to make writing
+Nagios/Icinga plugins easier. To learn how to use it, it is best to go through
+the :ref:`tutorial`.
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
+
+   tutorial
+   glossary
+
+.. todo::
+
+   * Advanced topics
+
+      * logging
+      * multiple measures
+
+   * API docs
+
 
 Indices and tables
 ==================
@@ -18,4 +36,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
