@@ -26,6 +26,7 @@ Contents:
 
       * logging
       * multiple measures
+      * cookies
 
    * API docs
 
@@ -36,3 +37,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. todolist::
+

@@ -11,7 +11,7 @@ class DiskCheck(nagiosplugin.Check):
    def obtain_data(self):
       vfs = os.statvfs('/')
       self.diskusage = 100 - (100 * vfs.f_bfree / vfs.f_blocks)
-      self.data = [nagiosplugin.Measure(
+      self.measures = [nagiosplugin.Measure(
          'diskusage', self.diskusage, '%', '0:50', '0:75', 0, 100)]
 
    def default_message(self):
