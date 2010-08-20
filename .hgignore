@@ -1,7 +1,8 @@
 syntax: glob
+_build
 build
 dist
 *.egg-info
 *.pyc
 *.pyo
-_build
+setuptools_hg*

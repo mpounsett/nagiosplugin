@@ -30,5 +30,6 @@ setup(
     package_data={'nagiosplugin': ['test/*.txt']},
     data_files=[('.', ['version.txt', 'ChangeLog', 'HISTORY.txt'])],
     zip_safe=False,
-    test_suite='nagiosplugin.test'
+    test_suite='nagiosplugin.test',
+    setup_requires=['setuptools_hg']
 )

@@ -1,5 +1,7 @@
 #!/usr/bin/python2.6
 # Example Nagios plugin to check disk usage.
+# It is kept very basic to serve as tutoral example. For the tutorial, see the
+# nagiosplugin documentation.
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -8,6 +10,7 @@ import os
 
 
 class DiskCheck(nagiosplugin.Check):
+
    name = 'disk tutorial'
    version = '0.1'
 
