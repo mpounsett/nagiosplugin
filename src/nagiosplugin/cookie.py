@@ -4,6 +4,7 @@
 import fcntl
 import os
 import os.path
+import pwd
 from contextlib import contextmanager
 
 
@@ -29,7 +30,8 @@ class Cookie(object):
         elif filename.startswith('/'):
             self.filename = os.path.abspath(filename)
         else:
-            self.filename = os.path.join(os.path.expanduser('~'), filename)
+            home = pwd.getpwuid(os.getuid()).pw_dir
+            self.filename = os.path.join(os.path.expanduser(home), filename)
         self.new = not os.path.exists(self.filename)
         self.changed = False
         self.f = file(self.filename, 'a+')
