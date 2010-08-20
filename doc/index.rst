@@ -4,9 +4,9 @@
    contain the root `toctree` directive.
    Requires sphinx 1.0 or later.
 
-********************************
+################################
 The `nagiosplugin` Class Library
-********************************
+################################
 
 :py:mod:`nagiosplugin` is a Python class library to make writing
 Nagios/Icinga plugins easier. To learn how to use it, it is best to go through
