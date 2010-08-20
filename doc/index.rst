@@ -18,18 +18,12 @@ Contents:
    :maxdepth: 2
 
    tutorial
+   advanced
    glossary
 
 .. todo::
 
-   * Advanced topics
-
-      * logging
-      * multiple measures
-      * cookies
-
-   * API docs
-
+   check indices
 
 Indices and tables
 ==================

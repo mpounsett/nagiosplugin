@@ -8,6 +8,8 @@ import os
 
 
 class DiskCheck(nagiosplugin.Check):
+   name = 'disk tutorial'
+   version = '0.1'
 
    def __init__(self, optparser, logger):
       optparser.description = 'Check disk usage of the root partition'

@@ -19,3 +19,11 @@ Glossary
       String notation defined in the Nagios plugin API to express a set of
       acceptable values. Values outside a range trigger a warning or critical
       condition.
+
+   plugin API
+      Documents that define how a Nagios/Icinga compatible plugin must be called
+      and how it should respond. There is a `main document`_ and an appendix for
+      `Nagios 3 extensions`_.
+
+.. _main document: http://nagiosplug.sourceforge.net/developer-guidelines.html
+.. _Nagios 3 extensions: http://nagios.sourceforge.net/docs/3_0/pluginapi.html

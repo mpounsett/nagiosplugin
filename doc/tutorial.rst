@@ -23,7 +23,8 @@ To get started, we start with an empty :py:class:`Check` subclass::
 
 
    class DiskCheck(nagiosplugin.Check):
-      pass
+      name = 'disk tutorial'
+      version = '0.1'
 
 
    main = nagiosplugin.Controller(DiskCheck)
@@ -34,7 +35,8 @@ The new plugins functionality will be defined in the class
 :py:class:`DiskCheck`. This class is passed to the :py:class:`Controller`'s
 constructor which returns the main function. :py:obj:`main` could be used as a
 console script entry point or used directly if the script is called from the
-command line.
+command line. The :py:attr:`name` and :py:attr:`version` attributes
+define basic check properties used for output.
 
 
 Obtaining Data
@@ -113,11 +115,7 @@ two come from the standard librarie's :py:mod:`optionparser` and
 define addition option in addition to the standard options like :option:`--help`
 or :option:`--version`.
 
-.. todo::
-
-   Add link to logging section.
-
-We define option for warning and critical ranges in the :py:meth:`__init__`
+We define options for warning and critical ranges in the :py:meth:`__init__`
 method, but do not use the logging facility for now::
 
    def __init__(self, optparser, logger):
@@ -129,6 +127,10 @@ method, but do not use the logging facility for now::
       optparser.add_option(
          '-c', '--critical', default='75', metavar='RANGE',
          help='warning threshold (default: %default%)')
+
+.. seealso::
+
+   Details on how to use logging are discussed in the :ref:`logging` chapter.
 
 After plugin initialization is complete, the :py:class:`Controller` passes the
 parsed options and positional arguments to the plugin via the
@@ -151,23 +153,23 @@ with the user-defined ones. The re-worked method read like this::
          '/', self.usage, '%', self.warning, self.critical, 0, 100)]
 
 Congratulations! Our basic disk usage plugin is now complete.  For example, when
-called as :command:`check_disk`, it returns OK state due on a computer with a
-root partition that is sufficiently free::
+called as :command:`check_disk_tutorial`, it returns OK state due on a computer
+with a root partition that is sufficiently free::
 
-   $ python ./check_disk.py
+   $ python ./check_disk_tutorial.py
    CHECK OK - / is 7% full | /=7%;50;75;0;100
 
-If we call it like :command:`check_disk -w 5` to set a tighter range for the
-warning threshold, it returns warning state::
+If we call it like :command:`check_disk_tutorial -w 5` to set a tighter range
+for the warning threshold, it returns warning state::
 
-   $ python ./check_disk.py -w 5
+   $ python ./check_disk_tutorial.py -w 5
    CHECK WARNING - / value 7% exceeds warning range 5 | /=7%;5;75;0;100
 
 At least, using the pre-defined help option generated a nicely formatted help
 page::
 
-   $ python examples/check_disk.py --help
-   Usage: check_disk.py [options]
+   $ python examples/check_disk_tutorial.py --help
+   Usage: check_disk_tutorial.py [options]
 
    Check disk usage of the root partition
 
