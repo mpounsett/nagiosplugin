@@ -1,7 +1,7 @@
 Release History
 ===============
 
-0.4.1 (unreleased)
+0.4.1 (2010-09-09)
 ------------------
 
 - Fix package_data directory to allow sdists to build.
