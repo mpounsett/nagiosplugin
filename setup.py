@@ -27,7 +27,7 @@ setup(
     license='ZPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    package_data={'nagiosplugin': ['test/*.txt']},
+    package_data={'nagiosplugin': ['test/*.txt', 'version.txt']},
     zip_safe=False,
     test_suite='nagiosplugin.test',
     setup_requires=['setuptools_hg']
