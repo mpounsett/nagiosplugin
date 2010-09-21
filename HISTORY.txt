@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-0.4.1 (unreleased)
+0.4.1 (2010-09-21)
 ------------------
 
 - Fix distribution to install correctly.
