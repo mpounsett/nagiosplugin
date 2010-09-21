@@ -5,8 +5,5 @@ Advanced Topics
 .. toctree::
 
    logging
-
-.. todo::
-
-   * multiple measures
-   * cookies
+   multiple_measures
+   cookies

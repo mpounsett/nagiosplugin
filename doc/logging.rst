@@ -4,7 +4,7 @@ Logging
 =======
 
 When something does not work as expected, plugins should provide diagnostic
-output. Since the Nagios :term:`plugin API` requires the status line always
+output. Since the :term:`Nagios plugin API` requires the status line always
 first, simply putting print statements in the plugin code is not an option.
 
 :py:mod:`nagiosplugin` provides a :py:class:`Logger` object which is passed to

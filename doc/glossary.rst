@@ -1,3 +1,5 @@
+.. _glossary:
+
 Glossary
 ========
 
@@ -16,11 +18,11 @@ Glossary
       Part of the plugin output which is passed to external programs by Nagios.
 
    range
-      String notation defined in the Nagios plugin API to express a set of
+      String notation defined in the :term:`Nagios plugin API` to express a set of
       acceptable values. Values outside a range trigger a warning or critical
       condition.
 
-   plugin API
+   Nagios plugin API
       Documents that define how a Nagios/Icinga compatible plugin must be called
       and how it should respond. There is a `main document`_ and an appendix for
       `Nagios 3 extensions`_.

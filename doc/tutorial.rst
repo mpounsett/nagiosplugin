@@ -7,7 +7,7 @@ Tutorial
 Class Anatomy
 =============
 
-Plugins written with :py:mod::`nagiosplugin` are subclasses from the
+Plugins written with :py:mod:`nagiosplugin` are subclasses from the
 :py:class:`Check` base class, overriding methods to provide
 functionality. The methods are called from the :py:class:`Controller` class,
 which implements the general plugin control logic.
@@ -21,11 +21,9 @@ To get started, we start with an empty :py:class:`Check` subclass::
    import nagiosplugin
    import os
 
-
    class DiskCheck(nagiosplugin.Check):
       name = 'disk tutorial'
       version = '0.1'
-
 
    main = nagiosplugin.Controller(DiskCheck)
    if __name__ == '__main__':
@@ -42,14 +40,21 @@ define basic check properties used for output.
 Obtaining Data
 ==============
 
-Override the :py:meth:`obtain_data` method to perform the actual measurement.
-To obtain the disk usage, we use the standard :py:func:`os.statvfs` call::
+.. index::
+   single: data
+   single: measures; simple
+
+Override the :py:meth:`Check.obtain_data` method to perform the actual
+measurement.  To obtain the disk usage, we use the standard
+:py:func:`os.statvfs` call::
 
    def obtain_data(self):
       vfs = os.statvfs('/')
       self.usage = 100 - (100 * vfs.f_bfree / vfs.f_blocks)
       self.measures = [nagiosplugin.Measure(
          '/', self.usage, '%', self.warning, self.critical, 0, 100)]
+
+.. index:: threshold
 
 Much of the tiresome parts of writing Nagios plugins by hand is capsuled in the
 :py:class:`Measure` class. The Measure class is initialized with the check name,
@@ -66,19 +71,21 @@ section.
 Generating Output
 =================
 
-Much of the gory details of generating and formatting plugin API compliant
-output are handled by :py:mod:`nagiosplugin`. In the simplest case, we leave
-:term:`range` checking and :term:`performance data` generation to the built-in
-methods and define just the string returned when everything is OK::
+.. index:: output
+
+Much of the gory details of generating and formatting :term:`Nagios plugin API`
+compliant output are handled by :py:mod:`nagiosplugin`. In the simplest case, we
+leave :term:`range` checking and :term:`performance data` generation to the
+built-in methods and define just the string returned when everything is OK::
 
    def default_message(self):
       return '/ is %i%% full' % (self.usage)
 
-The optional :py:meth:`states` and :py:meth:`performances` methods should return
-arrays of :py:class:`State` objects respective performance strings.  The
-:py:class:`Controller` class reduces the states of all measures (if there is
-more than one) to the dominant state, which determines the plugin's output.  In
-case of an exception, UNKNOWN state is output.
+The optional :py:meth:`Check.states` and :py:meth:`Check.performances` methods
+should return arrays of :py:class:`State` objects respective performance
+strings.  The :py:class:`Controller` class reduces the states of all measures
+(if there is more than one) to the dominant state, which determines the plugin's
+output.  In case of an exception, UNKNOWN state is output.
 
 .. hint::
 
@@ -98,25 +105,27 @@ case of an exception, UNKNOWN state is output.
    automatically from their value and their warning/critical ranges. Likewise,
    the performance strings are constructed automatically.
 
-.. todo::
-
-   Add link to multiple measures section.
+To create arrays of similar measures automatically, see also the shortcuts
+described in :ref:`multiple_measures`.
 
 
 Plugin Options
 ==============
 
+.. index::
+   pair: command line; options
+
 Of course, static range for the warning and critical thresholds are not very
 flexible. To gain flexibility, we add some options. This is done in the
-:my:meth:__init__ method. The :py:meth::`__init__` method get two additional
-parameters: an :py:class:`OptionParser` and a :py:class:`Logger` object. These
-two come from the standard librarie's :py:mod:`optionparser` and
-:py:mod:`logging` modules. The :py:class:`OptionParser` object may be used to
-define addition option in addition to the standard options like :option:`--help`
-or :option:`--version`.
+:py:meth:`Check.__init__` method. :py:meth:`Check.__init__` get two
+additional parameters: an :py:class:`OptionParser` and a :py:class:`Logger`
+object. These two come from the Python standard library's :py:mod:`optionparser`
+and :py:mod:`logging` modules. The :py:class:`OptionParser` object may be used
+to define addition option in addition to the standard options like
+:option:`--help` or :option:`--version`.
 
-We define options for warning and critical ranges in the :py:meth:`__init__`
-method, but do not use the logging facility for now::
+We define options for warning and critical ranges in the
+:py:meth:`Check.__init__` method, but do not use the logging facility for now::
 
    def __init__(self, optparser, logger):
       optparser.description = 'Check disk usage of the root partition'
@@ -134,7 +143,7 @@ method, but do not use the logging facility for now::
 
 After plugin initialization is complete, the :py:class:`Controller` passes the
 parsed options and positional arguments to the plugin via the
-:py:meth:`process_args` method. Here, we store them::
+:py:meth:`Check.process_args` method. Here, we store them::
 
    def process_args(self, options, args):
       self.warning = options.warning.rstrip('%')
@@ -143,14 +152,17 @@ parsed options and positional arguments to the plugin via the
 Note the option postprocessing: As users may append a percent mark to the
 thresholds, we perform a option postprocessing step here to remove it.
 
-Of course, the static thresholds in :py:meth:`obtain_data` must now be replaced
-with the user-defined ones. The re-worked method read like this::
+Of course, the static thresholds in :py:meth:`Check.obtain_data` must now be
+replaced with the user-defined ones. The re-worked method read like this::
 
    def obtain_data(self):
       vfs = os.statvfs('/')
       self.usage = 100 - (100 * vfs.f_bfree / vfs.f_blocks)
       self.measures = [nagiosplugin.Measure(
          '/', self.usage, '%', self.warning, self.critical, 0, 100)]
+
+.. index::
+   pair: plugin; invocation
 
 Congratulations! Our basic disk usage plugin is now complete.  For example, when
 called as :command:`check_disk_tutorial`, it returns OK state due on a computer
@@ -164,6 +176,9 @@ for the warning threshold, it returns warning state::
 
    $ python ./check_disk_tutorial.py -w 5
    CHECK WARNING - / value 7% exceeds warning range 5 | /=7%;5;75;0;100
+
+.. index::
+   pair: command line; help
 
 At least, using the pre-defined help option generated a nicely formatted help
 page::
