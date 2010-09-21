@@ -14,6 +14,7 @@ the :ref:`tutorial`.
 
 This documentation covers nagiosplugin |version|.
 For a quick feature overview, see the :download:`README <../README.txt>` file.
+To download the package, see the `PyPI page`_.
 
 
 Contents
@@ -34,3 +35,4 @@ Indices and tables
 * :ref:`search`
 
 .. todolist::
+.. _PyPI page: http://pypi.python.org/pypi/nagiosplugin

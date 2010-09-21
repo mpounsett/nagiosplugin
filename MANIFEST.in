@@ -1,5 +1,5 @@
-include README.txt
-include NEWS.txt
 include ChangeLog
+include HISTORY.txt
 include LICENSE.txt
+include README.txt
 include version.txt
