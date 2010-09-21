@@ -3,6 +3,7 @@
 	* Fix missing version.txt in sdist #7925.
 	* Write multiple measures guide #7914.
 	* Write cookies guide #7914.
+	* Clean up documentation.
 
 2010-08-17  Christian Kauhaus <kc@gocept.com>
 

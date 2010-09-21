@@ -6,7 +6,7 @@ Release History
 ------------------
 
 - Fix distribution to install correctly.
-- Greatly improve documentation.
+- Documentation: tutorial and topic guides.
 
 
 0.4 (2010-08-17)
@@ -14,4 +14,4 @@ Release History
 
 - Initial public release.
 
-# vim: set ft=rst:
+.. vim: set ft=rst sw=3 sts=3:

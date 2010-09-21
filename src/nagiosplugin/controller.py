@@ -64,7 +64,7 @@ class Controller(object):
         self.print_output()
 
     def run(self):
-        """Run, but interrupt check action if it takes longer than the timeout."""
+        """Run, but interrupt check if it takes longer than the timeout."""
         loglevel = max((40 - self.opts.verbose * 10, 10))
         self.logger.setLevel(loglevel)
         self.states = []
