@@ -1,19 +1,17 @@
 Release History
 ===============
 
-0.5 (unreleased)
-----------------
 
-- Nothing changed yet.
-
-
-0.4.1 (2010-09-09)
+0.4.1 (unreleased)
 ------------------
 
-- Fix package_data directory to allow sdists to build.
+- Fix distribution to install correctly.
+- Greatly improve documentation.
 
 
 0.4 (2010-08-17)
 ----------------
+
+- Initial public release.
 
 # vim: set ft=rst:

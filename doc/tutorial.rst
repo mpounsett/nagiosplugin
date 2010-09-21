@@ -1,3 +1,4 @@
+.. Copyright (c) 2010 gocept gmbh & co. kg
 .. _tutorial:
 
 ********
@@ -6,6 +7,8 @@ Tutorial
 
 Class Anatomy
 =============
+
+.. index:: plugin
 
 Plugins written with :py:mod:`nagiosplugin` are subclasses from the
 :py:class:`Check` base class, overriding methods to provide

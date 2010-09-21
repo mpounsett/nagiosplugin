@@ -8,11 +8,13 @@
 The `nagiosplugin` Class Library
 ################################
 
-.. index:: plugin
-
 :py:mod:`nagiosplugin` is a Python class library to make writing
-Nagios/Icinga plugins easier. To learn how to use it, it is best to go through
+Nagios/Icinga plugins easier. To learn how to use it, go through
 the :ref:`tutorial`.
+
+This documentation covers nagiosplugin |version|.
+For a quick feature overview, see the :download:`README <../README.txt>` file.
+
 
 Contents
 ========

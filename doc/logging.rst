@@ -30,3 +30,5 @@ uncaught exceptions. Stack traces are suppressed by default. :option:`-vv` and
 
 Log messages output with :py:meth:`Logger.error` are displayed regardless on the
 number of :option:`-v` options.
+
+.. vim: set spell spelllang=en_us:

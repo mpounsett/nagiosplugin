@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'nagiosplugin'
-copyright = u'2010, Christian Kauhaus'
+copyright = u'2010 gocept gmbh & co. kg'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -112,7 +112,7 @@ html_theme = 'sphinxdoc'
 #html_title = None
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-#html_short_title = None
+html_short_title = 'nagiosplugin v%s' % version
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
@@ -185,7 +185,7 @@ htmlhelp_basename = 'nagiosplugindoc'
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'nagiosplugin.tex', u'nagiosplugin Documentation',
-   u'Christian Kauhaus', 'manual'),
+   u'gocept gmbh & co. kg', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -218,5 +218,5 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'nagiosplugin', u'nagiosplugin Documentation',
-     [u'Christian Kauhaus'], 1)
+     [u'gocept gmbh & co. kg'], 1)
 ]
