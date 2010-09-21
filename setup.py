@@ -1,18 +1,21 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import glob
 from setuptools import setup, find_packages
+import os
+import sys
+
+here = os.path.abspath(os.path.dirname(__file__))
+README = open(os.path.join(here, 'README.txt')).read()
+NEWS = open(os.path.join(here, 'NEWS.txt')).read()
+version = open(os.path.join(here, 'version.txt')).read().strip()
 
 
 setup(
     name='nagiosplugin',
     version=file('version.txt').read().strip(),
-    author='Christian Kauhaus',
-    author_email='kc@gocept.com',
-    url='http://projects.gocept.com/projects/projects/nagiosplugin/wiki',
     description='Class library for writing Nagios/Icinga plugins',
-    long_description=file('README.txt').read(),
+    long_description=README + '\n\n' + NEWS,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Plugins',
@@ -24,11 +27,16 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Monitoring',
     ],
+    keywords='Nagios Icinga plugin check monitoring',
+    author='Christian Kauhaus',
+    author_email='kc@gocept.com',
+    url='http://projects.gocept.com/projects/projects/nagiosplugin/wiki',
     license='ZPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    package_data={'nagiosplugin': ['test/*.txt', 'version.txt']},
+    package_data = {'': ['*.txt', '*.rst']},
+    include_package_data=True,
     zip_safe=False,
-    test_suite='nagiosplugin.test',
-    setup_requires=['setuptools_hg']
+    install_requires=[],
+    test_suite='nagiosplugin.test'
 )

@@ -1,5 +1,9 @@
+2010-09-21  Christian Kauhaus <kc@gocept.com>
+
+	* Fix missing version.txt in sdist #7925.
+
 2010-08-17  Christian Kauhaus <kc@gocept.com>
 
-	* Initial public release
-	* Clean up code
-	* Improve README.txt
+	* Initial public release.
+	* Clean up code.
+	* Improve README.txt.

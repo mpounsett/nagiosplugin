@@ -1,8 +1,12 @@
 syntax: glob
+bin
 _build
 build
+develop-eggs
 dist
 *.egg-info
+.installed.cfg
 *.pyc
 *.pyo
 setuptools_hg*
+tmp

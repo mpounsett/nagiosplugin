@@ -1,0 +1,28 @@
+Development setup
+=================
+
+The `nagiosplugin` package follows the usual Python development practices. A
+build can be generated with::
+
+   $ python setup.py build
+
+Be sure to run all tests::
+
+   $ python setup.py test
+
+The docs can be built using::
+
+   $ python setup.py build_sphinx
+
+
+Release HOWTO
+=============
+
+To make a release, we prefer `zest.releaser`_. To make a release, follow the
+standard procedure, which usually boils down to::
+
+   $ fullrelease
+
+.. _zest.releaser: http://pypi.python.org/pypi/zest.releaser/
+
+.. vim: set ft=rst sw=3 sts=3 et:
