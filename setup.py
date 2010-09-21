@@ -7,7 +7,7 @@ import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
-NEWS = open(os.path.join(here, 'NEWS.txt')).read()
+HISTORY = open(os.path.join(here, 'HISTORY.txt')).read()
 version = open(os.path.join(here, 'version.txt')).read().strip()
 
 
@@ -15,7 +15,7 @@ setup(
     name='nagiosplugin',
     version=file('version.txt').read().strip(),
     description='Class library for writing Nagios/Icinga plugins',
-    long_description=README + '\n\n' + NEWS,
+    long_description=README + '\n\n' + HISTORY,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Plugins',
