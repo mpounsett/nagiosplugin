@@ -4,9 +4,9 @@ nagiosplugin
 Features
 --------
 
-`nagiosplugin` is a package which helps writing Nagios/Icinga compatible
-plugins easily in Python. It cares for much of the boilerplate code and default
-logic commonly found in Nagios checks, including:
+`nagiosplugin` is a class library which helps writing Nagios (or Icinga)
+compatible plugins easily in Python. It cares for much of the boilerplate code
+and default logic commonly found in Nagios checks, including:
 
 - Nagios 3 Plugin API compliant parameters and output formatting
 - Controller to handle the general plugin control flow

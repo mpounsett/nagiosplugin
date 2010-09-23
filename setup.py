@@ -14,7 +14,7 @@ version = open(os.path.join(here, 'version.txt')).read().strip()
 setup(
     name='nagiosplugin',
     version=file('version.txt').read().strip(),
-    description='Class library for writing Nagios/Icinga plugins',
+    description='Class library for writing Nagios (Icinga) plugins',
     long_description=README + '\n\n' + HISTORY,
     classifiers=[
         'Development Status :: 4 - Beta',
