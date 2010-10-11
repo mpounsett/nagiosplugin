@@ -1,3 +1,7 @@
+2010-10-11  Christian Kauhaus  <kc@gocept.com>
+
+	* Fix missing HISTORY.txt in sdist.
+
 2010-09-21  Christian Kauhaus <kc@gocept.com>
 
 	* Fix missing version.txt in sdist #7925.
