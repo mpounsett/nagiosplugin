@@ -5,7 +5,7 @@ Release History
 0.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change __str__ representation of large numbers to avoid scientific notation.
 
 
 0.4.2 (2010-10-11)
