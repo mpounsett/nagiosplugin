@@ -41,9 +41,15 @@ class Range(object):
         if start == u'~':
             self.start = None
         elif start:
-            self.start = float(start)
+            if start.find('.') >= 0:
+                self.start = float(start)
+            else:
+                self.start = int(start)
         if len(end):
-            self.end = float(end)
+            if end.find('.') >= 0:
+                self.end = float(end)
+            else:
+                self.end = int(end)
 
     def verify(self):
         """Throw ValueError if the range is not consistent."""
@@ -68,9 +74,9 @@ class Range(object):
         if self.start is None:
             result.append(u'~:')
         elif self.start != 0:
-            result.append((u'%g:' % self.start))
+            result.append((u'%s:' % self.start))
         if self.end is not None:
-            result.append((u'%g' % self.end))
+            result.append((u'%s' % self.end))
         return u''.join(result)
 
     def __repr__(self):

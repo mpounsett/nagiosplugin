@@ -96,12 +96,16 @@ class RangeStrTest(unittest.TestCase):
         self.assertEqual(u'-6.5:', str(self.r))
 
     def test_neg_infinity(self):
-        (self.r.start, self.r.end) = (None, -3.7)
-        self.assertEqual(u'~:-3.7', str(self.r))
+        (self.r.start, self.r.end) = (None, -3.0)
+        self.assertEqual(u'~:-3.0', str(self.r))
 
     def test_invert(self):
         (self.r.invert, self.r.start, self.r.end) = (True, 3, 7)
         self.assertEqual(u'@3:7', str(self.r))
+
+    def test_large_number(self):
+        self.r.end = 2800000000
+        self.assertEqual(u'2800000000', str(self.r))
 
 
 def suite():
