@@ -15,6 +15,7 @@ def suite():
                      os.path.abspath(here + '/../../../examples')]
     suite = doctest.DocFileSuite(
         'check_load.txt',
+        'check_users.txt',
         optionflags=doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS |
                     doctest.REPORT_NDIFF)
     return suite

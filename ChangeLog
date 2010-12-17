@@ -1,6 +1,7 @@
 2010-12-17  Christian Kauhaus <kc@gocept.com>
 
 	* Fix output of large decimal numbers #8440.
+	* Doctest for check_users #7915.
 
 2010-10-11  Christian Kauhaus  <kc@gocept.com>
 

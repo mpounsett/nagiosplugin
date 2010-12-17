@@ -14,6 +14,7 @@ class UsersCheck(nagiosplugin.Check):
 
     def __init__(self, optp, logger):
         """Set up options."""
+        optp.description = u'Check number of users logged into the system.'
         optp.add_option(u'-w', u'--warning', metavar=u'RANGE',
                         help=u'set WARNING status if number of logged in users '
                         u'does not match RANGE',
