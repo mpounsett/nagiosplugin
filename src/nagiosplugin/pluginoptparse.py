@@ -1,8 +1,9 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import cStringIO
 import optparse
+import sys
 
 
 class PluginOptionParser(optparse.OptionParser):
@@ -23,7 +24,8 @@ class PluginOptionParser(optparse.OptionParser):
         ret = (None, None)
         try:
             ret = optparse.OptionParser.parse_args(self, args, values)
-        except UnboundLocalError as e:
+        except UnboundLocalError:
+            e = sys.exc_info()[1]
             self._print(u'invalid option (internal error: %s)' % e)
         return ret
 

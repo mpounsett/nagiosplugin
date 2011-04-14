@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import cStringIO
@@ -77,7 +77,8 @@ class Controller(object):
         except TimeoutError:
             self.states.append(nagiosplugin.state.Unknown(
                 u'timeout of %is exceeded' % self.opts.timeout))
-        except Exception as e:
+        except Exception:
+            e = sys.exc_info()[1]
             self.states.append(nagiosplugin.state.Unknown(str(e)))
             if self.opts.verbose > 0:
                 self.stderr += traceback.format_exc()
