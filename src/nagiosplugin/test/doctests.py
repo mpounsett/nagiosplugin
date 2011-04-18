@@ -11,7 +11,6 @@ def suite():
     here = os.path.dirname(__file__)
     sys.path[0:0] = [here,
                      os.path.abspath(here + '/../..'),
-                     os.path.abspath(here + '/../../doc/examples'),
                      os.path.abspath(here + '/../../../examples')]
     suite = doctest.DocFileSuite(
         'check_load.txt',
