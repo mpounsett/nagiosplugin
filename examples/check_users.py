@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import nagiosplugin
@@ -14,6 +14,7 @@ class UsersCheck(nagiosplugin.Check):
 
     def __init__(self, optp, logger):
         """Set up options."""
+        self.optp = optp
         optp.description = u'Check number of users logged into the system.'
         optp.add_option(u'-w', u'--warning', metavar=u'RANGE',
                         help=u'set WARNING status if number of logged in users '
@@ -23,13 +24,15 @@ class UsersCheck(nagiosplugin.Check):
                         help=u'set CRITICAL status if number of logged in users '
                         u'does not match RANGE',
                         default=u'')
+        optp.add_option(u'--who', help=u'path to the who implementation',
+                        default=u'who')
 
     def process_args(self, options, arguments):
         """Pull in parsed options and arguments with optional checking."""
         (self.warn, self.crit) = (options.warning, options.critical)
 
     def obtain_data(self):
-        cmd = 'who -q'
+        cmd = self.optp.values.who + ' -q'
         p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, env={})
         (stdout, stderr) = p.communicate()

@@ -28,19 +28,20 @@ version that returns always 5 users::
 >>> import os
 >>> file('who', 'w').write('#!/bin/bash\necho "foo bar baz qux quux"\necho "# users=5"\n')
 >>> os.chmod('who', 0775)
->>> os.environ['PATH'] = '.:' + os.environ['PATH']
+>>> who_path = './who'
 
 Invoking `check_users` without parameters, it reports the current number of
 users::
 
->>> c = nagiosplugin.Controller(UsersCheck, []).run()
+>>> c = nagiosplugin.Controller(UsersCheck, ['--who', who_path]).run()
 >>> print c.format()
 USERS OK - 5 users | users=5;;;0
 
 Warning and critical thresholds may be specified as usual. For instance, 
 `-w` sets the warning range::
 
->>> c = nagiosplugin.Controller(UsersCheck, ['-w', '1:3']).run()
+>>> c = nagiosplugin.Controller(
+...     UsersCheck, ['-w', '1:3', '--who', who_path]).run()
 >>> print c.format()
 USERS WARNING - users value 5 exceeds warning range 1:3 | users=5;1:3;;0
 
