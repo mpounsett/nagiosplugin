@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import nagiosplugin
@@ -13,14 +13,14 @@ class LoadCheck(nagiosplugin.Check):
     def __init__(self, op, log):
         op.description = 'Check the current system load average.'
         op.version = self.version
-        op.add_option(u'-w', u'--warning', metavar=u'RANGES', default=u'1',
-                help=u'warning if load<n> is out of RANGE<n> '
-                u'(default: %default)')
-        op.add_option(u'-c', u'--critical', metavar=u'RANGES', default=u'2',
-                help=u'critical if load<n> is out of RANGE<n> '
-                u'(default: %default)')
-        op.add_option(u'-r', u'--percpu', action='store_true',
-                help=u'divide the load averages by the number of CPUs')
+        op.add_option('-w', '--warning', metavar='RANGES', default='1',
+                help='warning if load<n> is out of RANGE<n> '
+                '(default: %default)')
+        op.add_option('-c', '--critical', metavar='RANGES', default='2',
+                help='critical if load<n> is out of RANGE<n> '
+                '(default: %default)')
+        op.add_option('-r', '--percpu', action='store_true',
+                help='divide the load averages by the number of CPUs')
         op.epilog = u"""\
 For --warning and --critical, either three comma separated range specifications
 (1, 5, 15 minutes) or one range specification covering all are accepted."""
@@ -28,11 +28,11 @@ For --warning and --critical, either three comma separated range specifications
 
     @property
     def name(self):
-        return u'Load average'
+        return 'Load average'
 
     @property
     def version(self):
-        return u'0.1'
+        return '0.1'
 
     def process_args(self, opts, args):
         nagiosplugin.Check.process_args(self, opts, args)

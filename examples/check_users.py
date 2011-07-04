@@ -1,5 +1,5 @@
 #!/usr/bin/python
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import nagiosplugin
@@ -9,23 +9,23 @@ import subprocess
 class UsersCheck(nagiosplugin.Check):
     """Very simple Nagios check plugin to demonstrate basic library usage."""
 
-    name = u'users'
-    version = u'0.1'
+    name = 'users'
+    version = '0.1'
 
     def __init__(self, optp, logger):
         """Set up options."""
         self.optp = optp
-        optp.description = u'Check number of users logged into the system.'
-        optp.add_option(u'-w', u'--warning', metavar=u'RANGE',
-                        help=u'set WARNING status if number of logged in users '
-                        u'does not match RANGE',
-                        default=u'')
-        optp.add_option(u'-c', u'--critical', metavar=u'RANGE',
-                        help=u'set CRITICAL status if number of logged in users '
-                        u'does not match RANGE',
-                        default=u'')
-        optp.add_option(u'--who', help=u'path to the who implementation',
-                        default=u'who')
+        optp.description = 'Check number of users logged into the system.'
+        optp.add_option('-w', '--warning', metavar='RANGE',
+                        help='set WARNING status if number of logged in users '
+                        'does not match RANGE',
+                        default='')
+        optp.add_option('-c', '--critical', metavar='RANGE',
+                        help='set CRITICAL status if number of logged in users '
+                        'does not match RANGE',
+                        default='')
+        optp.add_option('--who', help='path to the who implementation',
+                        default='who')
 
     def process_args(self, options, arguments):
         """Pull in parsed options and arguments with optional checking."""

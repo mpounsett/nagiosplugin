@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import cStringIO
@@ -43,15 +43,15 @@ class Controller(object):
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""
         self.optparser = nagiosplugin.pluginoptparse.PluginOptionParser()
-        self.optparser.add_option(u'-V', u'--version', action='version',
-                help=u'print version and exit')
-        self.optparser.add_option(u'-v', u'--verbose', action='count',
-                default=0, help=u'increase output verbosity (up to 3 times)')
-        self.optparser.add_option(u'-t', u'--timeout', metavar=u'TIMEOUT',
+        self.optparser.add_option('-V', '--version', action='version',
+                help='print version and exit')
+        self.optparser.add_option('-v', '--verbose', action='count',
+                default=0, help='increase output verbosity (up to 3 times)')
+        self.optparser.add_option('-t', '--timeout', metavar='TIMEOUT',
                 default=15, type='int',
-                help=(u'abort execution after TIMEOUT seconds '
-                      u'(default: %default)'))
-        self.logger = logging.getLogger(u'nagiosplugin')
+                help=('abort execution after TIMEOUT seconds '
+                      '(default: %default)'))
+        self.logger = logging.getLogger('nagiosplugin')
         self.logger.setLevel(logging.DEBUG)
         self.logstream = cStringIO.StringIO()
         handler = logging.StreamHandler(self.logstream)

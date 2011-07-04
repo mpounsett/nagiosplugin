@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from setuptools import setup, find_packages
@@ -24,6 +24,7 @@ setup(
         'License :: OSI Approved :: Zope Public License',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Monitoring',
     ],
