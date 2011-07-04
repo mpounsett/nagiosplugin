@@ -1,3 +1,8 @@
+2011-07-04  Christian Kauhaus <kc@gocept.com>
+
+	* Replace unicode strings through ASCII strings on all optparse
+	invocations (#8755).
+
 2010-12-17  Christian Kauhaus <kc@gocept.com>
 
 	* Fix output of large decimal numbers #8440.
