@@ -1,3 +1,7 @@
+2011-07-06  Christian Kauhaus <kc@gocept.com>
+
+	* Improve MANIFEST.in to include doc and examples (#8555).
+
 2011-07-04  Christian Kauhaus <kc@gocept.com>
 
 	* Replace unicode strings through ASCII strings on all optparse

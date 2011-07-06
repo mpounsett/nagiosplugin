@@ -5,7 +5,8 @@ Release History
 0.4.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Improve Mac OS X compatibility (#8755).
+- Include examples in distribution (#8555).
 
 
 0.4.3 (2010-12-17)
