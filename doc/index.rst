@@ -19,7 +19,7 @@ Contents
    :maxdepth: 2
 
    tutorial/index
-   advanced
+   advanced/index
    glossary
    history
 
