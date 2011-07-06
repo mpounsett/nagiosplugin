@@ -8,14 +8,9 @@
 The `nagiosplugin` Class Library
 ################################
 
-:py:mod:`nagiosplugin` is a Python class library to make writing
-Nagios (or Icinga) plugins easier. To learn how to use it, go through
-the :ref:`tutorial`.
+.. include:: ../README.txt
 
 This documentation covers nagiosplugin |version|.
-For a quick feature overview, see the :download:`README <../README.txt>` file.
-To download the package, see the `PyPI page`_.
-
 
 Contents
 ========
@@ -23,10 +18,10 @@ Contents
 .. toctree::
    :maxdepth: 2
 
-   tutorial
+   tutorial/index
    advanced
    glossary
-
+   history
 
 Indices and tables
 ==================
@@ -34,5 +29,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`search`
 
-.. todolist::
+To download the package, see the `PyPI page`_.
+
 .. _PyPI page: http://pypi.python.org/pypi/nagiosplugin

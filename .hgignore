@@ -3,6 +3,7 @@ bin
 build
 develop-eggs
 dist
+doc/_build
 *.egg-info
 .installed.cfg
 *.pyc
