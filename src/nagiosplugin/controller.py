@@ -83,7 +83,8 @@ class Controller(object):
             if self.opts.verbose > 0:
                 self.stderr += traceback.format_exc()
         try:
-            self.dominant_state = reduce(nagiosplugin.state.reduce, self.states)
+            self.dominant_state = reduce(
+                nagiosplugin.state.reduce, self.states)
         except TypeError:
             pass
         self.exitcode = self.dominant_state.code
@@ -118,7 +119,7 @@ class Controller(object):
         return out
 
     def firstline(self):
-        """Return check status and performance data (not more than 80 chars)."""
+        """Return check status and performance data."""
         out = u'%s %s' % (self.check.shortname, str(self.dominant_state))
         if self.dominant_state.headline():
             out += u' - ' + self.dominant_state.headline()

@@ -36,9 +36,9 @@ setup(
     license='ZPL',
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    package_data = {'': ['*.txt', '*.rst']},
+    package_data={'': ['*.txt', '*.rst']},
     include_package_data=True,
     zip_safe=False,
     install_requires=[],
-    test_suite='nagiosplugin.test'
+    test_suite='nagiosplugin.test',
 )
