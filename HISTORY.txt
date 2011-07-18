@@ -5,6 +5,8 @@ Release History
 0.4.4 (unreleased)
 ------------------
 
+Bugfix release to fix issues reported by users.
+
 - Improve Mac OS X compatibility (#8755).
 - Include examples in distribution (#8555).
 
