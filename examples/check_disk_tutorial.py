@@ -19,10 +19,10 @@ class DiskCheck(nagiosplugin.Check):
       optparser.version = '0.1'
       optparser.add_option(
          '-w', '--warning', default='50', metavar='RANGE',
-         help='warning threshold (default: %default%)')
+         help=u'warning threshold (default: %default%)')
       optparser.add_option(
          '-c', '--critical', default='75', metavar='RANGE',
-         help='warning threshold (default: %default%)')
+         help=u'warning threshold (default: %default%)')
 
    def process_args(self, options, args):
       self.warning = options.warning.rstrip('%')

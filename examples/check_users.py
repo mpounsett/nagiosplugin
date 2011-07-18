@@ -17,14 +17,14 @@ class UsersCheck(nagiosplugin.Check):
         self.optp = optp
         optp.description = 'Check number of users logged into the system.'
         optp.add_option('-w', '--warning', metavar='RANGE',
-                        help='set WARNING status if number of logged in users '
+                        help=u'set WARNING status if number of logged in users '
                         'does not match RANGE',
                         default='')
         optp.add_option('-c', '--critical', metavar='RANGE',
-                        help='set CRITICAL status if number of logged in users '
-                        'does not match RANGE',
+                        help=u'set CRITICAL status if number of logged in '
+                             u'users does not match RANGE',
                         default='')
-        optp.add_option('--who', help='path to the who implementation',
+        optp.add_option('--who', help=u'path to the who implementation',
                         default='who')
 
     def process_args(self, options, arguments):

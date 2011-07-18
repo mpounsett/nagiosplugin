@@ -8,6 +8,7 @@ doc/_build
 include/python*
 .installed.cfg
 lib/python*
+lib64
 *.py[co]
 setuptools_hg*
 *.sw[po]
