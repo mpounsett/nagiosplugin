@@ -1,4 +1,5 @@
-.. nagiosplugin README
+The nagiosplugin library
+========================
 
 About
 -----
