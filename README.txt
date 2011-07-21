@@ -39,12 +39,12 @@ The `nagiosplugin` package is released the Zope Public License (ZPL), a BSD-styl
 Documentation
 -------------
 
-To get started writing Nagios plugins, see the examples in the :file:`examples`
+To get started writing Nagios plugins, see the examples in the `examples`
 subdirectory.
 
-More documentation on using this package can be found in the :file:`doc`
+More documentation on using this package can be found in the `doc`
 directory.  There is also an `online copy`_ of the docs available.
 
 .. _online copy: http://packages.python.org/nagiosplugin/
 
-.. vim: set ft=rst sw=3 sts=3 et:
+.. vim: set ft=rst:
