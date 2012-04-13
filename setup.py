@@ -30,7 +30,7 @@ setup(
     keywords='Nagios Icinga plugin check monitoring',
     author='Christian Kauhaus',
     author_email='kc@gocept.com',
-    url='http://projects.gocept.com/projects/projects/nagiosplugin/wiki',
+    url='http://projects.gocept.com/projects/nagiosplugin/wiki',
     download_url='http://pypi.python.org/pypi/nagiosplugin',
     license='ZPL',
     packages=find_packages('src'),

@@ -4,11 +4,15 @@ build
 develop-eggs
 dist
 doc/_build
+doc/html
+doc/doctrees
+doc/make.bat
+doc/Makefile
 *.egg-info
 include/python*
 .installed.cfg
-lib/python*
 lib64
+lib/python*
 *.py[co]
 setuptools_hg*
 *.sw[po]

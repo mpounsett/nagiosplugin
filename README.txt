@@ -27,7 +27,7 @@ Feedback and Suggestions
 patches.
 
 A public issue tracker can be found at
-http://projects.gocept.com/projects/projects/nagiosplugin/issues.
+http://projects.gocept.com/projects/nagiosplugin/issues.
 
 
 License

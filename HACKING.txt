@@ -27,6 +27,10 @@ This package supports installation in a virtualenv using zc.buildout::
    bin/buildout
    bin/test
 
+Build the docs by invoking::
+
+   bin/makedoc
+
 
 Release HOWTO
 =============
