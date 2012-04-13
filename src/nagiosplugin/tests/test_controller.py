@@ -4,7 +4,7 @@
 import logging
 import nagiosplugin.check
 import nagiosplugin.state
-import nagiosplugin.test
+import nagiosplugin.tests
 import unittest
 from nagiosplugin import controller
 
@@ -118,12 +118,3 @@ class ControllerTest(unittest.TestCase):
     def test_help_option_should_exit_unknown(self):
         c = controller.Controller(MockCheck, ['-h'])
         self.assertEqual(3, c.exitcode)
-
-
-def suite():
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(ControllerTest)
-    return suite
-
-
-if __name__ == '__main__':
-    unittest.main()

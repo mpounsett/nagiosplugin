@@ -1,18 +1,31 @@
 Development setup
 =================
 
+Invoke setup.py directly
+------------------------
+
 The `nagiosplugin` package follows the usual Python development practices. A
 build can be generated with::
 
-   $ python setup.py build
+   python setup.py build
 
 Be sure to run all tests::
 
-   $ python setup.py test
+   python setup.py test
 
 The docs can be built using::
 
-   $ python setup.py build_sphinx
+   python setup.py build_sphinx
+
+Using zc.buildout
+-----------------
+
+This package supports installation in a virtualenv using zc.buildout::
+
+   virtualenv -p python2.7 .
+   bin/python2.7 bootstrap.py
+   bin/buildout
+   bin/test
 
 
 Release HOWTO
@@ -21,7 +34,7 @@ Release HOWTO
 To make a release, we prefer `zest.releaser`_. To make a release, follow the
 standard procedure, which usually boils down to::
 
-   $ fullrelease
+   fullrelease
 
 .. _zest.releaser: http://pypi.python.org/pypi/zest.releaser/
 

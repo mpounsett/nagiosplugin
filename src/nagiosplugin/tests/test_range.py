@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import unittest
-import nagiosplugin.test
 from nagiosplugin import range
 
 
@@ -106,14 +105,3 @@ class RangeStrTest(unittest.TestCase):
     def test_large_number(self):
         self.r.end = 2800000000
         self.assertEqual(u'2800000000', str(self.r))
-
-
-def suite():
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(RangeParseTest)
-    suite.addTests(
-        unittest.defaultTestLoader.loadTestsFromTestCase(RangeStrTest))
-    return suite
-
-
-if __name__ == '__main__':
-    unittest.main()

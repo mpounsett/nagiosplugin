@@ -1,9 +1,8 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from setuptools import setup, find_packages
 import os
-import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
@@ -40,5 +39,5 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[],
-    test_suite='nagiosplugin.test',
+    test_suite='nagiosplugin.tests',
 )

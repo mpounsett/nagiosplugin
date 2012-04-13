@@ -1,8 +1,7 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import unittest
-import nagiosplugin.test
 from nagiosplugin import state
 
 
@@ -54,12 +53,3 @@ class StateTest(unittest.TestCase):
         s2 = state.Warning([u'msg 3', u'msg 4'])
         self.assertEqual([u'msg 1', u'msg 2', u'msg 3', u'msg 4'],
                          state.reduce(s1, s2).messages)
-
-
-def suite():
-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(StateTest)
-    return suite
-
-
-if __name__ == '__main__':
-    unittest.main()
