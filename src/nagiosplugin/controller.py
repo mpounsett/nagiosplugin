@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import cStringIO
@@ -6,9 +6,36 @@ import logging
 import nagiosplugin.state
 import nagiosplugin.pluginoptparse
 import os
-import signal
 import sys
 import traceback
+
+if os.name == 'nt':
+    def timeout(func, args=(), kwargs={}, timeout_duration=60, default=None):
+        """This function will spawn a thread and run the given function
+        using the args, kwargs and return the given default value if the
+        timeout_duration is exceeded.
+
+        This is used instead of signal on windows systems.
+        """
+        import threading
+
+        class InterruptableThread(threading.Thread):
+            def __init__(self):
+                threading.Thread.__init__(self)
+                self.result = default
+
+            def run(self):
+                self.result = func(*args, **kwargs)
+
+        it = InterruptableThread()
+        it.start()
+        it.join(timeout_duration)
+        if it.isAlive():
+            raise TimeoutError(u'timeout exceeded')
+        else:
+            return it.result
+else:
+    import signal
 
 
 class TimeoutError(RuntimeError):
@@ -70,10 +97,13 @@ class Controller(object):
         self.states = []
         self.performances = []
         try:
-            signal.signal(signal.SIGALRM, self.timeout_handler)
-            signal.alarm(self.opts.timeout)
-            self.run_inner()
-            signal.alarm(0)
+            if os.name == 'nt':
+                timeout(self.run_inner, timeout_duration=self.opts.timeout)
+            else:
+                signal.signal(signal.SIGALRM, self.timeout_handler)
+                signal.alarm(self.opts.timeout)
+                self.run_inner()
+                signal.alarm(0)
         except TimeoutError:
             self.states.append(nagiosplugin.state.Unknown(
                 u'timeout of %is exceeded' % self.opts.timeout))
