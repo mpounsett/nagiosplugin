@@ -27,13 +27,15 @@ Feedback and Suggestions
 patches.
 
 A public issue tracker can be found at
-http://projects.gocept.com/projects/nagiosplugin/issues.
+http://projects.gocept.com/projects/nagiosplugin/issues. There is also a forum
+available at https://projects.gocept.com/projects/nagiosplugin/boards.
 
 
 License
 -------
 
-The `nagiosplugin` package is released the Zope Public License (ZPL), a BSD-style Open Source license.
+The `nagiosplugin` package is released the Zope Public License (ZPL), a
+BSD-style Open Source license.
 
 
 Documentation
