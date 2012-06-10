@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import logging
@@ -80,11 +80,6 @@ class ControllerTest(unittest.TestCase):
         c = controller.Controller(StatePerformanceCheck, []).run()
         self.assertEqual(u'CHECK WARNING - yellow | perf=4\nlong1\nlong2\n',
                          c.format())
-
-    def test_sigalarm_should_raise_TimeoutError(self):
-        c = controller.Controller(MockCheck).run()
-        self.assertRaises(controller.TimeoutError,
-                          c.timeout_handler, None, None)
 
     def test_process_timeouterror(self):
         class TimeoutCheck(MockCheck):
