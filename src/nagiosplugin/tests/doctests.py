@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import doctest
@@ -11,7 +11,7 @@ def suite():
     here = os.path.dirname(__file__)
     sys.path[0:0] = [here,
                      os.path.abspath(here + '/../..'),
-                     os.path.abspath(here + '/../../../examples')]
+                     os.path.abspath(here + '/../examples')]
     suite = doctest.DocFileSuite(
         'check_load.txt',
         'check_users.txt',

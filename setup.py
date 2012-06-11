@@ -35,7 +35,7 @@ setup(
     download_url='http://pypi.python.org/pypi/nagiosplugin',
     license='ZPL',
     packages=find_packages('src'),
-    package_dir={'nagiosplugin': 'src/nagiosplugin'},
+    package_dir={'': 'src'},
     package_data={'nagiosplugin': ['examples/*.py']},
     include_package_data=True,
     zip_safe=False,
