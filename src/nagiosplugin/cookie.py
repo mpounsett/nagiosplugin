@@ -1,15 +1,10 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from .platform import flock_exclusive
+import contextlib
 import os
 import os.path
-from contextlib import contextmanager
-
-if os.name == 'nt':
-    import msvcrt
-    from win32com.shell import shell, shellcon
-else:
-    import fcntl
 
 
 class Cookie(object):
@@ -39,10 +34,7 @@ class Cookie(object):
         self.new = not os.path.exists(self.filename)
         self.changed = False
         self.f = file(self.filename, 'a+')
-        if os.name == 'nt':
-            msvcrt.locking(self.f.fileno(), msvcrt.LK_LOCK, 2147483647L)
-        else:
-            fcntl.flock(self.f, fcntl.LOCK_EX)
+        flock_exclusive(self.f)
         self.cur_value = None
         self.new_value = None
 
@@ -74,7 +66,7 @@ class Cookie(object):
             os.unlink(self.filename)
 
 
-@contextmanager
+@contextlib.contextmanager
 def store(filename, dir=None):
     """Encapsulate init/close into `with` block."""
     c = Cookie(filename, dir)

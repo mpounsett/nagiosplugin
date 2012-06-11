@@ -3,10 +3,10 @@
     <note priority="medium" time="1339324363" done="1339393849">
         relative imports in controller.py
     </note>
-    <note priority="medium" time="1339324575">
+    <note priority="medium" time="1339324575" done="1339424746">
         parametrized platform import?
     </note>
-    <note priority="medium" time="1339325977">
+    <note priority="medium" time="1339325977" done="1339425747">
         os.name switch in cookie
     </note>
 </todo>

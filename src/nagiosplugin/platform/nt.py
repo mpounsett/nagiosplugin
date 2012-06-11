@@ -5,6 +5,7 @@
 
 from __future__ import print_function, unicode_literals
 from nagiosplugin.errors import TimeoutError
+import msvcrt
 import threading
 
 
@@ -20,3 +21,8 @@ def with_timeout(t, func, args=(), kwargs={}):
     func_thread.join(t)
     if func_thread.is_alive():
         raise TimeoutError('timeout exceeded')
+
+
+def flock_exclusive(fileobj):
+    """Acquire exclusive lock for open file `fileobj`."""
+    msvcrt.locking(fileobj.fileno(), msvcrt.LK_LOCK, 2147483647L)

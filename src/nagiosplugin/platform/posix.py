@@ -5,6 +5,7 @@
 
 from __future__ import print_function, unicode_literals
 from nagiosplugin.errors import TimeoutError
+import fcntl
 import signal
 
 
@@ -17,3 +18,8 @@ def with_timeout(t, func, args=(), kwargs={}):
     signal.alarm(t)
     func(*args, **kwargs)
     signal.alarm(0)
+
+
+def flock_exclusive(fileobj):
+    """Acquire exclusive lock for open file `fileobj`."""
+    fcntl.flock(fileobj, fcntl.LOCK_EX)

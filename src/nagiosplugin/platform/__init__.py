@@ -6,8 +6,8 @@
 import os
 
 if os.name == 'nt':
-    from .nt import with_timeout
+    from .nt import with_timeout, flock_exclusive
 elif os.name == 'posix':
-    from .posix import with_timeout
+    from .posix import with_timeout, flock_exclusive
 else:
     raise NotImplementedError('unsupported platform %s' % os.name)
