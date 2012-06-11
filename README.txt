@@ -17,6 +17,7 @@ and default logic commonly found in Nagios checks, including:
 - Timeout handling
 - Default options
 - Persistent "cookies" to retain state information between check runs.
+- Runs on POSIX and Windows systems.
 
 
 Feedback and Suggestions
