@@ -1,12 +1,13 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 
-def reduce(state1, state2):
-    """Prune non-dominant states and concat messages of dominant states.
+def dominantstate(state1, state2):
+    """Select the dominant state from two states.
 
-    The set of dominant states is constructed from all states which share the
-    highest status code.
+    If both states are the same, the messages will be concatenated.
+    Otherwise, the message from the non-dominant state will be
+    discarded.
     """
     if state1 == state2:
         state1.messages.extend(state2.messages)

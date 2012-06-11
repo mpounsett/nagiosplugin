@@ -1,12 +1,12 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from .platform import with_timeout
 from .errors import TimeoutError
+from .platform import with_timeout
+from .pluginoptparse import PluginOptionParser
+from .state import Unknown, Ok, dominantstate
 import StringIO
 import logging
-import nagiosplugin.state
-import nagiosplugin.pluginoptparse
 import sys
 import traceback
 
@@ -25,7 +25,7 @@ class Controller(object):
         self.exitcode = None
         self.states = []
         self.performances = []
-        self.dominant_state = nagiosplugin.state.Unknown()
+        self.dominant_state = Unknown()
         (self.opts, self.args) = self.optparser.parse_args(argv)
         if self.optparser.get_stdout():
             self.format = lambda *args: self.optparser.get_stdout()
@@ -33,12 +33,11 @@ class Controller(object):
         if self.optparser.get_stderr():
             self.stderr = self.optparser.get_stderr()
             self.exitcode = 3
-            self.dominant_state = nagiosplugin.state.Unknown(
-                self.optparser.error_message)
+            self.dominant_state = Unknown(self.optparser.error_message)
 
     def prepare(self):
         """Prepare ancillary objects: option parser and logger."""
-        self.optparser = nagiosplugin.pluginoptparse.PluginOptionParser()
+        self.optparser = PluginOptionParser()
         self.optparser.add_option('-V', '--version', action='version',
                 help=u'print version and exit')
         self.optparser.add_option('-v', '--verbose', action='count',
@@ -68,16 +67,15 @@ class Controller(object):
         try:
             with_timeout(self.opts.timeout, self.run_inner)
         except TimeoutError:
-            self.states.append(nagiosplugin.state.Unknown(
+            self.states.append(Unknown(
                 u'timeout of %is exceeded' % self.opts.timeout))
         except Exception:
             e = sys.exc_info()[1]
-            self.states.append(nagiosplugin.state.Unknown(str(e)))
+            self.states.append(Unknown(str(e)))
             if self.opts.verbose > 0:
                 self.stderr += traceback.format_exc()
         try:
-            self.dominant_state = reduce(
-                nagiosplugin.state.reduce, self.states)
+            self.dominant_state = reduce(dominantstate, self.states)
         except TypeError:
             pass
         self.exitcode = self.dominant_state.code
@@ -92,8 +90,7 @@ class Controller(object):
         self.states = self.check.states()
         self.performances = self.check.performances()
         if self.check.default_message():
-            self.states.append(nagiosplugin.state.Ok(
-                self.check.default_message()))
+            self.states.append(Ok(self.check.default_message()))
 
     def format(self):
         """Compile and format output according to Nagios 3 plugin API."""
