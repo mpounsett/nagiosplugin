@@ -5,7 +5,7 @@ Invoke setup.py directly
 ------------------------
 
 The `nagiosplugin` package follows the usual Python development practices. A
-build can be generated with::
+build can be created with::
 
    python setup.py build
 
@@ -30,6 +30,10 @@ This package supports installation in a virtualenv using zc.buildout::
 Build the docs by invoking::
 
    bin/makedoc
+
+Run the supplied examples with the local interpreter::
+
+   bin/py src/nagiosplugin/examples/check_disk_tutorial.py
 
 
 Release HOWTO

@@ -6,7 +6,7 @@ Release History
 ------------------
 
 - Windows port. `nagiosplugin` code now runs under pywin32 (#10899).
-- Include examples and docs in egg release (#9901).
+- Include examples in egg release (#9901).
 
 
 0.4.4 (2011-07-18)

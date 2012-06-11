@@ -46,7 +46,8 @@ To get started writing Nagios plugins, see the examples in the `examples`
 subdirectory.
 
 More documentation on using this package can be found in the `doc`
-directory.  There is also an `online copy`_ of the docs available.
+directory of the source distribution.  There is also an `online copy`_ of the
+docs available.
 
 .. _online copy: http://packages.python.org/nagiosplugin/
 
