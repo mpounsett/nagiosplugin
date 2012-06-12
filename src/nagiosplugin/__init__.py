@@ -1,4 +1,7 @@
-# Nagiosplug python package
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+"""Class library for writing Nagios (Icinga) plugins"""
 
 # abbreviate commonly used classes
 from check import Check

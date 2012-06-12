@@ -1,5 +1,7 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
+
+"""Measures and related functions"""
 
 import functools
 import nagiosplugin.range
@@ -38,22 +40,22 @@ class Measure(object):
         """
         if (minimum is not None and (value < minimum) or
                 maximum is not None and (value > maximum)):
-            raise ValueError(u'value %r is outside min/max interval [%r,%r]' % (
-                value, minimum, maximum))
+            raise ValueError(u'value %r is outside min/max interval [%r,%r]'
+                             % (value, minimum, maximum))
         (self.name, self.value, self.uom) = (name, value, uom)
         (self.warning, self.critical) = map(nagiosplugin.range.Range,
                                             (warning, critical))
-        (self.minimum, self.maximum) =  (minimum, maximum)
+        (self.minimum, self.maximum) = (minimum, maximum)
 
     @classmethod
     def array(cls, names, values, uoms=None, warnings=None, criticals=None,
             minimums=None, maximums=None):
         """Create array of measures.
 
-        The usual Measure init parameters need to be given as arrays. The number
-        of elements in the names array determines how many measures are created.
-        If these arrays have less than |names| elements, they are filled up with
-        the last specified value.
+        The usual Measure init parameters need to be given as arrays.
+        The number of elements in the names array determines how many
+        measures are created. If these arrays have less than |names|
+        elements, they are filled up with the last specified value.
         """
         num = len(names)
         fill_num = functools.partial(_fill, num)

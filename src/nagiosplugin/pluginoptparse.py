@@ -1,5 +1,7 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
+
+"""OptionParser replacement adapted for library use"""
 
 import cStringIO
 import optparse
@@ -9,9 +11,10 @@ import sys
 class PluginOptionParser(optparse.OptionParser):
     """OptionParser variant adapted to Plugin call conventions.
 
-    PluginOptionParser never exits or writes output to stderr. Instead, the new
-    attribute `stderr` contains any output. If `stderr` is non-empty after
-    `parse_args` invocation, the application should print `stderr` and exit.
+    PluginOptionParser never exits or writes output to stderr. Instead,
+    the new attribute `stderr` contains any output. If `stderr` is
+    non-empty after `parse_args` invocation, the application should
+    print `stderr` and exit.
     """
 
     def __init__(self, *args, **kwargs):
@@ -34,7 +37,10 @@ class PluginOptionParser(optparse.OptionParser):
         pass
 
     def _print(self, msg, channel=None):
-        """Append `msg` to string buffer `channel`. Add newline if necessary."""
+        """Append `msg` to string buffer `channel`.
+
+        Add newline if necessary.
+        """
         if channel is None:
             channel = self.stderr
         print >>channel, msg
