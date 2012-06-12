@@ -5,9 +5,8 @@
 
 import os
 
-if os.name == 'nt':
-    from .nt import with_timeout, flock_exclusive
-elif os.name == 'posix':
-    from .posix import with_timeout, flock_exclusive
-else:
-    raise NotImplementedError('unsupported platform %s' % os.name)
+platform = __import__('nagiosplugin.platform.%s' % os.name,
+                      fromlist=['with_timeout', 'flock_exclusive'])
+
+with_timeout = platform.with_timeout
+flock_exclusive = platform.flock_exclusive

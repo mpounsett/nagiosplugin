@@ -16,8 +16,10 @@ def with_timeout(t, func, args=(), kwargs={}):
 
     signal.signal(signal.SIGALRM, timeout_handler)
     signal.alarm(t)
-    func(*args, **kwargs)
-    signal.alarm(0)
+    try:
+        func(*args, **kwargs)
+    finally:
+        signal.alarm(0)
 
 
 def flock_exclusive(fileobj):
