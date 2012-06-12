@@ -18,19 +18,18 @@ class Cookie(object):
     Human-readable ASCII text is strongly preferred.
     """
 
-    def __init__(self, filename, dir=None):
+    def __init__(self, filename, directory=None):
         """Create new or lookup existing cookie.
 
         `filename` is the file where the cookie lives.
-        `dir` defaults to the home directory.
+        `directory` defaults to the home directory.
         """
-        if dir:
-            self.filename = os.path.join(os.path.abspath(dir), filename)
+        if directory:
+            self.filename = os.path.join(os.path.abspath(directory), filename)
         elif filename.startswith('/'):
             self.filename = os.path.abspath(filename)
         else:
-            home = os.path.expanduser("~")
-            self.filename = os.path.join(os.path.expanduser(home), filename)
+            self.filename = os.path.join(os.path.expanduser('~'), filename)
         self.new = not os.path.exists(self.filename)
         self.changed = False
         self.f = file(self.filename, 'a+')

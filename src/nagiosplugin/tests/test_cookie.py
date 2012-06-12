@@ -1,7 +1,6 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import nagiosplugin.cookie
 import os
 import os.path
 import unittest
@@ -19,7 +18,7 @@ class CookieTest(unittest.TestCase):
     def test_dir(self):
         if not os.path.exists('testdir'):
             os.mkdir('testdir')
-        c = Cookie('cookietest', dir='testdir')
+        c = Cookie('cookietest', 'testdir')
         self.assert_(os.path.exists('testdir/cookietest'),
                      u"file 'testdir/cookietest' does not exist")
         os.unlink('testdir/cookietest')
