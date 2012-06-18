@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-0.4.5 (unreleased)
+0.4.5 (2012-06-18)
 ------------------
 
 - Windows port. `nagiosplugin` code now runs under pywin32 (#10899).
