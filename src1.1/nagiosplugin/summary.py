@@ -1,0 +1,2 @@
+class Summary(object):
+    pass
