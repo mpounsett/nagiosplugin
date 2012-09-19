@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import copy
 
 
@@ -8,11 +5,12 @@ class Range(object):
     """Represents a threshold range.
 
     The general format is `[@][start:][end]`. `start:` may be omitted if
-    start==0. `~:` means that start is negative infinity. If `end` is omitted,
-    infinity is assumed. To invert the match condition, prefix the range
-    expression with `@`.
+    start==0. `~:` means that start is negative infinity. If `end` is
+    omitted, infinity is assumed. To invert the match condition, prefix
+    the range expression with `@`.
 
-    See http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+    See
+    http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
     for details.
     """
 
@@ -31,14 +29,14 @@ class Range(object):
         self.verify()
 
     def _parse(self, spec):
-        spec = (spec or u'')
-        if spec.startswith(u'@'):
+        spec = (spec or '')
+        if spec.startswith('@'):
             self.invert = True
             spec = spec[1:]
-        if spec.find(u':') < 0:
+        if spec.find(':') < 0:
             spec = ':' + spec
-        (start, end) = spec.split(u':')
-        if start == u'~':
+        (start, end) = spec.split(':')
+        if start == '~':
             self.start = None
         elif start:
             if start.find('.') >= 0:
@@ -55,7 +53,7 @@ class Range(object):
         """Throw ValueError if the range is not consistent."""
         if (self.start is not None and self.end is not None and
             self.start > self.end):
-            raise ValueError(u'start %f must not be greater than end %f' % (
+            raise ValueError('start %s must not be greater than end %s' % (
                              self.start, self.end))
 
     def match(self, value):
@@ -70,18 +68,18 @@ class Range(object):
         """Return a human-readable range specification."""
         result = []
         if self.invert:
-            result.append(u'@')
+            result.append('@')
         if self.start is None:
-            result.append(u'~:')
+            result.append('~:')
         elif self.start != 0:
-            result.append((u'%s:' % self.start))
+            result.append(('%s:' % self.start))
         if self.end is not None:
-            result.append((u'%s' % self.end))
-        return u''.join(result)
+            result.append(('%s' % self.end))
+        return ''.join(result)
 
     def __repr__(self):
         """Return a parseable range specification."""
-        return u'Range(%r)' % str(self)
+        return 'Range(%r)' % str(self)
 
     def __eq__(self, other):
         """True if both objects represent the same value range."""
