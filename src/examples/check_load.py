@@ -24,8 +24,7 @@ def main():
     argp.add_argument('-w', '--warning')
     argp.add_argument('-c', '--critical')
     args = argp.parse_args()
-    c = Check('load',
-              Load(),
+    c = Check(Load(),
               ScalarContext(['load1', 'load5', 'load15'],
                             args.warning, args.critical),
              )

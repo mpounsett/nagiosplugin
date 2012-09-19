@@ -51,7 +51,7 @@ def main():
     argp.add_argument('--qw', '--qlen-warning', metavar='RANGE')
     argp.add_argument('--qc', '--qlen-critical', metavar='RANGE')
     args = argp.parse_args()
-    c = Check('haproxy', HAProxy(args.logfile),
+    c = Check(HAProxy(args.logfile),
               ScalarContext(['ttot mean'], args.tw, args.tc),
               ScalarContext(['error rate'], args.ew, args.ec),
               ScalarContext(['qlen mean'], args.qw, args.qc),

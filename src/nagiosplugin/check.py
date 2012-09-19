@@ -10,8 +10,7 @@ import sys
 
 class Check(object):
 
-    def __init__(self, name, *objects):
-        self.name = name
+    def __init__(self, *objects, name=None):
         self.resources = []
         self.contexts = []
         self.context_by_metric = {}
@@ -20,6 +19,7 @@ class Check(object):
         self.overall_state = nagiosplugin.state.Unknown()
         self.performance_data = []
         self._dispatch_check_objects(objects)
+        self.name = name or self.resources[0].__class__.__name__
 
     def _dispatch_check_objects(self, objects):
         for obj in objects:
