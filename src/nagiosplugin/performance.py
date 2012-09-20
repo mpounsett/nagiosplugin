@@ -34,4 +34,3 @@ class Performance(collections.namedtuple('Performance', [
         out = reversed(list(
             itertools.dropwhile(lambda x: x == '', reversed(out))))
         return ';'.join(out)
-

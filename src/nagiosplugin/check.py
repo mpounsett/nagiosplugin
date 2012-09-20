@@ -1,7 +1,7 @@
 from __future__ import unicode_literals, print_function
 from .context import Context
 from .resource import Resource
-import collections
+from .result import ResultSet
 import nagiosplugin.state
 import functools
 import operator
@@ -15,9 +15,9 @@ class Check(object):
         self.contexts = []
         self.context_by_metric = {}
         self.metrics = []
-        self.metric_by_importance = collections.defaultdict(list)
         self.overall_state = nagiosplugin.state.Unknown()
         self.performance_data = []
+        self.results = ResultSet()
         self._dispatch_check_objects(objects)
         self.name = name or self.resources[0].__class__.__name__
 
@@ -38,18 +38,19 @@ class Check(object):
     def evaluate(self):
         for metric in self.metrics:
             metric.context = self.context_by_metric[metric.name]
-            metric.evaluate()
-            self.metric_by_importance[metric.state].append(metric)
+            self.results.add(metric.evaluate())
 
     def run(self):
         self.inspect_metrics()
         self.evaluate()
-        self.overall_state = max(self.metric_by_importance.keys())
-        self.performance_data = [str(m.performance) for m in self.metrics
-                                 if m.performance is not None]
+        self.performance_data = [str(m.performance() or '')
+                                 for m in self.metrics]
 
     def __str__(self):
-        out = ['%s %s:\n' % (self.name.upper(), str(self.overall_state).upper())]
+        # XXX summary function
+        out = ['%s %s: %s\n' % (
+            self.name.upper(), str(self.results.worst_state).upper(),
+            '; '.join(str(result) for result in self.results))]
         out += ['|'] + self.performance_data
         return ' '.join(out)
 

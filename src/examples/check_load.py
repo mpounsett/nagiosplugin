@@ -13,9 +13,12 @@ class Load(Resource):
         with open(self.procfile) as loadavg:
             load1, load5, load15, _rest = loadavg.readline().split(None, 3)
         return [
-            Metric('load1', float(load1), minimum=0),
-            Metric('load5', float(load5), minimum=0),
-            Metric('load15', float(load15), minimum=0),
+            Metric('load1', float(load1), minimum=0,
+                   description='1min loadavg'),
+            Metric('load5', float(load5), minimum=0,
+                   description='5min loadavg'),
+            Metric('load15', float(load15), minimum=0,
+                   description='15min loadavg'),
         ]
 
 
