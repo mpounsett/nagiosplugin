@@ -1,6 +1,7 @@
 #!/usr/bin/python3.2
 
-from nagiosplugin import Check, Resource, Metric, ScalarContext
+from nagiosplugin import Check, Resource, Metric, ScalarContext, Summary
+from nagiosplugin.state import Ok
 import argparse
 
 
@@ -9,7 +10,7 @@ class Load(Resource):
     def __init__(self, procfile='/proc/loadavg'):
         self.procfile = procfile
 
-    def inspect(self):
+    def __call__(self):
         with open(self.procfile) as loadavg:
             load1, load5, load15, _rest = loadavg.readline().split(None, 3)
         return [
@@ -22,6 +23,15 @@ class Load(Resource):
         ]
 
 
+class LoadSummary(Summary):
+
+    def brief(self, results):
+        if results.worst_state == Ok():
+            return 'loadavg is %s' % ', '.join(
+                str(results[r].metric) for r in ['load1', 'load5', 'load15'])
+        return super(LoadSummary, self).brief(results)
+
+
 def main():
     argp = argparse.ArgumentParser()
     argp.add_argument('-w', '--warning')
@@ -30,7 +40,7 @@ def main():
     c = Check(Load(),
               ScalarContext(['load1', 'load5', 'load15'],
                             args.warning, args.critical),
-             )
+              LoadSummary())
     c.main()
 
 if __name__ == '__main__':

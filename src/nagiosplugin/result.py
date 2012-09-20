@@ -26,9 +26,14 @@ class ResultSet:
 
     def __init__(self):
         self.by_state = collections.defaultdict(list)
+        self.by_name = {}
 
     def add(self, result):
         self.by_state[result.state].append(result)
+        self.by_name[result.metric.name] = result
+
+    def __getitem__(self, value):
+        return self.by_name[value]
 
     @property
     def worst_state(self):
@@ -36,6 +41,13 @@ class ResultSet:
             return max(self.by_state.keys())
         except TypeError:
             return Unknown()
+
+    @property
+    def worst_category(self):
+        try:
+            return self.by_state[self.worst_state]
+        except KeyError:
+            return []
 
     def __iter__(self):
         return iter(functools.reduce(operator.add, self.by_state.values()))

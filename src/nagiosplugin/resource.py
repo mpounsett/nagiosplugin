@@ -1,4 +1,4 @@
 class Resource(object):
 
-    def inspect(self):
+    def __call__(self):
         return []

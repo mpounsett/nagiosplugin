@@ -2,6 +2,7 @@ from __future__ import unicode_literals, print_function
 from .context import Context
 from .resource import Resource
 from .result import ResultSet
+from .summary import Summary
 import nagiosplugin.state
 import functools
 import operator
@@ -15,7 +16,7 @@ class Check(object):
         self.contexts = []
         self.context_by_metric = {}
         self.metrics = []
-        self.overall_state = nagiosplugin.state.Unknown()
+        self.summaries = []
         self.performance_data = []
         self.results = ResultSet()
         self._dispatch_check_objects(objects)
@@ -28,35 +29,39 @@ class Check(object):
             elif isinstance(obj, Context):
                 self.contexts.append(obj)
                 self.context_by_metric.update({(m, obj) for m in obj.metrics})
+            elif isinstance(obj, Summary):
+                self.summaries.append(obj)
             else:
                 raise RuntimeError('%r has not an allowed type' % obj)
 
-    def inspect_metrics(self):
-        self.metrics = functools.reduce(operator.add, (
-            res.inspect() for res in self.resources))
-
     def evaluate(self):
+        self.metrics = functools.reduce(operator.add, (
+            res() for res in self.resources))
         for metric in self.metrics:
             metric.context = self.context_by_metric[metric.name]
             self.results.add(metric.evaluate())
 
     def run(self):
-        self.inspect_metrics()
         self.evaluate()
         self.performance_data = [str(m.performance() or '')
                                  for m in self.metrics]
 
+    @property
+    def summary(self):
+        if not self.summaries:
+            self.summaries = [Summary()]
+        return '; '.join(s.brief(self.results) for s in self.summaries)
+
     def __str__(self):
-        # XXX summary function
-        out = ['%s %s: %s\n' % (
+        out = ['%s %s: %s' % (
             self.name.upper(), str(self.results.worst_state).upper(),
-            '; '.join(str(result) for result in self.results))]
-        out += ['|'] + self.performance_data
-        return ' '.join(out)
+            self.summary)]
+        out += ['| ' + ' '.join(self.performance_data)]
+        return '\n'.join(out)
 
     @property
     def exitcode(self):
-        return int(self.overall_state)
+        return int(self.results.worst_state)
 
     def main(self):
         self.run()

@@ -25,7 +25,7 @@ class HAProxy(Resource):
                 err = not (stat.startswith('2') or stat.startswith('3'))
                 yield int(tt), err, int(ql)
 
-    def inspect(self):
+    def __call__(self):
         d = numpy.fromiter(self.parse(),
                            dtype=[('tt', numpy.int32), ('err', numpy.uint16),
                                   ('qlen', numpy.uint16)]
