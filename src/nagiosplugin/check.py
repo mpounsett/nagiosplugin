@@ -1,4 +1,3 @@
-from __future__ import unicode_literals, print_function
 from .context import Context
 from .resource import Resource
 from .result import ResultSet
@@ -11,7 +10,7 @@ import sys
 
 class Check(object):
 
-    def __init__(self, *objects, name=None):
+    def __init__(self, *objects, name=None, verbose=0):
         self.resources = []
         self.contexts = []
         self.context_by_metric = {}
@@ -21,6 +20,7 @@ class Check(object):
         self.results = ResultSet()
         self._dispatch_check_objects(objects)
         self.name = name or self.resources[0].__class__.__name__
+        self.verbose = verbose
 
     def _dispatch_check_objects(self, objects):
         for obj in objects:

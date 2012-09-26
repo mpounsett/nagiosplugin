@@ -9,4 +9,16 @@
     <note priority="medium" time="1339325977" done="1339425747">
         os.name switch in cookie
     </note>
+    <note priority="medium" time="1348636642" done="1348637523">
+        per-cpu option in check_load
+    </note>
+    <note priority="medium" time="1348636654">
+        different output types depending on -v
+    </note>
+    <note priority="medium" time="1348636674">
+        logging
+    </note>
+    <note priority="medium" time="1348636688">
+        catch framework errors and return appropriate state
+    </note>
 </todo>
