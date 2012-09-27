@@ -12,13 +12,16 @@
     <note priority="medium" time="1348636642" done="1348637523">
         per-cpu option in check_load
     </note>
-    <note priority="medium" time="1348636654">
+    <note priority="medium" time="1348636654" done="1348758947">
         different output types depending on -v
     </note>
-    <note priority="medium" time="1348636674">
+    <note priority="medium" time="1348636674" done="1348758950">
         logging
     </note>
     <note priority="medium" time="1348636688">
         catch framework errors and return appropriate state
+    </note>
+    <note priority="medium" time="1348637652">
+        replace state objects with singletons
     </note>
 </todo>

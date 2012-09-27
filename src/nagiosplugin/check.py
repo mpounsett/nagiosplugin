@@ -2,15 +2,17 @@ from .context import Context
 from .resource import Resource
 from .result import ResultSet
 from .summary import Summary
-import nagiosplugin.state
 import functools
+import io
+import logging
+import numbers
 import operator
 import sys
 
 
 class Check(object):
 
-    def __init__(self, *objects, name=None, verbose=0):
+    def __init__(self, *objects, name=None, verbose=None):
         self.resources = []
         self.contexts = []
         self.context_by_metric = {}
@@ -20,7 +22,25 @@ class Check(object):
         self.results = ResultSet()
         self._dispatch_check_objects(objects)
         self.name = name or self.resources[0].__class__.__name__
-        self.verbose = verbose
+        if isinstance(verbose, numbers.Number):
+            self.init_logging(verbose)
+        else:
+            self.init_logging(len(verbose or []))
+
+    def init_logging(self, verbose):
+        self.logoutput = io.StringIO()
+        rootlogger = logging.getLogger()
+        rootlogger.setLevel(logging.DEBUG)
+        chan = logging.StreamHandler(self.logoutput)
+        chan.setFormatter(logging.Formatter(
+            '%(filename)s:%(lineno)d: %(message)s'))
+        if verbose >= 3:
+            chan.setLevel(logging.DEBUG)
+        elif verbose == 2:
+            chan.setLevel(logging.INFO)
+        else:
+            chan.setLevel(logging.WARNING)
+        rootlogger.addHandler(chan)
 
     def _dispatch_check_objects(self, objects):
         for obj in objects:
@@ -57,7 +77,8 @@ class Check(object):
             self.name.upper(), str(self.results.worst_state).upper(),
             self.summary)]
         out += ['| ' + ' '.join(self.performance_data)]
-        return '\n'.join(out)
+        out.append(self.logoutput.getvalue())
+        return '\n'.join(elem for elem in out if elem)
 
     @property
     def exitcode(self):
