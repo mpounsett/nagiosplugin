@@ -1,13 +1,14 @@
 #!/usr/bin/python3.2
 
-from nagiosplugin import Check, Resource, Metric, ScalarContext, Summary
-from nagiosplugin.state import Ok
 import argparse
+import itertools
 import logging
+import nagiosplugin
+import nagiosplugin.state
 import re
 
 
-class Load(Resource):
+class Load(nagiosplugin.Resource):
 
     def __init__(self, percpu=False):
         self.percpu = percpu
@@ -33,42 +34,41 @@ class Load(Resource):
         logging.debug('raw load is %s', load)
         cpus = self.cpus()
         load = [float(l) / cpus for l in load]
-        return [
-            Metric('load1', load[0], minimum=0,
-                   description='1min loadavg'),
-            Metric('load5', load[1], minimum=0,
-                   description='5min loadavg'),
-            Metric('load15', load[2], minimum=0,
-                   description='15min loadavg'),
-        ]
+        return [nagiosplugin.Metric('load%d' % period, load[i], min=0,
+                                    description='%dmin loadavg' % period)
+                for period, i in zip([1, 5, 15], itertools.count())]
 
 
-class LoadSummary(Summary):
+class LoadSummary(nagiosplugin.Summary):
 
-    def __init__(self, percpu=False):
+    def __init__(self, percpu):
         self.percpu = percpu
 
-    def brief(self, results):
-        if results.worst_state == Ok():
-            qualifier = 'per cpu ' if self.percpu else ''
-            return 'loadavg %sis %s' % (qualifier, ', '.join(
-                str(results[r].metric) for r in ['load1', 'load5', 'load15']))
-        return super(LoadSummary, self).brief(results)
+    def ok(self, results):
+        qualifier = 'per cpu ' if self.percpu else ''
+        return 'loadavg %sis %s' % (qualifier, ', '.join(
+            str(results[r].metric) for r in ['load1', 'load5', 'load15']))
 
 
-def main():
+@nagiosplugin.managed
+def main(runtime):
     argp = argparse.ArgumentParser()
-    argp.add_argument('-w', '--warning')
-    argp.add_argument('-c', '--critical')
+    argp.add_argument('-w', '--warning', metavar='RANGE', default='',
+                      help='return warning if load is outside RANGE',
+                      type=nagiosplugin.MultiArg)
+    argp.add_argument('-c', '--critical', metavar='RANGE', default='',
+                      help='return critical if load is outside RANGE',
+                      type=nagiosplugin.MultiArg)
     argp.add_argument('-r', '--percpu', action='store_true', default=False)
-    argp.add_argument('-v', '--verbose', action='append_const', const='v')
+    argp.add_argument('-v', '--verbose', action='append_const', const='v',
+                      help='increase output verbosity (use up to 3 times)')
     args = argp.parse_args()
-    c = Check(Load(args.percpu),
-              ScalarContext(['load1', 'load5', 'load15'],
-                            args.warning, args.critical),
-              LoadSummary(args.percpu),
-              verbose=args.verbose)
-    c.main()
+    runtime.verbose = args.verbose
+    check = nagiosplugin.Check(Load(args.percpu), LoadSummary(args.percpu))
+    for period, i in zip([1, 5, 15], itertools.count()):
+        check.add(nagiosplugin.ScalarContext(
+            ['load%d' % period], args.warning[i], args.critical[i]))
+    runtime.execute(check)
 
 if __name__ == '__main__':
     main()

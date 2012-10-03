@@ -12,7 +12,7 @@ version = open(os.path.join(here, 'version.txt')).read().strip()
 
 setup(
     name='nagiosplugin',
-    version=file('version.txt').read().strip(),
+    version=version,
     description='Class library for writing Nagios (Icinga) plugins',
     long_description=README + '\n\n' + HISTORY,
     classifiers=[
@@ -23,7 +23,6 @@ setup(
         'License :: OSI Approved :: Zope Public License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Monitoring',

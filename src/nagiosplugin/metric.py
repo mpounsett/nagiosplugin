@@ -1,18 +1,17 @@
-from .context import Context
 import numbers
 
 
 class Metric(object):
 
-    def __init__(self, name, value, uom=None, minimum=None, maximum=None,
+    def __init__(self, name, value, uom=None, min=None, max=None,
                  description=None):
         self.name = name
         self.value = value
         self.uom = uom
-        self.minimum = minimum
-        self.maximum = maximum
+        self.minimum = min
+        self.maximum = max
         self.description = description or name
-        self.context = Context([])
+        self.context = None
         self.state = None
         self.failure_criterion = None
 

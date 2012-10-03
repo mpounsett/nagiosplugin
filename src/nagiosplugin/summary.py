@@ -1,10 +1,7 @@
 class Summary:
 
-    def brief(self, results):
-        try:
-            return str(results.worst_category[0])
-        except IndexError:
-            return ''
+    def ok(self, results, verbose=0):
+        return str(results.first_significant())
 
-    def verbose(self, results):
-        return self.brief(results)
+    def problem(self, results, verbose=0):
+        return str(results.first_significant())

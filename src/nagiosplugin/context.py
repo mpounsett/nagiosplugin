@@ -1,7 +1,7 @@
 from .performance import Performance
 from .range import Range
-from .state import Ok, Warning, Critical
 from .result import Result
+from .state import Ok, Warn, Critical
 
 
 class Context(object):
@@ -10,7 +10,7 @@ class Context(object):
         self.metrics = metrics
 
     def evaluate(self, metric):
-        return Result(metric, Ok())
+        return Result(metric, Ok)
 
     def performance(self, metric):
         return None
@@ -26,11 +26,11 @@ class ScalarContext(Context):
 
     def evaluate(self, metric):
         if not self.critical.match(metric.value):
-            return self.result_cls(metric, Critical(), self.critical)
+            return self.result_cls(metric, Critical, self.critical)
         elif not self.warning.match(metric.value):
-            return self.result_cls(metric, Warning(), self.warning)
+            return self.result_cls(metric, Warn, self.warning)
         else:
-            return self.result_cls(metric, Ok())
+            return self.result_cls(metric, Ok)
 
     def performance(self, metric):
         return Performance(metric.name, metric.value, metric.uom,

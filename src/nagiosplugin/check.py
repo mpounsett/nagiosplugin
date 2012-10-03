@@ -1,6 +1,7 @@
 from .context import Context
 from .resource import Resource
-from .result import ResultSet
+from .result import ResultSet, FrameworkWarning, FrameworkError
+from .state import Ok
 from .summary import Summary
 import functools
 import io
@@ -8,11 +9,12 @@ import logging
 import numbers
 import operator
 import sys
+import traceback
 
 
 class Check(object):
 
-    def __init__(self, *objects, name=None, verbose=None):
+    def __init__(self, *objects, name=None):
         self.resources = []
         self.contexts = []
         self.context_by_metric = {}
@@ -20,29 +22,10 @@ class Check(object):
         self.summaries = []
         self.performance_data = []
         self.results = ResultSet()
-        self._dispatch_check_objects(objects)
+        self.add(*objects)
         self.name = name or self.resources[0].__class__.__name__
-        if isinstance(verbose, numbers.Number):
-            self.init_logging(verbose)
-        else:
-            self.init_logging(len(verbose or []))
 
-    def init_logging(self, verbose):
-        self.logoutput = io.StringIO()
-        rootlogger = logging.getLogger()
-        rootlogger.setLevel(logging.DEBUG)
-        chan = logging.StreamHandler(self.logoutput)
-        chan.setFormatter(logging.Formatter(
-            '%(filename)s:%(lineno)d: %(message)s'))
-        if verbose >= 3:
-            chan.setLevel(logging.DEBUG)
-        elif verbose == 2:
-            chan.setLevel(logging.INFO)
-        else:
-            chan.setLevel(logging.WARNING)
-        rootlogger.addHandler(chan)
-
-    def _dispatch_check_objects(self, objects):
+    def add(self, *objects):
         for obj in objects:
             if isinstance(obj, Resource):
                 self.resources.append(obj)
@@ -58,33 +41,43 @@ class Check(object):
         self.metrics = functools.reduce(operator.add, (
             res() for res in self.resources))
         for metric in self.metrics:
-            metric.context = self.context_by_metric[metric.name]
+            try:
+                metric.context = self.context_by_metric[metric.name]
+            except KeyError:
+                pass
             self.results.add(metric.evaluate())
+        if not self.results:
+            self.results.add(FrameworkWarning(
+                'check did not produce any results'))
 
-    def run(self):
-        self.evaluate()
-        self.performance_data = [str(m.performance() or '')
-                                 for m in self.metrics]
+    def __call__(self):
+        try:
+            self.evaluate()
+            self.performance_data = sorted([str(m.performance() or '')
+                                            for m in self.metrics])
+        except Exception:
+            exc_type, value, tb = sys.exc_info()
+            filename, lineno = traceback.extract_tb(tb)[-1][0:2]
+            self.results.add(FrameworkError('%s (%s:%d)' % (
+                traceback.format_exception_only(exc_type, value)[0].strip(),
+                filename, lineno)))
+            logging.warning(''.join(traceback.format_tb(tb)))
 
     @property
     def summary(self):
         if not self.summaries:
             self.summaries = [Summary()]
-        return '; '.join(s.brief(self.results) for s in self.summaries)
+        if self.results.worst_state == Ok:
+            return '; '.join(s.ok(self.results) for s in self.summaries)
+        return '; '.join(s.problem(self.results) for s in self.summaries)
 
     def __str__(self):
         out = ['%s %s: %s' % (
             self.name.upper(), str(self.results.worst_state).upper(),
             self.summary)]
         out += ['| ' + ' '.join(self.performance_data)]
-        out.append(self.logoutput.getvalue())
         return '\n'.join(elem for elem in out if elem)
 
     @property
     def exitcode(self):
         return int(self.results.worst_state)
-
-    def main(self):
-        self.run()
-        print(self)
-        sys.exit(self.exitcode)
