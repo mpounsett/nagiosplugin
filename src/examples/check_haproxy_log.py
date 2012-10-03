@@ -1,10 +1,7 @@
 #!/usr/bin/python3.2
 
 import argparse
-import pprint
-import collections
 import itertools
-import logging
 import nagiosplugin
 import numpy
 import re
@@ -38,15 +35,16 @@ class HAProxyLog(nagiosplugin.Resource):
         requests = len(d['err'])
         error_rate = (100.0 * numpy.sum(d['err'] / requests)
                       if requests else 0.0)
-        metrics = [nagiosplugin.Metric('request count', requests, min=0),
-                   nagiosplugin.Metric('error_rate', error_rate, '%', 0, 100)]
+        metrics = [nagiosplugin.Metric('error_rate', error_rate, '%', 0, 100),
+                   nagiosplugin.Metric('request_count', requests, min=0)]
         for pct in self.percentiles:
             metrics.append(nagiosplugin.Metric(
-                'ttot%d' % pct, numpy.percentile(d['tt'], pct) / 1000, 's', 0,
-                description='total request time (%d.percentile)' % pct))
+                'ttot%s' % pct, numpy.percentile(d['tt'], int(pct)) / 1000.0,
+                's', 0,
+                description='total request time (%s.percentile)' % pct))
             metrics.append(nagiosplugin.Metric(
-                'qlen%d' % pct, numpy.percentile(d['qlen'], pct), min=0,
-                description=('queue length (%d.percentile)' % pct)))
+                'qlen%s' % pct, numpy.percentile(d['qlen'], int(pct)), min=0,
+                description=('queue length (%s.percentile)' % pct)))
         return metrics
 
 
@@ -73,16 +71,16 @@ def parse_args():
 def main(runtime):
     args = parse_args()
     runtime.verbose = args.verbose
-    percentiles = list(map(int, args.percentiles.split(',')))
+    percentiles = args.percentiles.split(',')
     check = nagiosplugin.Check(
         HAProxyLog(args.logfile, percentiles),
         nagiosplugin.ScalarContext(['error_rate'], args.ew, args.ec),
-        nagiosplugin.ScalarContext(['request count']))
+        nagiosplugin.ScalarContext(['request_count']))
     for pct, i in zip(percentiles, itertools.count()):
         check.add(nagiosplugin.ScalarContext(
-            ['ttot%d' % pct], args.tw[i], args.tc[i]))
+            ['ttot%s' % pct], args.tw[i], args.tc[i]))
         check.add(nagiosplugin.ScalarContext(
-            ['qlen%d' % pct], args.qw[i], args.qc[i]))
+            ['qlen%s' % pct], args.qw[i], args.qc[i]))
     runtime.execute(check)
 
 if __name__ == '__main__':
