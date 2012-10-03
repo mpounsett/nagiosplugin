@@ -2,10 +2,11 @@ Release History
 ===============
 
 
-0.4.6 (unreleased)
-------------------
+1.0 (unreleased)
+----------------
 
-- Nothing changed yet.
+- Completely reworked API.
+- Python 3 support.
 
 
 0.4.5 (2012-06-18)
