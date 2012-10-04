@@ -1,0 +1,854 @@
+Nagios plug-in development guidelines
+
+   Nagios Plugins Development Team
+
+   Copyright © 2000 - 2009 Nagios Plugins Development Team
+     __________________________________________________________________
+
+   Table of Contents
+   [1]Preface
+
+        1. [2]Development platform requirements
+        2. [3]Plugin Output for Nagios
+
+              2.1. [4]Print only one line of text
+              2.2. [5]Verbose output
+              2.3. [6]Screen Output
+              2.4. [7]Plugin Return Codes
+              2.5. [8]Threshold and ranges
+              2.6. [9]Performance data
+              2.7. [10]Translations
+
+        3. [11]System Commands and Auxiliary Files
+
+              3.1. [12]Don't execute system commands without specifying
+                      their full path
+
+              3.2. [13]Use spopen() if external commands must be executed
+              3.3. [14]Don't make temp files unless absolutely required
+              3.4. [15]Don't be tricked into following symlinks
+              3.5. [16]Validate all input
+
+        4. [17]Perl Plugins
+        5. [18]Runtime Timeouts
+
+              5.1. [19]Use DEFAULT_SOCKET_TIMEOUT
+              5.2. [20]Add alarms to network plugins
+
+        6. [21]Plugin Options
+
+              6.1. [22]Option Processing
+              6.2. [23]Plugins with more than one type of threshold, or
+                      with threshold ranges
+
+        7. [24]Test cases
+
+              7.1. [25]Test cases for plugins
+              7.2. [26]Testing the C library functions
+
+        8. [27]Coding guidelines
+
+              8.1. [28]C coding
+              8.2. [29]Crediting sources
+              8.3. [30]CVS comments
+              8.4. [31]Translations for developers
+              8.5. [32]Translations for translators
+
+        9. [33]Submission of new plugins and patches
+
+              9.1. [34]Patches
+              9.2. [35]Contributed plugins
+              9.3. [36]New plugins
+
+   List of Tables
+   1. [37]Verbose output levels
+   2. [38]Plugin Return Codes
+   3. [39]Example ranges
+   4. [40]Command line examples
+     __________________________________________________________________
+
+Preface
+
+   The purpose of this guidelines is to provide a reference for the
+   plug-in developers and encourage the standarization of the different
+   kind of plug-ins: C, shell, perl, python, etc.
+
+   Nagios Plug-in Development Guidelines Copyright (C) 2000-2009 (Nagios
+   Plugins Team)
+
+   Permission is granted to make and distribute verbatim copies of this
+   manual provided the copyright notice and this permission notice are
+   preserved on all copies.
+
+   The plugins themselves are copyrighted by their respective authors.
+
+   Table of Contents
+   1. [41]Development platform requirements
+   2. [42]Plugin Output for Nagios
+
+        2.1. [43]Print only one line of text
+        2.2. [44]Verbose output
+        2.3. [45]Screen Output
+        2.4. [46]Plugin Return Codes
+        2.5. [47]Threshold and ranges
+        2.6. [48]Performance data
+        2.7. [49]Translations
+
+   3. [50]System Commands and Auxiliary Files
+
+        3.1. [51]Don't execute system commands without specifying their
+                full path
+
+        3.2. [52]Use spopen() if external commands must be executed
+        3.3. [53]Don't make temp files unless absolutely required
+        3.4. [54]Don't be tricked into following symlinks
+        3.5. [55]Validate all input
+
+   4. [56]Perl Plugins
+   5. [57]Runtime Timeouts
+
+        5.1. [58]Use DEFAULT_SOCKET_TIMEOUT
+        5.2. [59]Add alarms to network plugins
+
+   6. [60]Plugin Options
+
+        6.1. [61]Option Processing
+        6.2. [62]Plugins with more than one type of threshold, or with
+                threshold ranges
+
+   7. [63]Test cases
+
+        7.1. [64]Test cases for plugins
+        7.2. [65]Testing the C library functions
+
+   8. [66]Coding guidelines
+
+        8.1. [67]C coding
+        8.2. [68]Crediting sources
+        8.3. [69]CVS comments
+        8.4. [70]Translations for developers
+        8.5. [71]Translations for translators
+
+   9. [72]Submission of new plugins and patches
+
+        9.1. [73]Patches
+        9.2. [74]Contributed plugins
+        9.3. [75]New plugins
+
+1. Development platform requirements
+
+   Nagios plugins are developed to the GNU standard, so any OS which is
+   supported by GNU should run the plugins. While the requirements for
+   compiling the Nagios plugins release are very basic, developing from
+   the Git repository requires additional software to be installed. These
+   are the minimum levels of software required:
+
+   GNU make 3.79
+   GNU automake 1.9.2
+   GNU autoconf 2.59
+   GNU m4 1.4.2
+   GNU libtool 1.5
+   To compile from Git, after you have cloned the repository, run:
+
+   tools/setup
+   ./configure
+   make
+   make install
+     __________________________________________________________________
+
+2. Plugin Output for Nagios
+
+   You should always print something to STDOUT that tells if the service
+   is working or why it is failing. Try to keep the output short -
+   probably less that 80 characters. Remember that you ideally would like
+   the entire output to appear in a pager message, which will get chopped
+   off after a certain length.
+
+   As Nagios does not capture stderr output, you should only output to
+   STDOUT and not print to STDERR.
+     __________________________________________________________________
+
+2.1. Print only one line of text
+
+   Nagios will only grab the first line of text from STDOUT when it
+   notifies contacts about potential problems. If you print multiple
+   lines, you're out of luck (though this will be a feature of Nagios 3).
+   Remember, keep your output short and to the point.
+
+   Output should be in the format:
+
+   SERVICE STATUS: Information text
+
+   However, note that this is not a requirement of the API, so you cannot
+   depend on this being an accurate reflection of the status of the
+   service - the status should always be determined by the return code.
+     __________________________________________________________________
+
+2.2. Verbose output
+
+   Use the -v flag for verbose output. You should allow multiple -v
+   options for additional verbosity, up to a maximum of 3. The standard
+   type of output should be:
+
+   Table 1. Verbose output levels
+
+Verbosity level
+
+               Type of output
+
+0
+
+               Single line, minimal output. Summary
+
+1
+
+               Single line, additional information (eg list processes that fail)
+
+2
+
+               Multi line, configuration debug output (eg ps command used)
+
+3
+
+               Lots of detail for plugin problem diagnosis
+     __________________________________________________________________
+
+2.3. Screen Output
+
+   The plug-in should print the diagnostic and just the usage part of the
+   help message. A well written plugin would then have --help as a way to
+   get the verbose help.
+
+   Code and output should try to respect the 80x25 size of a crt (remember
+   when fixing stuff in the server room!)
+     __________________________________________________________________
+
+2.4. Plugin Return Codes
+
+   The return codes below are based on the POSIX spec of returning a
+   positive value. Netsaint prior to v0.0.7 supported non-POSIX compliant
+   return code of "-1" for unknown. Nagios supports POSIX return codes by
+   default.
+
+   Note: Some plugins will on occasion print on STDOUT that an error
+   occurred and error code is 138 or 255 or some such number. These are
+   usually caused by plugins using system commands and having not enough
+   checks to catch unexpected output. Developers should include a default
+   catch-all for system command output that returns an UNKNOWN return
+   code.
+
+   Table 2. Plugin Return Codes
+
+   Numeric Value
+
+   Service Status
+
+   Status Description
+
+   0
+
+   OK
+
+   The plugin was able to check the service and it appeared to be
+   functioning properly
+
+   1
+
+   Warning
+
+   The plugin was able to check the service, but it appeared to be above
+   some "warning" threshold or did not appear to be working properly
+
+   2
+
+   Critical
+
+   The plugin detected that either the service was not running or it was
+   above some "critical" threshold
+
+   3
+
+   Unknown
+
+   Invalid command line arguments were supplied to the plugin or low-level
+   failures internal to the plugin (such as unable to fork, or open a tcp
+   socket) that prevent it from performing the specified operation.
+   Higher-level errors (such as name resolution errors, socket timeouts,
+   etc) are outside of the control of plugins and should generally NOT be
+   reported as UNKNOWN states.
+     __________________________________________________________________
+
+2.5. Threshold and ranges
+
+   A range is defined as a start and end point (inclusive) on a numeric
+   scale (possibly negative or positive infinity).
+
+   A threshold is a range with an alert level (either warning or
+   critical). Use the set_thresholds(thresholds *, char *, char *)
+   function to set the thresholds.
+
+   The theory is that the plugin will do some sort of check which returns
+   back a numerical value, or metric, which is then compared to the
+   warning and critical thresholds. Use the get_status(double, thresholds
+   *) function to compare the value against the thresholds.
+
+   This is the generalised format for ranges:
+
+   [@]start:end
+
+   Notes:
+
+    1. start ≤ end
+    2. start and ":" is not required if start=0
+    3. if range is of format "start:" and end is not specified, assume end
+       is infinity
+    4. to specify negative infinity, use "~"
+    5. alert is raised if metric is outside start and end range (inclusive
+       of endpoints)
+    6. if range starts with "@", then alert if inside this range
+       (inclusive of endpoints)
+
+   Note: Not all plugins are coded to expect ranges in this format yet.
+   There will be some work in providing multiple metrics.
+
+   Table 3. Example ranges
+
+   Range definition
+
+                   Generate an alert if x...
+   10              < 0 or > 10, (outside the range of {0 .. 10})
+   10:             < 10, (outside {10 .. ∞})
+   ~:10            > 10, (outside the range of {-∞ .. 10})
+   10:20           < 10 or > 20, (outside the range of {10 .. 20})
+   @10:20          ≥ 10 and ≤ 20, (inside the range of {10 .. 20})
+   10              < 0 or > 10, (outside the range of {0 .. 10})
+
+   Table 4. Command line examples
+
+   Command line
+
+   Meaning
+   check_stuff -w10 -c20 Critical if "stuff" is over 20, else warn if over
+   10 (will be critical if "stuff" is less than 0)
+   check_stuff -w~:10 -c~:20 Same as above. Negative "stuff" is OK
+   check_stuff -w10: -c20 Critical if "stuff" is over 20, else warn if
+   "stuff" is below 10 (will be critical if "stuff" is less than 0)
+   check_stuff -c1: Critical if "stuff" is less than 1
+   check_stuff -w~:0 -c10 Critical if "stuff" is above 10; Warn if "stuff"
+   is above zero
+   check_stuff -c5:6 The only noncritical range is 5:6
+   check_stuff -c10:20 Critical if "stuff" is 10 to 20
+     __________________________________________________________________
+
+2.6. Performance data
+
+   Performance data is defined by Nagios as "everything after the | of the
+   plugin output" - please refer to Nagios documentation for information
+   on capturing this data to logfiles. However, it is the responsibility
+   of the plugin writer to ensure the performance data is in a "Nagios
+   plugins" format. This is the expected format:
+
+   'label'=value[UOM];[warn];[crit];[min];[max]
+
+   Notes:
+
+    1. space separated list of label/value pairs
+    2. label can contain any characters
+    3. the single quotes for the label are optional. Required if spaces, =
+       or ' are in the label
+    4. label length is arbitrary, but ideally the first 19 characters are
+       unique (due to a limitation in RRD). Be aware of a limitation in
+       the amount of data that NRPE returns to Nagios
+    5. to specify a quote character, use two single quotes
+    6. warn, crit, min or max may be null (for example, if the threshold
+       is not defined or min and max do not apply). Trailing unfilled
+       semicolons can be dropped
+    7. min and max are not required if UOM=%
+    8. value, min and max in class [-0-9.]. Must all be the same UOM
+    9. warn and crit are in the range format (see [76]Section 2.5). Must
+       be the same UOM
+   10. UOM (unit of measurement) is one of:
+         a. no unit specified - assume a number (int or float) of things
+            (eg, users, processes, load averages)
+         b. s - seconds (also us, ms)
+         c. % - percentage
+         d. B - bytes (also KB, MB, TB)
+         e. c - a continous counter (such as bytes transmitted on an
+            interface)
+
+   It is up to third party programs to convert the Nagios plugins
+   performance data into graphs.
+     __________________________________________________________________
+
+2.7. Translations
+
+   If possible, use translation tools for all output to respect the user's
+   language settings. See [77]Section 8.4 for guidelines for the core
+   plugins.
+     __________________________________________________________________
+
+3. System Commands and Auxiliary Files
+
+3.1. Don't execute system commands without specifying their full path
+
+   Don't use exec(), popen(), etc. to execute external commands without
+   explicity using the full path of the external program.
+
+   Doing otherwise makes the plugin vulnerable to hijacking by a trojan
+   horse earlier in the search path. See the main plugin distribution for
+   examples on how this is done.
+     __________________________________________________________________
+
+3.2. Use spopen() if external commands must be executed
+
+   If you have to execute external commands from within your plugin and
+   you're writing it in C, use the spopen() function that Karl DeBisschop
+   has written.
+
+   The code for spopen() and spclose() is included with the core plugin
+   distribution.
+     __________________________________________________________________
+
+3.3. Don't make temp files unless absolutely required
+
+   If temp files are needed, make sure that the plugin will fail cleanly
+   if the file can't be written (e.g., too few file handles, out of disk
+   space, incorrect permissions, etc.) and delete the temp file when
+   processing is complete.
+     __________________________________________________________________
+
+3.4. Don't be tricked into following symlinks
+
+   If your plugin opens any files, take steps to ensure that you are not
+   following a symlink to another location on the system.
+     __________________________________________________________________
+
+3.5. Validate all input
+
+   use routines in utils.c or utils.pm and write more as needed
+     __________________________________________________________________
+
+4. Perl Plugins
+
+   Perl plugins are coded a little more defensively than other plugins
+   because of embedded Perl. When configured as such, embedded Perl Nagios
+   (ePN) requires stricter use of the some of Perl's features. This
+   section outlines some of the steps needed to use ePN effectively.
+
+    1. Do not use BEGIN and END blocks since they will be called only once
+       (when Nagios starts and shuts down) with Embedded Perl (ePN). In
+       particular, do not use BEGIN blocks to initialize variables.
+    2. To use utils.pm, you need to provide a full path to the module in
+       order for it to work.
+         e.g.
+       use lib "/usr/local/nagios/libexec";
+       use utils qw(...);
+
+    3. Perl scripts should be called with "-w"
+    4. All Perl plugins must compile cleanly under "use strict" - i.e. at
+       least explicitly package names as in "$main::x" or predeclare every
+       variable.
+       Explicitly initialize each variable in use. Otherwise with caching
+       enabled, the plugin will not be recompiled each time, and therefore
+       Perl will not reinitialize all the variables. All old variable
+       values will still be in effect.
+    5. Do not use >DATA< handles (these simply do not compile under ePN).
+    6. Do not use global variables in named subroutines. This is bad
+       practise anyway, but with ePN the compiler will report an error
+       "<global_var> will not stay shared ..". Values used by subroutines
+       should be passed in the argument list.
+    7. If writing to a file (perhaps recording performance data)
+       explicitly close close it. The plugin never calls exit; that is
+       caught by p1.pl, so output streams are never closed.
+    8. As in [78]Section 5 all plugins need to monitor their runtime,
+       specially if they are using network resources. Use of the alarm is
+       recommended noting that some Perl modules (eg LWP) manage timers,
+       so that an alarm set by a plugin using such a module is overwritten
+       by the module. (workarounds are cunning (TM) or using the module
+       timer) Plugins may import a default time out ($TIMEOUT) from
+       utils.pm.
+    9. Perl plugins should import %ERRORS from utils.pm and then "exit
+       $ERRORS{'OK'}" rather than "exit 0"
+     __________________________________________________________________
+
+5. Runtime Timeouts
+
+   Plugins have a very limited runtime - typically 10 sec. As a result, it
+   is very important for plugins to maintain internal code to exit if
+   runtime exceeds a threshold.
+
+   All plugins should timeout gracefully, not just networking plugins. For
+   instance, df may lock if you have automounted drives and your network
+   fails - but on first glance, who'd think df could lock up like that.
+   Plus, it should just be more error resistant to be able to time out
+   rather than consume resources.
+     __________________________________________________________________
+
+5.1. Use DEFAULT_SOCKET_TIMEOUT
+
+   All network plugins should use DEFAULT_SOCKET_TIMEOUT to timeout
+     __________________________________________________________________
+
+5.2. Add alarms to network plugins
+
+   If you write a plugin which communicates with another networked host,
+   you should make sure to set an alarm() in your code that prevents the
+   plugin from hanging due to abnormal socket closures, etc. Nagios takes
+   steps to protect itself against unruly plugins that timeout, but any
+   plugins you create should be well behaved on their own.
+     __________________________________________________________________
+
+6. Plugin Options
+
+   A well written plugin should have --help as a way to get verbose help.
+   Code and output should try to respect the 80x25 size of a crt (remember
+   when fixing stuff in the server room!)
+     __________________________________________________________________
+
+6.1. Option Processing
+
+   For plugins written in C, we recommend the C standard getopt library
+   for short options. Getopt_long is always available.
+
+   For plugins written in Perl, we recommend Getopt::Long module.
+
+   Positional arguments are strongly discouraged.
+
+   There are a few reserved options that should not be used for other
+   purposes:
+
+             -V version (--version)
+             -h help (--help)
+             -t timeout (--timeout)
+             -w warning threshold (--warning)
+             -c critical threshold (--critical)
+             -H hostname (--hostname)
+             -v verbose (--verbose)
+
+   In addition to the reserved options above, some other standard options
+   are:
+
+             -C SNMP community (--community)
+             -a authentication password (--authentication)
+             -l login name (--logname)
+             -p port or password (--port or --passwd/--password)monitors o
+   perational
+             -u url or username (--url or --username)
+
+   Look at check_pgsql and check_procs to see how I currently think this
+   can work. Standard options are:
+
+   The option -V or --version should be present in all plugins. For C
+   plugins it should result in a call to print_revision, a function in
+   utils.c which takes two character arguments, the command name and the
+   plugin revision.
+
+   The -? option, or any other unparsable set of options, should print out
+   a short usage statement. Character width should be 80 and less and no
+   more that 23 lines should be printed (it should display cleanly on a
+   dumb terminal in a server room).
+
+   The option -h or --help should be present in all plugins. In C plugins,
+   it should result in a call to print_help (or equivalent). The function
+   print_help should call print_revision, then print_usage, then should
+   provide detailed help. Help text should fit on an 80-character width
+   display, but may run as many lines as needed.
+
+   The option -v or --verbose should be present in all plugins. The user
+   should be allowed to specify -v multiple times to increase the
+   verbosity level, as described in [79]Table 1.
+     __________________________________________________________________
+
+6.2. Plugins with more than one type of threshold, or with threshold ranges
+
+   Old style was to do things like -ct for critical time and -cv for
+   critical value. That goes out the window with POSIX getopt. The
+   allowable alternatives are:
+
+    1. long options like -critical-time (or -ct and -cv, I suppose).
+    2. repeated options like `check_load -w 10 -w 6 -w 4 -c 16 -c 10 -c
+       10`
+    3. for brevity, the above can be expressed as `check_load -w 10,6,4 -c
+       16,10,10`
+    4. ranges are expressed with colons as in `check_procs -C httpd -w
+       1:20 -c 1:30` which will warn above 20 instances, and critical at 0
+       and above 30
+    5. lists are expressed with commas, so Jacob's check_nmap uses
+       constructs like '-p 1000,1010,1050:1060,2000'
+    6. If possible when writing lists, use tokens to make the list easy to
+       remember and non-order dependent - so check_disk uses '-c
+       10000,10%' so that it is clear which is the precentage and which is
+       the KB values (note that due to my own lack of foresight, that used
+       to be '-c 10000:10%' but such constructs should all be changed for
+       consistency, though providing reverse compatibility is fairly
+       easy).
+
+   As always, comments are welcome - making this consistent without a host
+   of long options was quite a hassle, and I would suspect that there are
+   flaws in this strategy.
+     __________________________________________________________________
+
+7. Test cases
+
+   Tests are the best way of knowing if the plugins work as expected.
+   Please create and update test cases where possible.
+
+   To run a test, from the top level directory, run "make test". This will
+   run all the current tests and report an overall success rate.
+
+   See the [80]Nagios Plugins Tinderbox server for the daily test results.
+     __________________________________________________________________
+
+7.1. Test cases for plugins
+
+   These use perl's Test::More. To do a one time test, run "cd plugins &&
+   perl t/check_disk.t".
+
+   There will somtimes be failures seen in this output which are known
+   failures that need to be fixed. As long as the return code is 0, it
+   will be reported as "test pass". (If you have a fix so that the
+   specific test passes, that will be gratefully received!)
+
+   If you want a summary test, run: "cd plugins && prove t/check_disk.t".
+   This runs the test in a summary format.
+
+   For a good and amusing tutorial on using Test::More, see this [81]link
+     __________________________________________________________________
+
+7.2. Testing the C library functions
+
+   We use [82]the libtap library, which gives perl's TAP (Test Anything
+   Protocol) output. This is used by the FreeBSD team for their regression
+   testing.
+
+   To run tests using the libtap library, download the latest tar ball and
+   extract. There is a problem with tap-1.01 where [83]pthread support
+   doesn't appear to work properly on non-FreeBSD systems. Install with
+   'CPPFLAGS="-UHAVE_LIBPTHREAD" ./configure && make && make check && make
+   install'.
+
+   When you run Nagios Plugins' configure, it will look for the tap
+   library and will automatically setup the tests. Run "make test" to run
+   all the tests.
+     __________________________________________________________________
+
+8. Coding guidelines
+
+   See [84]GNU Coding standards for general guidelines.
+     __________________________________________________________________
+
+8.1. C coding
+
+   Variables should be declared at the beginning of code blocks and not
+   inline because of portability with older compilers.
+
+   You should use /* */ for comments and not // as some compilers do not
+   handle the latter form.
+
+   You should also avoid using the type "bool" and its values "true" and
+   "false". Instead use the "int" type and the plugins' own "TRUE"/"FALSE"
+   values to keep the code uniformly.
+     __________________________________________________________________
+
+8.2. Crediting sources
+
+   If you have copied a routine from another source, make sure the licence
+   from your source allows this. Add a comment referencing the
+   ACKNOWLEDGEMENTS file, where you can put more detail about the source.
+
+   For contributed code, do not add any named credits in the source code -
+   contributors should be added into the THANKS.in file instead.
+     __________________________________________________________________
+
+8.3. CVS comments
+
+   If the change is due to a contribution, please quote the contributor's
+   name and, if applicable, add the SourceForge Tracker number. Don't
+   forget to update the THANKS.in file.
+
+   If you have a change that is useful for noting in the next release,
+   please update the NEWS file.
+
+   All commit comments will be written to a ChangeLog at release time.
+     __________________________________________________________________
+
+8.4. Translations for developers
+
+   To make the job easier for translators, please follow these guidelines:
+
+    1. Before creating new strings, check the po/nagios-plugins.pot file
+       to see if a similar string already exists
+    2. For help texts, break into individual options so that these can be
+       reused between plugins
+    3. Try to avoid linefeeds unless you are working on a block of text
+    4. Short help is not translated
+    5. Long help has options in English language, but text translated
+    6. "Copyright" kept in English
+    7. Copyright holder names kept in original text
+    8. Debugging output does not need to be translated
+     __________________________________________________________________
+
+8.5. Translations for translators
+
+   To create an up to date list of translatable strings, run:
+   tools/gen_locale.sh
+     __________________________________________________________________
+
+9. Submission of new plugins and patches
+
+9.1. Patches
+
+   If you have a bug patch, please supply a unified or context diff
+   against the version you are using. For new features, please supply a
+   diff against the Git "master" branch.
+
+   Patches should be submitted via [85]SourceForge's tracker system for
+   Nagiosplug patches and be announced to the nagiosplug-devel mailing
+   list.
+
+   Submission of a patch implies that the submmitter acknowledges that
+   they are the author of the code (or have permission from the author to
+   release the code) and agree that the code can be released under the
+   GPL. The copyright for the changes will then revert to the Nagios
+   Plugin Development Team - this is required so that any copyright
+   infringements can be investigated quickly without contacting a huge
+   list of copyright holders. Credit will always be given for any patches
+   through a THANKS file in the distribution.
+     __________________________________________________________________
+
+9.2. Contributed plugins
+
+   Plugins that have been contributed to the project and distributed with
+   the Nagios Plugin files are held in the contrib/ directory and are not
+   installed by default. These plugins are not officially supported by the
+   team. The current policy is that these plugins should be owned and
+   maintained by the original contributor, preferably hosted on
+   [86]NagiosExchange.
+
+   If patches or bugs are raised to an contributed plugin, we will start
+   communications with the original contributor, but seek to remove the
+   plugin from our distribution.
+
+   The aim is to distribute only code that the Nagios Plugin team are
+   responsible for.
+     __________________________________________________________________
+
+9.3. New plugins
+
+   If you would like others to use your plugins, please add it to the
+   official 3rd party plugin repository, [87]NagiosExchange.
+
+   We are not accepting requests for inclusion of plugins into our
+   distribution at the moment, but when we do, these are the minimum
+   requirements:
+
+    1. Include copyright and license information in all files. Copyright
+       must be solely granted to the Nagios Plugin Development Team
+    2. The standard command options are supported (--help, --version,
+       --timeout, --warning, --critical)
+    3. It is determined to be not redundant (for instance, we would not
+       add a new version of check_disk just because someone had provide a
+       plugin that had perf checking - we would incorporate the features
+       into an exisiting plugin)
+    4. One of the developers has had the time to audit the code and
+       declare it ready for core
+    5. It should also follow code format guidelines, and use functions
+       from utils (perl or c or sh) rather than using its own
+    6. Includes patches to configure.in if required (via the EXTRAS list
+       if it will only work on some platforms)
+    7. If possible, please submit a test harness. Documentation on sample
+       tests coming soon
+
+Verweise
+
+   Sichtbare Links
+   1. http://nagiosplug.sourceforge.net/developer-guidelines.html#PREFACE
+   2. http://nagiosplug.sourceforge.net/developer-guidelines.html#DEVREQUIREMENTS
+   3. http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOUTPUT
+   4. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN33
+   5. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN39
+   6. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN72
+   7. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN76
+   8. http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+   9. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN201
+  10. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN240
+  11. http://nagiosplug.sourceforge.net/developer-guidelines.html#SYSCMDAUXFILES
+  12. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN246
+  13. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN250
+  14. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN254
+  15. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN257
+  16. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN260
+  17. http://nagiosplug.sourceforge.net/developer-guidelines.html#PERLPLUGIN
+  18. http://nagiosplug.sourceforge.net/developer-guidelines.html#RUNTIME
+  19. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN294
+  20. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN297
+  21. http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOPTIONS
+  22. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN303
+  23. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN318
+  24. http://nagiosplug.sourceforge.net/developer-guidelines.html#TESTCASES
+  25. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN341
+  26. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN348
+  27. http://nagiosplug.sourceforge.net/developer-guidelines.html#CODINGGUIDELINES
+  28. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN359
+  29. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN364
+  30. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN368
+  31. http://nagiosplug.sourceforge.net/developer-guidelines.html#TRANSLATIONSDEVELOPERS
+  32. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN393
+  33. http://nagiosplug.sourceforge.net/developer-guidelines.html#SUBMITTINGCHANGES
+  34. http://nagiosplug.sourceforge.net/developer-guidelines.html#PATCHES
+  35. http://nagiosplug.sourceforge.net/developer-guidelines.html#CONTRIBUTEDPLUGINS
+  36. http://nagiosplug.sourceforge.net/developer-guidelines.html#NEWPLUGINS
+  37. http://nagiosplug.sourceforge.net/developer-guidelines.html#VERBOSELEVELS
+  38. http://nagiosplug.sourceforge.net/developer-guidelines.html#RETURNCODES
+  39. http://nagiosplug.sourceforge.net/developer-guidelines.html#EXAMPLERANGES
+  40. http://nagiosplug.sourceforge.net/developer-guidelines.html#COMMANDLINEEXAMPLES
+  41. http://nagiosplug.sourceforge.net/developer-guidelines.html#DEVREQUIREMENTS
+  42. http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOUTPUT
+  43. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN33
+  44. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN39
+  45. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN72
+  46. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN76
+  47. http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+  48. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN201
+  49. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN240
+  50. http://nagiosplug.sourceforge.net/developer-guidelines.html#SYSCMDAUXFILES
+  51. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN246
+  52. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN250
+  53. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN254
+  54. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN257
+  55. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN260
+  56. http://nagiosplug.sourceforge.net/developer-guidelines.html#PERLPLUGIN
+  57. http://nagiosplug.sourceforge.net/developer-guidelines.html#RUNTIME
+  58. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN294
+  59. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN297
+  60. http://nagiosplug.sourceforge.net/developer-guidelines.html#PLUGOPTIONS
+  61. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN303
+  62. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN318
+  63. http://nagiosplug.sourceforge.net/developer-guidelines.html#TESTCASES
+  64. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN341
+  65. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN348
+  66. http://nagiosplug.sourceforge.net/developer-guidelines.html#CODINGGUIDELINES
+  67. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN359
+  68. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN364
+  69. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN368
+  70. http://nagiosplug.sourceforge.net/developer-guidelines.html#TRANSLATIONSDEVELOPERS
+  71. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN393
+  72. http://nagiosplug.sourceforge.net/developer-guidelines.html#SUBMITTINGCHANGES
+  73. http://nagiosplug.sourceforge.net/developer-guidelines.html#PATCHES
+  74. http://nagiosplug.sourceforge.net/developer-guidelines.html#CONTRIBUTEDPLUGINS
+  75. http://nagiosplug.sourceforge.net/developer-guidelines.html#NEWPLUGINS
+  76. http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
+  77. http://nagiosplug.sourceforge.net/developer-guidelines.html#TRANSLATIONSDEVELOPERS
+  78. http://nagiosplug.sourceforge.net/developer-guidelines.html#RUNTIME
+  79. http://nagiosplug.sourceforge.net/developer-guidelines.html#VERBOSELEVELS
+  80. http://tinderbox.opsera.com/
+  81. http://search.cpan.org/~mschwern/Test-Simple-0.62/lib/Test/Tutorial.pod
+  82. http://jc.ngo.org.uk/trac-bin/trac.cgi/wiki/LibTap
+  83. http://jc.ngo.org.uk/trac-bin/trac.cgi/ticket/25
+  84. http://www.gnu.org/prep/standards_toc.html
+  85. http://sourceforge.net/tracker/?group_id=29880&atid=397599
+  86. http://www.nagiosexchange.org/
+  87. http://www.nagiosexchange.org/
+
+   Versteckte Links:
+  89. http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN23

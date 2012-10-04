@@ -1,0 +1,16 @@
+Draft v1.1 API
+==============
+
+.. py:class::Check
+
+.. py:class::Resource
+
+.. py:class::Metric
+
+.. py:class::Context
+
+.. py:class::Status
+
+.. py:class::Message
+
+.. py:class::Perfdata
