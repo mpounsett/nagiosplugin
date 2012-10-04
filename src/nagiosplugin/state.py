@@ -1,10 +1,12 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
 import collections
 import functools
-import operator
 
 
 def worst(states):
-    return functools.reduce(operator.gt, states, Ok)
+    return functools.reduce(lambda a, b: a if a > b else b, states, Ok)
 
 
 class ServiceState(collections.namedtuple('ServiceState', 'code text')):
