@@ -1,7 +1,10 @@
-import copy
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+import collections
 
 
-class Range(object):
+class Range(collections.namedtuple('Range', 'invert start end')):
     """Represents a threshold range.
 
     The general format is `[@][start:][end]`. `start:` may be omitted if
@@ -14,47 +17,52 @@ class Range(object):
     for details.
     """
 
-    def __init__(self, spec=None):
+    def __new__(cls, spec=''):
         """Create a Range object according to `spec`.
 
         `spec` may be either a string or another Range object.
         """
-        self.invert = False
-        self.start = 0
-        self.end = None
         if isinstance(spec, Range):
-            self.__dict__ = copy.copy(spec.__dict__)
-        else:
-            self._parse(spec)
-        self.verify()
+            return super(cls, Range).__new__(
+                cls, spec.invert, spec.start, spec.end)
+        return super(cls, Range).__new__(cls, *cls._parse(spec))
 
-    def _parse(self, spec):
-        spec = (spec or '')
+    @classmethod
+    def _parse(cls, spec):
+        invert = False
         if spec.startswith('@'):
-            self.invert = True
+            invert = True
             spec = spec[1:]
-        if spec.find(':') < 0:
-            spec = ':' + spec
-        (start, end) = spec.split(':')
+        if ':' in spec:
+            start, end = spec.split(':')
+        else:
+            start, end = '', spec
         if start == '~':
-            self.start = None
-        elif start:
-            if start.find('.') >= 0:
-                self.start = float(start)
+            start = None
+        elif start is not '':
+            if '.' in start:
+                start = float(start)
             else:
-                self.start = int(start)
-        if len(end):
-            if end.find('.') >= 0:
-                self.end = float(end)
+                start = int(start)
+        else:
+            start = 0
+        if end is not '':
+            if '.' in end:
+                end = float(end)
             else:
-                self.end = int(end)
+                end = int(end)
+        else:
+            end = None
+        cls._verify(start, end)
+        return (invert, start, end)
 
-    def verify(self):
+    @classmethod
+    def _verify(cls, start, end):
         """Throw ValueError if the range is not consistent."""
-        if (self.start is not None and self.end is not None and
-            self.start > self.end):
+        if (start is not None and end is not None and
+            start > end):
             raise ValueError('start %s must not be greater than end %s' % (
-                             self.start, self.end))
+                             start, end))
 
     def match(self, value):
         """Decide if `value` is inside/outside the bounds."""
@@ -63,6 +71,9 @@ class Range(object):
         if self.end is not None and value > self.end:
             return False ^ self.invert
         return True ^ self.invert
+
+    def __contains__(self, value):
+        return self.match(value)
 
     def __str__(self):
         """Return a human-readable range specification."""
@@ -80,13 +91,3 @@ class Range(object):
     def __repr__(self):
         """Return a parseable range specification."""
         return 'Range(%r)' % str(self)
-
-    def __eq__(self, other):
-        """True if both objects represent the same value range."""
-        return all(map(lambda a: getattr(self, a) == getattr(other, a),
-                       self.__dict__.keys()))
-
-    def __ne__(self, other):
-        """True if the value ranges of both objects differ."""
-        return any(map(lambda a: getattr(self, a) != getattr(other, a),
-                       self.__dict__.keys()))
