@@ -26,7 +26,7 @@ class Load(nagiosplugin.Resource):
         logging.debug('found %i cpus in total', cpus)
         return cpus
 
-    def __call__(self):
+    def survey(self):
         logging.info('reading load from /proc/loadavg')
         with open('/proc/loadavg') as loadavg:
             load = loadavg.readline().split(None, 3)
@@ -35,7 +35,7 @@ class Load(nagiosplugin.Resource):
         cpus = self.cpus()
         load = [float(l) / cpus for l in load]
         return [nagiosplugin.Metric('load%d' % period, load[i], min=0,
-                                    description='%dmin loadavg' % period)
+                                    fmt='%dmin loadavg is {value}' % period)
                 for period, i in zip([1, 5, 15], itertools.count())]
 
 
@@ -60,7 +60,7 @@ def main(runtime):
                       help='return critical if load is outside RANGE',
                       type=nagiosplugin.MultiArg)
     argp.add_argument('-r', '--percpu', action='store_true', default=False)
-    argp.add_argument('-v', '--verbose', action='append_const', const='v',
+    argp.add_argument('-v', '--verbose', action='count', default=0,
                       help='increase output verbosity (use up to 3 times)')
     args = argp.parse_args()
     check = nagiosplugin.Check(Load(args.percpu), LoadSummary(args.percpu))

@@ -1,4 +1,6 @@
 #!/usr/bin/python3.2
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
 
 import argparse
 import itertools
@@ -27,7 +29,7 @@ class HAProxyLog(nagiosplugin.Resource):
                 err = not (stat.startswith('2') or stat.startswith('3'))
                 yield int(tt), err, int(ql)
 
-    def __call__(self):
+    def survey(self):
         d = numpy.fromiter(self.parse(),
                            dtype=[('tt', numpy.int32), ('err', numpy.uint16),
                                   ('qlen', numpy.uint16)]
@@ -41,10 +43,10 @@ class HAProxyLog(nagiosplugin.Resource):
             metrics.append(nagiosplugin.Metric(
                 'ttot%s' % pct, numpy.percentile(d['tt'], int(pct)) / 1000.0,
                 's', 0,
-                description='total request time (%s.%%ile)' % pct))
+                fmt='%s%% of the requests took at least {valueunit}' % pct))
             metrics.append(nagiosplugin.Metric(
                 'qlen%s' % pct, numpy.percentile(d['qlen'], int(pct)), min=0,
-                description=('queue length (%s.%%ile)' % pct)))
+                fmt='%s%% of the requests hit a queue of at least {value}'))
         return metrics
 
 
@@ -62,8 +64,10 @@ def parse_args():
     argp.add_argument('--qc', '--qlen-critical', metavar='RANGE',
                       type=nagiosplugin.MultiArg, default='')
     argp.add_argument('-p', '--percentiles', default='50,95')
-    argp.add_argument('-v', '--verbose', action='append_const', const='v',
+    argp.add_argument('-v', '--verbose', action='count', default=0,
                       help='increase output verbosity (use up to 3 times)')
+    argp.add_argument('-t', '--timeout', default=30,
+                      help='abort execution after TIMEOUT seconds')
     return argp.parse_args()
 
 
@@ -80,7 +84,7 @@ def main(runtime):
             ['ttot%s' % pct], args.tw[i], args.tc[i]))
         check.add(nagiosplugin.ScalarContext(
             ['qlen%s' % pct], args.qw[i], args.qc[i]))
-    runtime.execute(check, args.verbose)
+    runtime.execute(check, verbose=args.verbose, timeout=args.timeout)
 
 if __name__ == '__main__':
     main()

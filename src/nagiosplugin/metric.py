@@ -1,31 +1,28 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
 import numbers
+import collections
 
 
-class Metric(object):
+class Metric(collections.namedtuple('Metric', 'name value uom min max fmt')):
 
-    def __init__(self, name, value, uom=None, min=None, max=None,
-                 description=None):
-        self.name = name
-        self.value = value
-        self.uom = uom
-        self.minimum = min
-        self.maximum = max
-        self.description = description or name
-        self.context = None
-        self.state = None
-        self.failure_criterion = None
-
-    def __repr__(self):
-        return 'Metric(%r)' % self.__dict__
+    def __new__(cls, name, value, uom=None, min=None, max=None,
+                fmt='{name} is {valueunit}'):
+        return super(cls, Metric).__new__(cls, name, value, uom, min, max, fmt)
 
     def __str__(self):
+        return self.valueunit
+
+    @property
+    def description(self):
+        return self.fmt.format(
+            name=self.name, value=self.value, uom=self.uom,
+            valueunit=self.valueunit, min=self.min, max=self.max)
+
+    @property
+    def valueunit(self):
         return '%s%s' % (format_numeric(self.value), self.uom or '')
-
-    def evaluate(self):
-        return self.context.evaluate(self)
-
-    def performance(self):
-        return self.context.performance(self)
 
 
 def format_numeric(value):

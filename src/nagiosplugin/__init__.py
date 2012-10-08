@@ -1,5 +1,9 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
 from .check import Check
 from .context import Context, ScalarContext
+from .error import CheckError
 from .metric import Metric
 from .multiarg import MultiArg
 from .performance import Performance

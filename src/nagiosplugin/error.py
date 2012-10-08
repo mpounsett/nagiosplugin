@@ -1,16 +1,12 @@
-from .result import Result
-from .state import Warn, Unknown
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
 
 
-class InternalError(Result):
+class CheckError(RuntimeError):
 
-    def __init__(self, reason):
-        self.state = Unknown
-        self.reason = reason
+    pass
 
 
-class InternalWarning(Result):
+class Timeout(RuntimeError):
 
-    def __init__(self, reason):
-        self.state = Warn
-        self.reason = reason
+    pass

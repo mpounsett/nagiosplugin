@@ -1,16 +1,18 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
 from .range import Range
-from .state import Ok, Unknown
+from .state import Unknown
 import collections
-import functools
-import operator
 
 
 class Result:
 
-    def __init__(self, state, reason):
+    def __init__(self, state, reason=None, metric=None, resource=None):
         self.state = state
         self.reason = reason
-        self.resource = None
+        self.metric = metric
+        self.resource = resource
 
     def __str__(self):
         return self.reason
@@ -18,68 +20,54 @@ class Result:
 
 class ScalarResult(Result):
 
-    def __init__(self, state, reason, metric):
-        super(ScalarResult, self).__init__(state, reason)
-        self.metric = metric
+    def __init__(self, state, reason, metric, resource=None):
+        super(ScalarResult, self).__init__(state, reason, metric, resource)
+        if not self.metric:
+            raise RuntimeError('ScalarResult always needs metric', self)
 
     def __str__(self):
-        if self.state == Ok:
-            return '%s is %s' % (self.metric.description, self.metric)
-        if isinstance(self.reason, Range) and self.reason.start:
-            return '%s %s is outside range %s' % (
-                self.metric.description, self.metric, self.reason)
-        return '%s %s is greater than %s' % (
-            self.metric.description, self.metric, self.reason)
-
-    @property
-    def name(self):
-        return self.metric.name
-
-    @property
-    def value(self):
-        return self.metric.value
-
-    @property
-    def uom(self):
-        return self.metric.uom
+        if isinstance(self.reason, Range):
+            return '{} ({})'.format(self.metric.description,
+                                    self.reason.violation)
+        if self.reason:
+            return '{} ({})'.format(self.metric.description, self.reason)
+        return str(self.metric.description)
 
 
-class ResultSet:
+class Results:
 
     def __init__(self):
+        self.results = []
         self.by_state = collections.defaultdict(list)
         self.by_name = {}
-        self.by_resource = collections.defaultdict(list)
 
-    def add(self, result, resource=None):
-        if resource:
-            result.resource = resource
-            self.by_resource[resource] = result.name
+    def add(self, result):
+        self.results.append(result)
         self.by_state[result.state].append(result)
         try:
             self.by_name[result.metric.name] = result
         except AttributeError:
             pass
 
+    def __iter__(self):
+        return iter(self.results)
+
     def __getitem__(self, value):
         return self.by_name[value]
 
     @property
-    def worst_state(self):
+    def most_significant_state(self):
         try:
             return max(self.by_state.keys())
         except TypeError:
             return Unknown
 
     @property
-    def worst_category(self):
+    def most_significant_results(self):
         try:
-            return self.by_state[self.worst_state]
+            return self.by_state[self.most_significant_state]
         except KeyError:
             return []
 
-    def __iter__(self):
-        return iter(functools.reduce(operator.add, self.by_state.values()))
-
     def first_significant(self):
-        return self.worst_category[0]
+        return self.most_significant_results[0]

@@ -30,6 +30,7 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     @classmethod
     def _parse(cls, spec):
         invert = False
+        spec = spec or ''
         if spec.startswith('@'):
             invert = True
             spec = spec[1:]
@@ -91,3 +92,10 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     def __repr__(self):
         """Return a parseable range specification."""
         return 'Range(%r)' % str(self)
+
+    @property
+    def violation(self):
+        """Human-readable description why a value does not match."""
+        if self.start:
+            return 'outside range {}'.format(self)
+        return 'greater than {}'.format(self)

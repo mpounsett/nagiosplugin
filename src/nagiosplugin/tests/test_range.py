@@ -15,6 +15,7 @@ class RangeParseTest(unittest.TestCase):
 
     def test_null_range(self):
         self.assertEqual(Range(), Range(''))
+        self.assertEqual(Range(), Range(None))
 
     def test_explicit_start_end(self):
         r = Range('0.5:4')

@@ -1,3 +1,5 @@
+from .error import Timeout
+from .platform import with_timeout
 import io
 import logging
 import numbers
@@ -12,6 +14,12 @@ def managed(func):
         rt = Runtime()
         try:
             func(rt)
+        except Timeout as exc:
+            print('UNKNOWN: {}'.format(exc))
+            if rt.verbose > 0:
+                traceback.print_exc()
+                print(rt.logchan.stream.getvalue())
+            sys.exit(3)
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
@@ -33,7 +41,7 @@ class Runtime:
         self.logchan.setFormatter(logging.Formatter(
             '%(filename)s:%(lineno)d: %(message)s'))
         rootlogger.addHandler(self.logchan)
-        self.verbose = 0
+        self.verbose = 1
         self.timeout = 10
         self.output = ''
         self.exitcode = 70  # EX_SOFTWARE
@@ -56,7 +64,7 @@ class Runtime:
             self.logchan.setLevel(logging.WARNING)
 
     def run(self, check):
-        check()
+        check(self)
         self.output += str(check)
         self.output += self.logchan.stream.getvalue()
         self.exitcode = check.exitcode
@@ -65,7 +73,7 @@ class Runtime:
         if verbose is not None:
             check.verbose = self.verbose = verbose
         if timeout is not None:
-            check.timeout = self.timeout = timeout
-        self.run(check)
+            check.timeout = self.timeout = int(timeout)
+        with_timeout(self.timeout, self.run, check)
         print(self.output)
         sys.exit(self.exitcode)
