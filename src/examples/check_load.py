@@ -63,12 +63,11 @@ def main(runtime):
     argp.add_argument('-v', '--verbose', action='append_const', const='v',
                       help='increase output verbosity (use up to 3 times)')
     args = argp.parse_args()
-    runtime.verbose = args.verbose
     check = nagiosplugin.Check(Load(args.percpu), LoadSummary(args.percpu))
     for period, i in zip([1, 5, 15], itertools.count()):
         check.add(nagiosplugin.ScalarContext(
             ['load%d' % period], args.warning[i], args.critical[i]))
-    runtime.execute(check)
+    runtime.execute(check, verbose=args.verbose)
 
 if __name__ == '__main__':
     main()

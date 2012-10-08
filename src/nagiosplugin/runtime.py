@@ -61,7 +61,11 @@ class Runtime:
         self.output += self.logchan.stream.getvalue()
         self.exitcode = check.exitcode
 
-    def execute(self, check):
+    def execute(self, check, verbose=None, timeout=None):
+        if verbose is not None:
+            check.verbose = self.verbose = verbose
+        if timeout is not None:
+            check.timeout = self.timeout = timeout
         self.run(check)
         print(self.output)
         sys.exit(self.exitcode)

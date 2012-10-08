@@ -41,10 +41,10 @@ class HAProxyLog(nagiosplugin.Resource):
             metrics.append(nagiosplugin.Metric(
                 'ttot%s' % pct, numpy.percentile(d['tt'], int(pct)) / 1000.0,
                 's', 0,
-                description='total request time (%s.percentile)' % pct))
+                description='total request time (%s.%%ile)' % pct))
             metrics.append(nagiosplugin.Metric(
                 'qlen%s' % pct, numpy.percentile(d['qlen'], int(pct)), min=0,
-                description=('queue length (%s.percentile)' % pct)))
+                description=('queue length (%s.%%ile)' % pct)))
         return metrics
 
 
@@ -70,7 +70,6 @@ def parse_args():
 @nagiosplugin.managed
 def main(runtime):
     args = parse_args()
-    runtime.verbose = args.verbose
     percentiles = args.percentiles.split(',')
     check = nagiosplugin.Check(
         HAProxyLog(args.logfile, percentiles),
@@ -81,7 +80,7 @@ def main(runtime):
             ['ttot%s' % pct], args.tw[i], args.tc[i]))
         check.add(nagiosplugin.ScalarContext(
             ['qlen%s' % pct], args.qw[i], args.qc[i]))
-    runtime.execute(check)
+    runtime.execute(check, args.verbose)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,7 @@
 from .context import Context
+from .error import InternalError
 from .resource import Resource
-from .result import ResultSet, InternalWarning, InternalError
+from .result import ResultSet
 from .state import Ok
 from .summary import Summary
 import functools
@@ -14,7 +15,7 @@ import traceback
 
 class Check(object):
 
-    def __init__(self, *objects, name=None):
+    def __init__(self, *objects):
         self.resources = []
         self.contexts = []
         self.context_by_metric = {}
@@ -23,7 +24,9 @@ class Check(object):
         self.performance_data = []
         self.results = ResultSet()
         self.add(*objects)
-        self.name = name or self.resources[0].__class__.__name__
+        self.name = self.resources[0].name
+        self.verbose = 0
+        self.timeout = None
 
     def add(self, *objects):
         for obj in objects:
@@ -37,24 +40,26 @@ class Check(object):
             else:
                 raise RuntimeError('%r has not an allowed type' % obj)
 
-    def evaluate(self):
-        self.metrics = functools.reduce(operator.add, (
-            res() for res in self.resources))
-        for metric in self.metrics:
-            try:
-                metric.context = self.context_by_metric[metric.name]
-            except KeyError:
-                pass
-            self.results.add(metric.evaluate())
-        if not self.results:
-            self.results.add(InternalWarning(
-                'check did not produce any results'))
+    def evaluate_results(self):
+        self.metrics = []
+        for resource in self.resources:
+            res_metrics = resource()
+            self.metrics.extend(res_metrics)
+            for metric in res_metrics:
+                try:
+                    metric.context = self.context_by_metric[metric.name]
+                except KeyError:
+                    pass
+                self.results.add(metric.evaluate(), resource)
+
+    def evaluate_performance(self):
+        perfdata = sorted([str(m.performance() or '') for m in self.metrics])
+        self.performance_data = [p for p in perfdata if p]
 
     def __call__(self):
         try:
-            self.evaluate()
-            self.performance_data = sorted([str(m.performance() or '')
-                                            for m in self.metrics])
+            self.evaluate_results()
+            self.evaluate_performance()
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
@@ -75,6 +80,8 @@ class Check(object):
         out = ['%s %s: %s' % (
             self.name.upper(), str(self.results.worst_state).upper(),
             self.summary)]
+        if self.verbose:
+            out += [s.verbose(self.results) for s in self.summaries]
         out += ['| ' + ' '.join(self.performance_data)]
         return '\n'.join(elem for elem in out if elem)
 

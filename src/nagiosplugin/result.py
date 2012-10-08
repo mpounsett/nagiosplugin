@@ -1,6 +1,5 @@
-from .metric import Metric
 from .range import Range
-from .state import Ok, Warn, Unknown
+from .state import Ok, Unknown
 import collections
 import functools
 import operator
@@ -8,19 +7,29 @@ import operator
 
 class Result:
 
-    def __init__(self, metric, state, info=None):
-        self.metric = metric
+    def __init__(self, state, reason):
         self.state = state
-        self.info = info
+        self.reason = reason
+        self.resource = None
+
+    def __str__(self):
+        return self.reason
+
+
+class ScalarResult(Result):
+
+    def __init__(self, state, reason, metric):
+        super(ScalarResult, self).__init__(state, reason)
+        self.metric = metric
 
     def __str__(self):
         if self.state == Ok:
             return '%s is %s' % (self.metric.description, self.metric)
-        if isinstance(self.info, Range) and self.info.start:
+        if isinstance(self.reason, Range) and self.reason.start:
             return '%s %s is outside range %s' % (
-                self.metric.description, self.metric, self.info)
-        return '%s %s is greater %s' % (
-            self.metric.description, self.metric, self.info)
+                self.metric.description, self.metric, self.reason)
+        return '%s %s is greater than %s' % (
+            self.metric.description, self.metric, self.reason)
 
     @property
     def name(self):
@@ -35,38 +44,22 @@ class Result:
         return self.metric.uom
 
 
-class InternalWarning(Result):
-
-    def __init__(self, info):
-        self.metric = Metric('framework warning', None)
-        # XXX make the state for InternalWarnings configurable
-        self.state = Warn
-        self.info = info
-
-    def __str__(self):
-        return self.info
-
-
-class InternalError(Result):
-
-    def __init__(self, info):
-        self.metric = Metric('framework error', None)
-        self.state = Unknown
-        self.info = info
-
-    def __str__(self):
-        return self.info
-
-
 class ResultSet:
 
     def __init__(self):
         self.by_state = collections.defaultdict(list)
         self.by_name = {}
+        self.by_resource = collections.defaultdict(list)
 
-    def add(self, result):
+    def add(self, result, resource=None):
+        if resource:
+            result.resource = resource
+            self.by_resource[resource] = result.name
         self.by_state[result.state].append(result)
-        self.by_name[result.metric.name] = result
+        try:
+            self.by_name[result.metric.name] = result
+        except AttributeError:
+            pass
 
     def __getitem__(self, value):
         return self.by_name[value]
