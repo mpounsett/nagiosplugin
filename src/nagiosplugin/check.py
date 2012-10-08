@@ -1,6 +1,6 @@
 from .context import Context
 from .resource import Resource
-from .result import ResultSet, FrameworkWarning, FrameworkError
+from .result import ResultSet, InternalWarning, InternalError
 from .state import Ok
 from .summary import Summary
 import functools
@@ -47,7 +47,7 @@ class Check(object):
                 pass
             self.results.add(metric.evaluate())
         if not self.results:
-            self.results.add(FrameworkWarning(
+            self.results.add(InternalWarning(
                 'check did not produce any results'))
 
     def __call__(self):
@@ -58,7 +58,7 @@ class Check(object):
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
-            self.results.add(FrameworkError('%s (%s:%d)' % (
+            self.results.add(InternalError('%s (%s:%d)' % (
                 traceback.format_exception_only(exc_type, value)[0].strip(),
                 filename, lineno)))
             logging.warning(''.join(traceback.format_tb(tb)))

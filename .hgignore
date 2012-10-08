@@ -19,3 +19,4 @@ setuptools_hg*
 *.sw[po]
 tags
 tmp
+.todo

@@ -19,15 +19,27 @@ class Result:
         if isinstance(self.info, Range) and self.info.start:
             return '%s %s is outside range %s' % (
                 self.metric.description, self.metric, self.info)
-        return '%s %s is over %s' % (
+        return '%s %s is greater %s' % (
             self.metric.description, self.metric, self.info)
 
+    @property
+    def name(self):
+        return self.metric.name
 
-class FrameworkWarning(Result):
+    @property
+    def value(self):
+        return self.metric.value
+
+    @property
+    def uom(self):
+        return self.metric.uom
+
+
+class InternalWarning(Result):
 
     def __init__(self, info):
         self.metric = Metric('framework warning', None)
-        # XXX make the state for FrameworkWarnings configurable
+        # XXX make the state for InternalWarnings configurable
         self.state = Warn
         self.info = info
 
@@ -35,7 +47,7 @@ class FrameworkWarning(Result):
         return self.info
 
 
-class FrameworkError(Result):
+class InternalError(Result):
 
     def __init__(self, info):
         self.metric = Metric('framework error', None)
