@@ -3,13 +3,12 @@
 
 """NT implementation of platform-specific services"""
 
-from __future__ import print_function, unicode_literals
-from nagiosplugin.errors import TimeoutError
-import msvcrt
+from ..error import Timeout
 import threading
+import msvcrt
 
 
-def with_timeout(t, func, args=(), kwargs={}):
+def with_timeout(t, func, *args, **kwargs):
     """Call `func` but terminate after `t` seconds.
 
     We use a thread here since NT systems don't have POSIX signals.
@@ -20,9 +19,9 @@ def with_timeout(t, func, args=(), kwargs={}):
     func_thread.start()
     func_thread.join(t)
     if func_thread.is_alive():
-        raise TimeoutError('timeout exceeded')
+        raise Timeout('{}s'.format(t))
 
 
 def flock_exclusive(fileobj):
     """Acquire exclusive lock for open file `fileobj`."""
-    msvcrt.locking(fileobj.fileno(), msvcrt.LK_LOCK, 2147483647L)
+    msvcrt.locking(fileobj.fileno(), msvcrt.LK_LOCK, 2147483647)

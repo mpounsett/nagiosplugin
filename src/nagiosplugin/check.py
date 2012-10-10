@@ -73,7 +73,7 @@ class Check(object):
         if self.runtime.verbose:
             out.append(self.summary.verbose(self.results))
         out += ['| ' + ' '.join(self.perfdata)]
-        return '\n'.join(elem for elem in out if elem)
+        return '\n'.join(elem for elem in out if elem) + '\n'
 
     @property
     def exitcode(self):
