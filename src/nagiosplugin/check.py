@@ -12,7 +12,7 @@ class Check(object):
     def __init__(self, *objects):
         self.resources = []
         self.contexts = Contexts()
-        self.summary = []
+        self.summary = Summary()
         self.perfdata = []
         self.results = Results()
         self.add(*objects)

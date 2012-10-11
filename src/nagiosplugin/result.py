@@ -4,6 +4,9 @@
 from .range import Range
 from .state import Unknown
 import collections
+import numbers
+import functools
+import operator
 
 
 class Result:
@@ -50,9 +53,11 @@ class Results:
             pass
 
     def __iter__(self):
-        return iter(self.results)
+        return iter(functools.reduce(operator.add, self.by_state.values()))
 
     def __getitem__(self, value):
+        if isinstance(value, numbers.Number):
+            return self.results[value]
         return self.by_name[value]
 
     @property

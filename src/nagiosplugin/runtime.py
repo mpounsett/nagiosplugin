@@ -1,3 +1,4 @@
+from .output import Output
 from .platform import with_timeout
 import io
 import logging
@@ -12,7 +13,7 @@ def managed(func):
     def wrapper():
         rt = Runtime()
         try:
-            func(rt)
+            return func(rt)
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
@@ -36,7 +37,7 @@ class Runtime:
         rootlogger.addHandler(self.logchan)
         self.verbose = 0
         self.timeout = 10
-        self.output = ''
+        self.output = Output(self.logchan)
         self.exitcode = 70  # EX_SOFTWARE
 
     @property
@@ -55,23 +56,23 @@ class Runtime:
             self.logchan.setLevel(logging.INFO)
         else:
             self.logchan.setLevel(logging.WARNING)
+        self.output.verbose = self._verbose
 
     def run(self, check):
         try:
             check(self)
-            self.output += str(check)
+            self.output.add(check)
             self.exitcode = check.exitcode
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
-            self.output += '%s UNKNOWN: %s (%s:%d)\n' % (
+            self.output.add_status('%s UNKNOWN: %s (%s:%d)' % (
                 check.name.upper(),
                 traceback.format_exception_only(exc_type, value)[0].strip(),
-                filename, lineno)
+                filename, lineno))
             if self.verbose > 0:
-                self.output += traceback.format_exc()
+                self.output.add_longoutput(traceback.format_exc())
             self.exitcode = 3
-        self.output += self.logchan.stream.getvalue()
 
     def execute(self, check, verbose=None, timeout=None):
         if verbose is not None:
@@ -79,5 +80,5 @@ class Runtime:
         if timeout is not None:
             check.timeout = self.timeout = int(timeout)
         with_timeout(self.timeout, self.run, check)
-        sys.stdout.write(self.output)
+        print(self.output, end='', file=sys.stdout)
         sys.exit(self.exitcode)
