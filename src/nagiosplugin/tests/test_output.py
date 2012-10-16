@@ -2,9 +2,19 @@
 # See also LICENSE.txt
 
 from nagiosplugin.output import Output
-import unittest
-import logging
 import io
+import logging
+import nagiosplugin.state
+import unittest
+
+
+class FakeCheck:
+
+    name = 'Fake'
+    state = nagiosplugin.state.Ok
+    summary_str = 'check summary'
+    verbose_str = 'hello world\n'
+    perfdata = ['foo=1m;2;3', 'bar=1s;2;3']
 
 
 class OutputTest(unittest.TestCase):
@@ -12,11 +22,6 @@ class OutputTest(unittest.TestCase):
     def setUp(self):
         self.logio = io.StringIO()
         self.logchan = logging.StreamHandler(self.logio)
-
-    def test_add_status(self):
-        o = Output(self.logchan)
-        o.add_status('CHECK_NAME: STATUS Text')
-        self.assertEqual(str(o), 'CHECK_NAME: STATUS Text\n')
 
     def test_add_longoutput_string(self):
         o = Output(self.logchan)
@@ -38,13 +43,32 @@ class OutputTest(unittest.TestCase):
         print('debug log output', file=self.logio)
         self.assertEqual('debug log output\n', str(o))
 
-    def test_remove_illegal_chars(self):
+    def test_add_check_singleline(self):
         o = Output(self.logchan)
-        o.add_status('PIPE | STATUS')
-        o.add_longoutput('long pipe | output')
-        print('debug pipe | x', file=self.logio)
+        o.add(FakeCheck())
         self.assertEqual("""\
-PIPE  STATUS
+FAKE OK - check summary | foo=1m;2;3 bar=1s;2;3
+""", str(o))
+
+    def test_add_check_multiline(self):
+        o = Output(self.logchan, verbose=1)
+        o.add(FakeCheck())
+        self.assertEqual("""\
+FAKE OK - check summary
+hello world
+| foo=1m;2;3 bar=1s;2;3
+""", str(o))
+
+    def test_remove_illegal_chars(self):
+        check = FakeCheck()
+        check.summary_str = 'PIPE | STATUS'
+        check.verbose_str = 'long pipe | output'
+        check.perfdata = []
+        print('debug pipe | x', file=self.logio)
+        o = Output(self.logchan, verbose=1)
+        o.add(check)
+        self.assertEqual("""\
+FAKE OK - PIPE  STATUS
 long pipe  output
 debug pipe  x
 warning: removed illegal characters (0x7c) from status line
@@ -52,10 +76,15 @@ warning: removed illegal characters (0x7c) from long output
 warning: removed illegal characters (0x7c) from logging output
 """, str(o))
 
-    def test_add_check_singleline(self):
-        # XXX
-        pass
-
-    def test_add_check_multiline(self):
-        # XXX
-        pass
+    def test_perfdata_linebreak(self):
+        check = FakeCheck()
+        check.verbose_str = ''
+        check.perfdata = ['duration=340.4ms;500;1000;0'] * 5
+        o = Output(self.logchan, verbose=1)
+        o.add(check)
+        self.assertEqual("""\
+FAKE OK - check summary
+| duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0
+duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0
+duration=340.4ms;500;1000;0
+""", str(o))

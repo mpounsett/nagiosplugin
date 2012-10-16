@@ -32,8 +32,6 @@ class Check(object):
             elif isinstance(obj, Context):
                 self.contexts.add(obj)
             elif isinstance(obj, Summary):
-                if self.summary:
-                    raise RuntimeError('cannot use more than one Summary')
                 self.summary = obj
             else:
                 raise RuntimeError('%r has not an allowed type' % obj)
@@ -61,19 +59,19 @@ class Check(object):
             self.evaluate_resource(resource)
         self.perfdata = sorted([p for p in self.perfdata if p])
 
-    def summary_str(self):
-        if self.results.most_significant_state == Ok:
-            return self.summary.ok(self.results)
-        return self.summary.problem(self.results)
+    @property
+    def state(self):
+        return self.results.most_significant_state
 
-    def __str__(self):
-        out = ['%s %s: %s' % (self.name.upper(),
-                              str(self.results.most_significant_state).upper(),
-                              self.summary_str())]
-        if self.runtime.verbose:
-            out.append(self.summary.verbose(self.results))
-        out += ['| ' + ' '.join(self.perfdata)]
-        return '\n'.join(elem for elem in out if elem) + '\n'
+    @property
+    def summary_str(self):
+        if self.state == Ok:
+            return self.summary.ok(self.results) or ''
+        return self.summary.problem(self.results) or ''
+
+    @property
+    def verbose_str(self):
+        return self.summary.verbose(self.results) or ''
 
     @property
     def exitcode(self):

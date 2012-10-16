@@ -35,9 +35,9 @@ class Runtime:
         self.logchan.setFormatter(logging.Formatter(
             '%(filename)s:%(lineno)d: %(message)s'))
         rootlogger.addHandler(self.logchan)
+        self.output = Output(self.logchan)
         self.verbose = 0
         self.timeout = 10
-        self.output = Output(self.logchan)
         self.exitcode = 70  # EX_SOFTWARE
 
     @property
@@ -76,7 +76,7 @@ class Runtime:
 
     def execute(self, check, verbose=None, timeout=None):
         if verbose is not None:
-            check.verbose = self.verbose = verbose
+            self.verbose = verbose
         if timeout is not None:
             check.timeout = self.timeout = int(timeout)
         with_timeout(self.timeout, self.run, check)

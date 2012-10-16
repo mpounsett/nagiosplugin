@@ -1,6 +1,9 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import itertools
+
+
 class Output:
 
     ILLEGAL = '|'
@@ -14,31 +17,47 @@ class Output:
         self.warnings = []
 
     def add(self, check):
-        if self.verbose > 0:
-            self.multiline()
+        self.status = self.format_status(check)
+        if self.verbose == 0:
+            self.status += ' ' + self.format_perfdata(check)
         else:
-            self.oneline()
+            self.add_longoutput(check.verbose_str)
+            self.out.append(self.format_perfdata(check, 79))
 
-    def add_status(self, statusline):
-        self.status = self._screen(statusline, 'status line')
+    def format_status(self, check):
+        return self._screen_chars('{} {} - {}'.format(
+            check.name.upper(), str(check.state).upper(), check.summary_str),
+            'status line')
+
+    def format_perfdata(self, check, linebreak=None):
+        if not check.perfdata:
+            return ''
+        lines = ['|']
+        for item, i in zip(check.perfdata, itertools.count()):
+            if linebreak and len(lines[-1]) + len(item) >= linebreak:
+                lines.append(item)
+            else:
+                lines[-1] += ' ' + self._screen_chars(
+                    item, 'perfdata {}'.format(i))
+        return '\n'.join(lines)
 
     def add_longoutput(self, text):
         if isinstance(text, list) or isinstance(text, tuple):
             for line in text:
                 self.add_longoutput(line)
         else:
-            self.out.append(self._screen(text, 'long output'))
+            self.out.append(self._screen_chars(text, 'long output'))
 
     def __str__(self):
         output = [elem for elem in
                   [self.status] +
                   self.out +
-                  [self._screen(self.logchan.stream.getvalue(),
-                                'logging output')] +
+                  [self._screen_chars(self.logchan.stream.getvalue(),
+                                      'logging output')] +
                   self.warnings if elem]
         return '\n'.join(output) + '\n'
 
-    def _screen(self, text, where):
+    def _screen_chars(self, text, where):
         text = text.rstrip('\n')
         screened = text.translate(self.ILLEGAL_TRANSLATE)
         if screened != text:
