@@ -3,4 +3,4 @@ include LICENSE.txt
 include README.txt
 include version.txt
 recursive-include doc Makefile *.py *.rst
-recursive-include src/nagiosplugin/examples *.py
+recursive-include src/examples *.py
