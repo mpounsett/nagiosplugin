@@ -3,7 +3,7 @@
 
 """POSIX implementation of platform-specific services"""
 
-from ..error import Timeout
+import nagiosplugin
 import fcntl
 import signal
 
@@ -11,7 +11,7 @@ import signal
 def with_timeout(t, func, *args, **kwargs):
     """Call `func` but terminate after `t` seconds."""
     def timeout_handler(signum, frame):
-        raise Timeout('{}s'.format(t))
+        raise nagiosplugin.Timeout('{}s'.format(t))
 
     signal.signal(signal.SIGALRM, timeout_handler)
     signal.alarm(t)

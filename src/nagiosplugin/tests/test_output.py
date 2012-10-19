@@ -2,16 +2,16 @@
 # See also LICENSE.txt
 
 from nagiosplugin.output import Output
+import nagiosplugin
 import io
 import logging
-import nagiosplugin.state
 import unittest
 
 
 class FakeCheck:
 
     name = 'Fake'
-    state = nagiosplugin.state.Ok
+    state = nagiosplugin.Ok
     summary_str = 'check summary'
     verbose_str = 'hello world\n'
     perfdata = ['foo=1m;2;3', 'bar=1s;2;3']

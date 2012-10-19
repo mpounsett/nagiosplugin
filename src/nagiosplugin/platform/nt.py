@@ -3,7 +3,7 @@
 
 """NT implementation of platform-specific services"""
 
-from ..error import Timeout
+import nagiosplugin
 import threading
 import msvcrt
 
@@ -19,7 +19,7 @@ def with_timeout(t, func, *args, **kwargs):
     func_thread.start()
     func_thread.join(t)
     if func_thread.is_alive():
-        raise Timeout('{}s'.format(t))
+        raise nagiosplugin.Timeout('{}s'.format(t))
 
 
 def flock_exclusive(fileobj):

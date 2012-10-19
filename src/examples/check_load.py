@@ -4,7 +4,6 @@ import argparse
 import itertools
 import logging
 import nagiosplugin
-import nagiosplugin.state
 import re
 
 

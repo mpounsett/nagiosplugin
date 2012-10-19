@@ -1,19 +1,14 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from .state import Unknown
 import collections
 import numbers
-import functools
-import operator
 
 
-class Result:
+class Result(collections.namedtuple('Result', 'state reason metric')):
 
-    def __init__(self, state, reason=None, metric=None):
-        self.state = state
-        self.reason = reason
-        self.metric = metric
+    def __new__(cls, state, reason=None, metric=None):
+        return tuple.__new__(cls, (state, reason, metric))
 
     def __str__(self):
         return self.reason
@@ -31,10 +26,10 @@ class Result:
 
 class ScalarResult(Result):
 
-    def __init__(self, state, reason, metric):
-        super(ScalarResult, self).__init__(state, reason, metric)
-        if not self.metric:
-            raise RuntimeError('ScalarResult always needs metric', self)
+    def __new__(cls, state, reason, metric):
+        if not metric:
+            raise RuntimeError('ScalarResult always needs metric')
+        return tuple.__new__(cls, (state, reason, metric))
 
     def __str__(self):
         if self.reason:
@@ -51,16 +46,19 @@ class Results:
         self.by_state = collections.defaultdict(list)
         self.by_name = {}
 
-    def add(self, result):
-        self.results.append(result)
-        self.by_state[result.state].append(result)
-        try:
-            self.by_name[result.metric.name] = result
-        except AttributeError:
-            pass
+    def add(self, *results):
+        for result in results:
+            self.results.append(result)
+            self.by_state[result.state].append(result)
+            try:
+                self.by_name[result.metric.name] = result
+            except AttributeError:
+                pass
 
     def __iter__(self):
-        return iter(functools.reduce(operator.add, self.by_state.values()))
+        for state in reversed(sorted(self.by_state)):
+            for result in self.by_state[state]:
+                yield result
 
     def __getitem__(self, value):
         if isinstance(value, numbers.Number):
@@ -69,17 +67,15 @@ class Results:
 
     @property
     def most_significant_state(self):
-        try:
-            return max(self.by_state.keys())
-        except TypeError:
-            return Unknown
+        return max(self.by_state.keys())
 
     @property
-    def most_significant_results(self):
+    def most_significant(self):
         try:
             return self.by_state[self.most_significant_state]
-        except KeyError:
+        except ValueError:
             return []
 
+    @property
     def first_significant(self):
-        return self.most_significant_results[0]
+        return self.most_significant[0]

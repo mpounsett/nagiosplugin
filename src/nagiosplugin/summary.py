@@ -8,14 +8,13 @@ import logging
 class Summary:
 
     def ok(self, results):
-        return str(results.first_significant())
+        return str(results.first_significant)
 
     def problem(self, results):
-        return str(results.first_significant())
+        return str(results.first_significant)
 
     def verbose(self, results):
-        for state in reversed(sorted(results.by_state.keys())):
-            if state == Ok:
+        for result in results:
+            if result.state == Ok:
                 continue
-            for result in results.by_state[state]:
-                logging.info('%s: %s', state, result)
+            logging.info('%s: %s', result.state, result)
