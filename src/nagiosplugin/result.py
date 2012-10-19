@@ -1,7 +1,6 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from .range import Range
 from .state import Unknown
 import collections
 import numbers
@@ -11,29 +10,37 @@ import operator
 
 class Result:
 
-    def __init__(self, state, reason=None, metric=None, resource=None):
+    def __init__(self, state, reason=None, metric=None):
         self.state = state
         self.reason = reason
         self.metric = metric
-        self.resource = resource
 
     def __str__(self):
         return self.reason
 
+    @property
+    def resource(self):
+        if self.metric:
+            return self.metric.resource
+
+    @property
+    def context(self):
+        if self.metric:
+            return self.metric.context
+
 
 class ScalarResult(Result):
 
-    def __init__(self, state, reason, metric, resource=None):
-        super(ScalarResult, self).__init__(state, reason, metric, resource)
+    def __init__(self, state, reason, metric):
+        super(ScalarResult, self).__init__(state, reason, metric)
         if not self.metric:
             raise RuntimeError('ScalarResult always needs metric', self)
 
     def __str__(self):
-        if isinstance(self.reason, Range):
-            return '{} ({})'.format(self.metric.description,
-                                    self.reason.violation)
         if self.reason:
-            return '{} ({})'.format(self.metric.description, self.reason)
+            hint = (self.reason.violation if hasattr(self.reason, 'violation')
+                    else self.reason)
+            return '{} ({})'.format(self.metric.description, hint)
         return str(self.metric.description)
 
 

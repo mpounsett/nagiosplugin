@@ -66,10 +66,10 @@ class Runtime:
         except Exception:
             exc_type, value, tb = sys.exc_info()
             filename, lineno = traceback.extract_tb(tb)[-1][0:2]
-            self.output.add_status('%s UNKNOWN: %s (%s:%d)' % (
+            self.output.status = '%s UNKNOWN: %s (%s:%d)' % (
                 check.name.upper(),
                 traceback.format_exception_only(exc_type, value)[0].strip(),
-                filename, lineno))
+                filename, lineno)
             if self.verbose > 0:
                 self.output.add_longoutput(traceback.format_exc())
             self.exitcode = 3
@@ -78,7 +78,10 @@ class Runtime:
         if verbose is not None:
             self.verbose = verbose
         if timeout is not None:
-            check.timeout = self.timeout = int(timeout)
-        with_timeout(self.timeout, self.run, check)
+            self.timeout = int(timeout)
+        if self.timeout > 0:
+            with_timeout(self.timeout, self.run, check)
+        else:
+            self.run(check)
         print(self.output, end='', file=sys.stdout)
         sys.exit(self.exitcode)

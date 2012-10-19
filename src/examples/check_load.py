@@ -35,7 +35,7 @@ class Load(nagiosplugin.Resource):
         cpus = self.cpus()
         load = [float(l) / cpus for l in load]
         return [nagiosplugin.Metric('load%d' % period, load[i], min=0,
-                                    fmt='%dmin loadavg is {value}' % period)
+                                    context='load')
                 for period, i in zip([1, 5, 15], itertools.count())]
 
 
@@ -54,19 +54,17 @@ class LoadSummary(nagiosplugin.Summary):
 def main(runtime):
     argp = argparse.ArgumentParser()
     argp.add_argument('-w', '--warning', metavar='RANGE', default='',
-                      help='return warning if load is outside RANGE',
-                      type=nagiosplugin.MultiArg)
+                      help='return warning if load is outside RANGE')
     argp.add_argument('-c', '--critical', metavar='RANGE', default='',
-                      help='return critical if load is outside RANGE',
-                      type=nagiosplugin.MultiArg)
+                      help='return critical if load is outside RANGE')
     argp.add_argument('-r', '--percpu', action='store_true', default=False)
     argp.add_argument('-v', '--verbose', action='count', default=0,
                       help='increase output verbosity (use up to 3 times)')
     args = argp.parse_args()
-    check = nagiosplugin.Check(Load(args.percpu), LoadSummary(args.percpu))
-    for period, i in zip([1, 5, 15], itertools.count()):
-        check.add(nagiosplugin.ScalarContext(
-            ['load%d' % period], args.warning[i], args.critical[i]))
+    check = nagiosplugin.Check(
+        Load(args.percpu),
+        LoadSummary(args.percpu),
+        nagiosplugin.ScalarContext('load', args.warning, args.critical))
     runtime.execute(check, verbose=args.verbose)
 
 if __name__ == '__main__':

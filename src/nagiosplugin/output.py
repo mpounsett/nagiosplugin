@@ -15,6 +15,7 @@ class Output:
         self.status = ''
         self.out = []
         self.warnings = []
+        self.longperfdata = []
 
     def add(self, check):
         self.status = self.format_status(check)
@@ -22,7 +23,7 @@ class Output:
             self.status += ' ' + self.format_perfdata(check)
         else:
             self.add_longoutput(check.verbose_str)
-            self.out.append(self.format_perfdata(check, 79))
+            self.longperfdata.append(self.format_perfdata(check, 79))
 
     def format_status(self, check):
         return self._screen_chars('{} {} - {}'.format(
@@ -54,7 +55,9 @@ class Output:
                   self.out +
                   [self._screen_chars(self.logchan.stream.getvalue(),
                                       'logging output')] +
-                  self.warnings if elem]
+                  self.warnings +
+                  self.longperfdata
+                  if elem]
         return '\n'.join(output) + '\n'
 
     def _screen_chars(self, text, where):

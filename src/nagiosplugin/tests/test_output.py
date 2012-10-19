@@ -88,3 +88,16 @@ FAKE OK - check summary
 duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0
 duration=340.4ms;500;1000;0
 """, str(o))
+
+    def test_log_output_precedes_perfdata(self):
+        check = FakeCheck()
+        check.perfdata = ['foo=1']
+        print('debug log output', file=self.logio)
+        o = Output(self.logchan, verbose=1)
+        o.add(check)
+        self.assertEqual("""\
+FAKE OK - check summary
+hello world
+debug log output
+| foo=1
+""", str(o))

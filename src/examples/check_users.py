@@ -31,15 +31,14 @@ class Users(nagiosplugin.Resource):
     def survey(self):
         self.users = self.list_users()
         self.unique_users = set(self.users)
-        return [nagiosplugin.Metric('total', len(self.users), min=0,
-                                    fmt='{value} users logged in'),
-                nagiosplugin.Metric('unique', len(self.unique_users), min=0,
-                                    fmt='{value} unique users logged in')]
+        return [nagiosplugin.Metric('total', len(self.users), min=0),
+                nagiosplugin.Metric('unique', len(self.unique_users), min=0)]
 
 
 class UsersSummary(nagiosplugin.Summary):
 
     def verbose(self, results):
+        super(UsersSummary, self).verbose(results)
         return 'users: ' + ', '.join(results['total'].resource.users)
 
 
@@ -60,10 +59,13 @@ def main(runtime):
                       help='abort execution after TIMEOUT seconds')
     args = argp.parse_args()
     runtime.execute(nagiosplugin.Check(
-        Users(), UsersSummary(),
-        nagiosplugin.ScalarContext(['total'], args.warning, args.critical),
-        nagiosplugin.ScalarContext(['unique'], args.warning_unique,
-                                   args.critical_unique)),
+        Users(),
+        UsersSummary(),
+        nagiosplugin.ScalarContext('total', args.warning, args.critical,
+                                   fmt_metric='{value} users logged in'),
+        nagiosplugin.ScalarContext(
+            'unique', args.warning_unique, args.critical_unique,
+            fmt_metric='{value} unique users logged in')),
         verbose=args.verbose, timeout=args.timeout)
 
 if __name__ == '__main__':

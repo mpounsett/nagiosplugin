@@ -36,11 +36,6 @@ class Check(object):
             else:
                 raise RuntimeError('%r has not an allowed type' % obj)
 
-    def evaluate_metric(self, resource, metric):
-        context = self.contexts.match_metric(metric.name)
-        self.results.add(context.evaluate(metric, resource))
-        self.perfdata.append(str(context.performance(metric, resource) or ''))
-
     def evaluate_resource(self, resource):
         try:
             metric = None
@@ -49,7 +44,10 @@ class Check(object):
                 logging.warn('resource %s did not produce any metric',
                              resource.name)
             for metric in metrics:
-                self.evaluate_metric(resource, metric)
+                metric.context = self.contexts[metric.context_name]
+                metric.resource = resource
+                self.results.add(metric.evaluate())
+                self.perfdata.append(str(metric.performance() or ''))
         except CheckError as e:
             self.results.add(Result(Unknown, str(e), metric, resource))
 

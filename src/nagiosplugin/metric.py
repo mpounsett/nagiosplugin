@@ -2,31 +2,47 @@
 # See also LICENSE.txt
 
 import numbers
-import collections
 
 
-class Metric(collections.namedtuple('Metric', 'name value uom min max fmt')):
+class Metric:
 
-    def __new__(cls, name, value, uom=None, min=None, max=None,
-                fmt='{name} is {valueunit}'):
-        return super(cls, Metric).__new__(cls, name, value, uom, min, max, fmt)
+    def __init__(self, name, value, uom=None, min=None, max=None,
+                 context=None):
+        self.name = name
+        self.value = value
+        self.uom = uom
+        self.min = min
+        self.max = max
+        self.context_name = context or name
+        self.context = None
+        self.resource = None
 
     def __str__(self):
         return self.valueunit
 
     @property
     def description(self):
-        return self.fmt.format(
-            name=self.name, value=self.value, uom=self.uom,
-            valueunit=self.valueunit, min=self.min, max=self.max)
+        if self.context:
+            return self.context.describe(self)
+        return str(self)
 
     @property
     def valueunit(self):
-        return '%s%s' % (format_numeric(self.value), self.uom or '')
+        return '%s%s' % (self.human_readable_value, self.uom or '')
 
+    @property
+    def human_readable_value(self):
+        """Limit number of digits for floats."""
+        if isinstance(self.value, numbers.Real):
+            return '%.4g' % self.value
+        return str(self.value)
 
-def format_numeric(value):
-    """Special-case real numbers output."""
-    if isinstance(value, numbers.Real):
-        return '%.4g' % value
-    return str(value)
+    def evaluate(self):
+        if not self.context:
+            raise RuntimeError('no context set for metric', self.name)
+        return self.context.evaluate(self, self.resource)
+
+    def performance(self):
+        if not self.context:
+            raise RuntimeError('no context set for metric', self.name)
+        return self.context.performance(self, self.resource)

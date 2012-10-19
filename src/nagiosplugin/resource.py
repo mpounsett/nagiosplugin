@@ -4,5 +4,5 @@ class Resource(object):
     def name(self):
         return self.__class__.__name__
 
-    def peek(self):
+    def survey(self):
         return []
