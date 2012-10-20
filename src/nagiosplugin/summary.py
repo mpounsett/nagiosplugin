@@ -11,7 +11,10 @@ class Summary:
         return str(results.first_significant)
 
     def problem(self, results):
-        return str(results.first_significant)
+        try:
+            return str(results.first_significant)
+        except IndexError:
+            return 'no check results'
 
     def verbose(self, results):
         for result in results:

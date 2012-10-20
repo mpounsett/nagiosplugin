@@ -60,7 +60,7 @@ class Runtime:
 
     def run(self, check):
         try:
-            check(self)
+            check()
             self.output.add(check)
             self.exitcode = check.exitcode
         except Exception:

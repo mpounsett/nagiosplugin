@@ -77,6 +77,16 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(nagiosplugin.Unknown, result.state)
         self.assertEqual('problem', result.reason)
 
+    def test_call_evaluates_resources_and_compacts_perfdata(self):
+        class R4_NoPerfdata(nagiosplugin.Resource):
+            def survey(self):
+                return [nagiosplugin.Metric('m4', 4, context='null')]
+
+        c = Check(R1_MetricDefaultContext(), R4_NoPerfdata())
+        c()
+        self.assertEqual(['foo', 'm4'], [res.metric.name for res in c.results])
+        self.assertEqual(['foo=1'], c.perfdata)
+
     def test_first_resource_sets_name(self):
         class MyResource(nagiosplugin.Resource):
             pass
@@ -95,7 +105,15 @@ class CheckTest(unittest.TestCase):
     def test_check_without_results_is_unkown(self):
         self.assertEqual(nagiosplugin.Unknown, Check().state)
 
-    def test_summary_str_should_be_ok_if_state_ok(self):
+    def test_default_summary_if_no_results(self):
         c = Check()
+        self.assertEqual('no check results', c.summary_str)
+
+    def test_summary_str_calls_ok_if_state_ok(self):
+        c = Check(FakeSummary())
         c.evaluate_resource(R1_MetricDefaultContext())
         self.assertEqual("I'm feelin' good", c.summary_str)
+
+    def test_summary_str_calls_problem_if_state_not_ok(self):
+        c = Check(FakeSummary())
+        self.assertEqual('Houston, we have a problem', c.summary_str)

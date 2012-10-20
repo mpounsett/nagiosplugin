@@ -54,6 +54,7 @@ class Results:
                 self.by_name[result.metric.name] = result
             except AttributeError:
                 pass
+        return self
 
     def __iter__(self):
         for state in reversed(sorted(self.by_state)):
@@ -67,6 +68,9 @@ class Results:
         if isinstance(value, numbers.Number):
             return self.results[value]
         return self.by_name[value]
+
+    def __contains__(self, item):
+        return item in self.by_name
 
     @property
     def most_significant_state(self):

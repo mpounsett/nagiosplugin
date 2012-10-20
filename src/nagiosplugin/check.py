@@ -16,7 +16,6 @@ class Check(object):
         self.results = Results()
         self.perfdata = []
         self.name = ''
-        self.runtime = None
         self.add(*objects)
 
     def add(self, *objects):
@@ -51,8 +50,7 @@ class Check(object):
         except CheckError as e:
             self.results.add(Result(Unknown, str(e), metric))
 
-    def __call__(self, runtime):
-        self.runtime = runtime
+    def __call__(self):
         for resource in self.resources:
             self.evaluate_resource(resource)
         self.perfdata = sorted([p for p in self.perfdata if p])
