@@ -13,28 +13,28 @@ class Check(object):
         self.resources = []
         self.contexts = Contexts()
         self.summary = Summary()
-        self.perfdata = []
         self.results = Results()
-        self.add(*objects)
+        self.perfdata = []
+        self.name = ''
         self.runtime = None
-
-    @property
-    def name(self):
-        try:
-            return self.resources[0].name
-        except IndexError:
-            return ''
+        self.add(*objects)
 
     def add(self, *objects):
         for obj in objects:
             if isinstance(obj, Resource):
                 self.resources.append(obj)
+                if not self.name:
+                    self.name = self.resources[0].name
             elif isinstance(obj, Context):
                 self.contexts.add(obj)
             elif isinstance(obj, Summary):
                 self.summary = obj
+            elif isinstance(obj, Results):
+                self.results = obj
             else:
-                raise RuntimeError('%r has not an allowed type' % obj)
+                raise TypeError('cannot add type {} to check'.format(
+                    type(obj)), obj)
+        return self
 
     def evaluate_resource(self, resource):
         try:
@@ -49,7 +49,7 @@ class Check(object):
                 self.results.add(metric.evaluate())
                 self.perfdata.append(str(metric.performance() or ''))
         except CheckError as e:
-            self.results.add(Result(Unknown, str(e), metric, resource))
+            self.results.add(Result(Unknown, str(e), metric))
 
     def __call__(self, runtime):
         self.runtime = runtime
@@ -59,7 +59,10 @@ class Check(object):
 
     @property
     def state(self):
-        return self.results.most_significant_state
+        try:
+            return self.results.most_significant_state
+        except ValueError:
+            return Unknown
 
     @property
     def summary_str(self):

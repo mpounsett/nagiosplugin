@@ -63,3 +63,6 @@ class Contexts:
 
     def __getitem__(self, context_name):
         return self.by_name[context_name]
+
+    def __iter__(self):
+        return iter(self.by_name)

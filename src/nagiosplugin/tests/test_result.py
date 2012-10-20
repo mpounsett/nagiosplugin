@@ -48,8 +48,8 @@ class ScalarResultTest(unittest.TestCase):
 class ResultsTest(unittest.TestCase):
 
     def test_lookup_by_metric_name(self):
-        result = Result(Ok, '', nagiosplugin.Metric('met1', 0))
         r = Results()
+        result = Result(Ok, '', nagiosplugin.Metric('met1', 0))
         r.add(result, Result(Ok, 'other'))
         self.assertEqual(r['met1'], result)
 
@@ -58,6 +58,11 @@ class ResultsTest(unittest.TestCase):
         result = Result(Ok, '', nagiosplugin.Metric('met1', 0))
         r.add(Result(Ok, 'other'), result)
         self.assertEqual(r[1], result)
+
+    def test_len(self):
+        r = Results()
+        r.add(Result(Ok), Result(Ok), Result(Ok))
+        self.assertEqual(3, len(r))
 
     def test_iterate_in_order_of_descending_states(self):
         r = Results()
