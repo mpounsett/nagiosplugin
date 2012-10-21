@@ -2,17 +2,18 @@
 # See also LICENSE.txt
 
 from .platform import flock_exclusive
+import collections
 import json
 import os
 
 
-class Cookie:
+class Cookie(collections.UserDict):
 
     def __init__(self, path):
+        super(Cookie, self).__init__()
         self.path = path
-        self.new = not os.path.exists(path)
         self.fh = None
-        self.value = None
+        self.new = not os.path.exists(path)
 
     def __enter__(self):
         self.open()
@@ -23,43 +24,26 @@ class Cookie:
             self.commit()
         self.close()
 
-    def open(self):
-        self.fh = open(self.path, 'a+')
+    def open(self, mode='a+', encoding=None):
+        self.fh = open(self.path, mode, 16384, encoding)
         flock_exclusive(self.fh)
         self.fh.seek(0)
         try:
-            self.value = json.load(self.fh)
+            self.data = json.load(self.fh)
         except ValueError:
-            self.value = {}
+            self.data = {}
 
     def close(self):
         if not self.fh:
             return
         self.fh.close()
-        if self.new and self.value == {}:
+        if self.new and self.data == {}:
             os.unlink(self.path)
-        self.value = None
+        self.data = {}
         self.fh = None
 
     def commit(self):
         self.fh.seek(0)
         self.fh.truncate()
-        json.dump(self.value, self.fh, indent=1)
-
-    def get(self, key, default=None):
-        try:
-            return self.value[key]
-        except KeyError:
-            return default
-
-    def __getitem__(self, key):
-        return self.value[key]
-
-    def __setitem__(self, key, newvalue):
-        self.value[key] = newvalue
-
-    def __delitem__(self, key):
-        del self.value[key]
-
-    def __len__(self):
-        return len(self.value)
+        json.dump(self.data, self.fh, indent=1)
+        self.fh.flush()

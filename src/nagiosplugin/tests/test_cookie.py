@@ -25,9 +25,9 @@ class CookieTest(unittest.TestCase):
         with Cookie(self.tf.name) as c:
             self.assertEqual('world', c['hello'])
 
-    def test_get_without_open_should_raise_typeerror(self):
+    def test_get_without_open_should_raise_keyerror(self):
         c = Cookie(self.tf.name)
-        with self.assertRaises(TypeError):
+        with self.assertRaises(KeyError):
             c['foo']
 
     def test_set_should_write_content(self):
