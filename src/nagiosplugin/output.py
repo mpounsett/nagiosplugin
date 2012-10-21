@@ -27,8 +27,8 @@ class Output:
 
     def format_status(self, check):
         return self._screen_chars('{} {} - {}'.format(
-            check.name.upper(), str(check.state).upper(), check.summary_str),
-            'status line')
+            check.name.upper(), str(check.state).upper(),
+            check.summary_str.strip()), 'status line')
 
     def format_perfdata(self, check, linebreak=None):
         if not check.perfdata:
