@@ -21,7 +21,7 @@ class Result(collections.namedtuple('Result', 'state reason metric')):
     @property
     def context(self):
         if self.metric:
-            return self.metric.context
+            return self.metric.contextobj
 
 
 class ScalarResult(Result):

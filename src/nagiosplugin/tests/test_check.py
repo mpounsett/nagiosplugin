@@ -64,7 +64,7 @@ class CheckTest(unittest.TestCase):
         ctx = nagiosplugin.ScalarContext('bar', '1', '1')
         c = Check(ctx)
         c.evaluate_resource(R2_MetricCustomContext())
-        self.assertEqual(c.results[0].metric.context, ctx)
+        self.assertEqual(c.results[0].metric.contextobj, ctx)
 
     def test_evaluate_resource_catches_checkerror(self):
         class R3_Faulty(nagiosplugin.Resource):

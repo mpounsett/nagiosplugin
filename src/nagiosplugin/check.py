@@ -43,8 +43,8 @@ class Check(object):
                 logging.warn('resource %s did not produce any metric',
                              resource.name)
             for metric in metrics:
-                metric.context = self.contexts[metric.context_name]
-                metric.resource = resource
+                context = self.contexts[metric.context]
+                metric = metric.replace(contextobj=context, resource=resource)
                 self.results.add(metric.evaluate())
                 self.perfdata.append(str(metric.performance() or ''))
         except CheckError as e:

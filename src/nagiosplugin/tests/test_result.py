@@ -13,17 +13,17 @@ class ResultTest(unittest.TestCase):
         self.assertIsNone(Result(Ok).resource)
 
     def test_metric_resorce(self):
-        m = nagiosplugin.Metric('foo', 1)
-        r = m.resource = object()
-        self.assertEqual(Result(Ok, metric=m).resource, r)
+        res = object()
+        m = nagiosplugin.Metric('foo', 1, resource=res)
+        self.assertEqual(Result(Ok, metric=m).resource, res)
 
     def test_context_should_be_none_for_contextless_metric(self):
         self.assertIsNone(Result(Ok).context)
 
     def test_metric_context(self):
-        m = nagiosplugin.Metric('foo', 1)
-        c = m.context = object()
-        self.assertEqual(Result(Ok, metric=m).context, c)
+        ctx = object()
+        m = nagiosplugin.Metric('foo', 1, contextobj=ctx)
+        self.assertEqual(Result(Ok, metric=m).context, ctx)
 
 
 class ScalarResultTest(unittest.TestCase):
