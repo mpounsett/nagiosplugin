@@ -9,15 +9,15 @@ compatible plugins easily in Python. It cares for much of the boilerplate code
 and default logic commonly found in Nagios checks, including:
 
 - Nagios 3 Plugin API compliant parameters and output formatting
-- Controller to handle the general plugin control flow
 - Full Nagios range syntax support
 - Automatic threshold checking
-- Multiple independend measures and overall state logic
+- Multiple independend measures
+- Custom status line to communicate the main point quickly
 - Long output and performance data
 - Timeout handling
-- Default options
-- Persistent "cookies" to retain state information between check runs.
-- Runs on POSIX and Windows systems.
+- Persistent "cookies" to retain state information between check runs
+- Runs on POSIX and Windows systems
+- Python 3 compatible
 
 
 Feedback and Suggestions
