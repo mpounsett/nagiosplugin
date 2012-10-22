@@ -28,17 +28,21 @@ def managed(func):
 
 
 class Runtime:
+
     def __init__(self):
+        self.setup_logging()
+        self.verbose = 0
+        self.timeout = 10
+        self.exitcode = 70  # EX_SOFTWARE
+
+    def setup_logging(self):
         rootlogger = logging.getLogger()
         rootlogger.setLevel(logging.DEBUG)
         self.logchan = logging.StreamHandler(io.StringIO())
         self.logchan.setFormatter(logging.Formatter(
-            '%(filename)s:%(lineno)d: %(message)s'))
+            '%(message)s (%(filename)s:%(lineno)d)'))
         rootlogger.addHandler(self.logchan)
         self.output = Output(self.logchan)
-        self.verbose = 0
-        self.timeout = 10
-        self.exitcode = 70  # EX_SOFTWARE
 
     @property
     def verbose(self):
