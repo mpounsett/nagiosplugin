@@ -62,8 +62,8 @@ def main(runtime):
     args = argp.parse_args()
     check = nagiosplugin.Check(
         Load(args.percpu),
-        LoadSummary(args.percpu),
-        nagiosplugin.ScalarContext('load', args.warning, args.critical))
+        nagiosplugin.ScalarContext('load', args.warning, args.critical),
+        LoadSummary(args.percpu))
     runtime.execute(check, verbose=args.verbose)
 
 if __name__ == '__main__':

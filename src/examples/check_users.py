@@ -60,12 +60,12 @@ def main(runtime):
     args = argp.parse_args()
     runtime.execute(nagiosplugin.Check(
         Users(),
-        UsersSummary(),
         nagiosplugin.ScalarContext('total', args.warning, args.critical,
                                    fmt_metric='{value} users logged in'),
         nagiosplugin.ScalarContext(
             'unique', args.warning_unique, args.critical_unique,
-            fmt_metric='{value} unique users logged in')),
+            fmt_metric='{value} unique users logged in'),
+        UsersSummary()),
         verbose=args.verbose, timeout=args.timeout)
 
 if __name__ == '__main__':
