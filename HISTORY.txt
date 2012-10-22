@@ -2,8 +2,8 @@ Release History
 ===============
 
 
-1.0 (unreleased)
-----------------
+1.0.0-alpha.1 (unreleased)
+--------------------------
 
 - Completely reworked API.
 - Python 3 support.
