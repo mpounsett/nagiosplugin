@@ -14,7 +14,6 @@ Contents
 .. toctree::
 
    tutorial/index
-   advanced/index
    glossary
    history
 
