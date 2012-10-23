@@ -11,7 +11,7 @@ class Result(collections.namedtuple('Result', 'state reason metric')):
         return tuple.__new__(cls, (state, reason, metric))
 
     def __str__(self):
-        return self.reason
+        return self.reason or ''
 
     @property
     def resource(self):

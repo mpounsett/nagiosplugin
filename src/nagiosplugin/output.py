@@ -20,15 +20,18 @@ class Output:
     def add(self, check):
         self.status = self.format_status(check)
         if self.verbose == 0:
-            self.status += ' ' + self.format_perfdata(check)
+            perfdata = self.format_perfdata(check)
+            if perfdata:
+                self.status += ' ' + perfdata
         else:
             self.add_longoutput(check.verbose_str)
             self.longperfdata.append(self.format_perfdata(check, 79))
 
     def format_status(self, check):
-        return self._screen_chars('{} {} - {}'.format(
+        summary_str = check.summary_str.strip()
+        return self._screen_chars('{} {}{}'.format(
             check.name.upper(), str(check.state).upper(),
-            check.summary_str.strip()), 'status line')
+            ' - ' + summary_str if summary_str else ''), 'status line')
 
     def format_perfdata(self, check, linebreak=None):
         if not check.perfdata:

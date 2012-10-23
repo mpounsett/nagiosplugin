@@ -43,6 +43,14 @@ class OutputTest(unittest.TestCase):
         print('debug log output', file=self.logio)
         self.assertEqual('debug log output\n', str(o))
 
+    def test_empty_summary_perfdata(self):
+        o = Output(self.logchan)
+        check = FakeCheck()
+        check.summary_str = ''
+        check.perfdata = []
+        o.add(check)
+        self.assertEqual('FAKE OK\n', str(o))
+
     def test_add_check_singleline(self):
         o = Output(self.logchan)
         o.add(FakeCheck())
