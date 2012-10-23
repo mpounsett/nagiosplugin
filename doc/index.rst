@@ -26,3 +26,7 @@ Indices and tables
 To download the package, see the `PyPI page`_.
 
 .. _PyPI page: http://pypi.python.org/pypi/nagiosplugin
+
+.. general:
+   http://www.packtpub.com/article/documenting-your-python-project-1
+   http://lusislog.blogspot.de/2011/07/monitoring-sucks-watch-your-language.html
