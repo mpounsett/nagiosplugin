@@ -18,8 +18,8 @@ Glossary
       Part of the plugin output which is passed to external programs by Nagios.
 
    range
-      String notation defined in the :term:`Nagios plugin API` to express a set of
-      acceptable values. Values outside a range trigger a warning or critical
+      String notation defined in the :term:`Nagios plugin API` to express a set
+      of acceptable values. Values outside a range trigger a warning or critical
       condition.
 
    Nagios plugin API

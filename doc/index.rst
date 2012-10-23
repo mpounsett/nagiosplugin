@@ -6,11 +6,12 @@ The `nagiosplugin` Class Library
 
 This documentation covers nagiosplugin |version|.
 
+.. py:currentmodule:: nagiosplugin
+
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 2
 
    tutorial/index
    advanced/index

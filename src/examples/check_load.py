@@ -23,14 +23,11 @@ class Load(nagiosplugin.Resource):
         self.percpu = percpu
 
     def cpus(self):
-        if not self.percpu:
-            return 1
         cpus = 0
         logging.info('counting cpus in /proc/cpuinfo')
         with open('/proc/cpuinfo') as cpuinfo:
             for line in cpuinfo:
                 if re.match(r'^processor\s*:\s+\d+$', line):
-                    logging.debug('found cpu line match %s', line.strip())
                     cpus += 1
         logging.debug('found %i cpus in total', cpus)
         return cpus
@@ -38,10 +35,9 @@ class Load(nagiosplugin.Resource):
     def probe(self):
         logging.info('reading load from /proc/loadavg')
         with open('/proc/loadavg') as loadavg:
-            load = loadavg.readline().split(None, 3)
-        del load[3:]
+            load = loadavg.readline().split(None, 3)[0:3]
         logging.debug('raw load is %s', load)
-        cpus = self.cpus()
+        cpus = self.cpus() if self.percpu else 1
         load = [float(l) / cpus for l in load]
         return [nagiosplugin.Metric('load%d' % period, load[i], min=0,
                                     context='load')
