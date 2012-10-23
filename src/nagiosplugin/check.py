@@ -39,7 +39,7 @@ class Check(object):
     def evaluate_resource(self, resource):
         try:
             metric = None
-            metrics = resource.survey()
+            metrics = resource.probe()
             if not metrics:
                 logging.warn('resource %s did not produce any metric',
                              resource.name)

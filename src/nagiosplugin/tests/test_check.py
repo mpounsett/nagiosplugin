@@ -17,7 +17,7 @@ class FakeSummary(nagiosplugin.Summary):
 
 class R1_MetricDefaultContext(nagiosplugin.Resource):
 
-    def survey(self):
+    def probe(self):
         return [nagiosplugin.Metric('foo', 1, context='default')]
 
 
@@ -58,7 +58,7 @@ class CheckTest(unittest.TestCase):
 
     def test_evaluate_resource_looks_up_context(self):
         class R2_MetricCustomContext(nagiosplugin.Resource):
-            def survey(self):
+            def probe(self):
                 return [nagiosplugin.Metric('bar', 2)]
 
         ctx = nagiosplugin.ScalarContext('bar', '1', '1')
@@ -68,7 +68,7 @@ class CheckTest(unittest.TestCase):
 
     def test_evaluate_resource_catches_checkerror(self):
         class R3_Faulty(nagiosplugin.Resource):
-            def survey(self):
+            def probe(self):
                 raise nagiosplugin.CheckError('problem')
 
         c = Check()
@@ -79,7 +79,7 @@ class CheckTest(unittest.TestCase):
 
     def test_call_evaluates_resources_and_compacts_perfdata(self):
         class R4_NoPerfdata(nagiosplugin.Resource):
-            def survey(self):
+            def probe(self):
                 return [nagiosplugin.Metric('m4', 4, context='null')]
 
         c = Check(R1_MetricDefaultContext(), R4_NoPerfdata())

@@ -15,7 +15,7 @@ class Load(nagiosplugin.Resource):
     """Domain model: system load.
 
     Determines the system load parameters and (optionally) cpu count.
-    The `survey` method returns the three standard load average numbers.
+    The `probe` method returns the three standard load average numbers.
     If `percpu` is true, the load average will be normalized.
     """
 
@@ -35,7 +35,7 @@ class Load(nagiosplugin.Resource):
         logging.debug('found %i cpus in total', cpus)
         return cpus
 
-    def survey(self):
+    def probe(self):
         logging.info('reading load from /proc/loadavg')
         with open('/proc/loadavg') as loadavg:
             load = loadavg.readline().split(None, 3)

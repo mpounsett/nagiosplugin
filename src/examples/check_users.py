@@ -43,7 +43,7 @@ class Users(nagiosplugin.Resource):
                     self.who_cmd))
         return users
 
-    def survey(self):
+    def probe(self):
         """Create check metric for user counts.
 
         This method returns two metrics: `total` is total number of user
@@ -53,8 +53,6 @@ class Users(nagiosplugin.Resource):
         """
         self.users = self.list_users()
         self.unique_users = set(self.users)
-        import time
-        time.sleep(2)
         return [nagiosplugin.Metric('total', len(self.users), min=0),
                 nagiosplugin.Metric('unique', len(self.unique_users), min=0)]
 

@@ -30,7 +30,7 @@ class HAProxyLog(nagiosplugin.Resource):
                 err = not (stat.startswith('2') or stat.startswith('3'))
                 yield int(tt), err
 
-    def survey(self):
+    def probe(self):
         d = numpy.fromiter(self.parse_log(),
                            dtype=[('tt', numpy.int32), ('err', numpy.uint16)])
         requests = len(d['err'])
