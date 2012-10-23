@@ -12,6 +12,6 @@ from .performance import Performance
 from .range import Range
 from .resource import Resource
 from .result import Result, ScalarResult, Results
-from .runtime import Runtime, managed
+from .runtime import Runtime, guarded
 from .state import Ok, Warn, Critical, Unknown
 from .summary import Summary

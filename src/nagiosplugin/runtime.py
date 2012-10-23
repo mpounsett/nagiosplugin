@@ -1,4 +1,10 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+"""System interface, exception handling, logging."""
+
 from .output import Output
+from .error import Timeout
 from .platform import with_timeout
 import io
 import logging
@@ -8,41 +14,56 @@ import functools
 import traceback
 
 
-def managed(func):
+def guarded(func):
     @functools.wraps(func)
     def wrapper():
-        rt = Runtime()
+        runtime = Runtime()
         try:
-            return func(rt)
+            return func()
+        except Timeout as exc:
+            runtime._handle_exception(
+                'Timeout: check execution aborted after {}'.format(exc))
         except Exception:
-            exc_type, value, tb = sys.exc_info()
-            filename, lineno = traceback.extract_tb(tb)[-1][0:2]
-            print('UNKNOWN: %s (%s:%d)' % (
-                traceback.format_exception_only(exc_type, value)[0].strip(),
-                filename, lineno))
-            if rt.verbose > 0:
-                traceback.print_exc()
-                print(rt.logchan.stream.getvalue())
-            sys.exit(3)
+            runtime._handle_exception()
     return wrapper
 
 
 class Runtime:
 
-    def __init__(self):
-        self.setup_logging()
-        self.verbose = 0
-        self.timeout = 10
-        self.exitcode = 70  # EX_SOFTWARE
+    instance = None
+    check = None
+    _verbose = 0
+    timeout = None
+    logchan = None
+    output = None
+    exitcode = 70  # EX_SOFTWARE
 
-    def setup_logging(self):
+    def __new__(cls):
+        if not cls.instance:
+            cls.instance = super(Runtime, cls).__new__(cls)
+        return cls.instance
+
+    def __init__(self):
         rootlogger = logging.getLogger()
         rootlogger.setLevel(logging.DEBUG)
-        self.logchan = logging.StreamHandler(io.StringIO())
-        self.logchan.setFormatter(logging.Formatter(
-            '%(message)s (%(filename)s:%(lineno)d)'))
-        rootlogger.addHandler(self.logchan)
-        self.output = Output(self.logchan)
+        if not self.logchan:
+            self.logchan = logging.StreamHandler(io.StringIO())
+            self.logchan.setFormatter(logging.Formatter(
+                '%(message)s (%(filename)s:%(lineno)d)'))
+            rootlogger.addHandler(self.logchan)
+        if not self.output:
+            self.output = Output(self.logchan)
+
+    def _handle_exception(self, statusline=None):
+        exc_type, value = sys.exc_info()[0:2]
+        name = self.check.name.upper() + ' ' if self.check else ''
+        self.output.status = '{}UNKNOWN: {}'.format(
+            name, statusline or traceback.format_exception_only(
+                exc_type, value)[0].strip())
+        if self.verbose > 0:
+            self.output.add_longoutput(traceback.format_exc())
+        print(self.output, end='', file=sys.stdout)
+        sys.exit(3)
 
     @property
     def verbose(self):
@@ -63,27 +84,17 @@ class Runtime:
         self.output.verbose = self._verbose
 
     def run(self, check):
-        try:
-            check()
-            self.output.add(check)
-            self.exitcode = check.exitcode
-        except Exception:
-            exc_type, value, tb = sys.exc_info()
-            filename, lineno = traceback.extract_tb(tb)[-1][0:2]
-            self.output.status = '%s UNKNOWN: %s (%s:%d)' % (
-                check.name.upper(),
-                traceback.format_exception_only(exc_type, value)[0].strip(),
-                filename, lineno)
-            if self.verbose > 0:
-                self.output.add_longoutput(traceback.format_exc())
-            self.exitcode = 3
+        check()
+        self.output.add(check)
+        self.exitcode = check.exitcode
 
     def execute(self, check, verbose=None, timeout=None):
+        self.check = check
         if verbose is not None:
             self.verbose = verbose
         if timeout is not None:
             self.timeout = int(timeout)
-        if self.timeout > 0:
+        if self.timeout:
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)

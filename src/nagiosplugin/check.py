@@ -2,6 +2,7 @@ from .context import Context, Contexts
 from .error import CheckError
 from .resource import Resource
 from .result import Result, Results
+from .runtime import Runtime
 from .state import Ok, Unknown
 from .summary import Summary
 import logging
@@ -54,6 +55,10 @@ class Check(object):
         for resource in self.resources:
             self.evaluate_resource(resource)
         self.perfdata = sorted([p for p in self.perfdata if p])
+
+    def main(self, verbose=1, timeout=10):
+        runtime = Runtime()
+        runtime.execute(self, verbose, timeout)
 
     @property
     def state(self):

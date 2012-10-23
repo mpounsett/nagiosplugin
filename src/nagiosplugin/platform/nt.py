@@ -1,7 +1,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""NT implementation of platform-specific services"""
+"""NT implementation of platform-specific services."""
 
 import nagiosplugin
 import threading
