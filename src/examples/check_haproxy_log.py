@@ -70,8 +70,8 @@ def parse_args():
     return argp.parse_args()
 
 
-@nagiosplugin.managed
-def main(runtime):
+@nagiosplugin.guarded
+def main():
     args = parse_args()
     percentiles = args.percentiles.split(',')
     check = nagiosplugin.Check(
@@ -81,7 +81,7 @@ def main(runtime):
         check.add(nagiosplugin.ScalarContext(
             'ttot%s' % pct, args.tw[i], args.tc[i],
             'total time (%s.pct) is {valueunit}' % pct))
-    runtime.execute(check, verbose=args.verbose, timeout=args.timeout)
+    check.main(args.verbose, args.timeout)
 
 if __name__ == '__main__':
     main()

@@ -1,4 +1,8 @@
 #!/usr/bin/python3.2
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+"""Nagios/Icinga plugin to check system load."""
 
 import argparse
 import itertools
@@ -8,6 +12,12 @@ import re
 
 
 class Load(nagiosplugin.Resource):
+    """Domain model: system load.
+
+    Determines the system load parameters and (optionally) cpu count.
+    The `survey` method returns the three standard load average numbers.
+    If `percpu` is true, the load average will be normalized.
+    """
 
     def __init__(self, percpu=False):
         self.percpu = percpu
@@ -39,6 +49,12 @@ class Load(nagiosplugin.Resource):
 
 
 class LoadSummary(nagiosplugin.Summary):
+    """Status line conveying load information.
+
+    We specialize the `ok` method to present all three figures in one
+    handy tagline. In case of problems, the single-load texts from the
+    contexts work well.
+    """
 
     def __init__(self, percpu):
         self.percpu = percpu
@@ -49,9 +65,9 @@ class LoadSummary(nagiosplugin.Summary):
             str(results[r].metric) for r in ['load1', 'load5', 'load15']))
 
 
-@nagiosplugin.managed
-def main(runtime):
-    argp = argparse.ArgumentParser()
+@nagiosplugin.guarded
+def main():
+    argp = argparse.ArgumentParser(description=__doc__)
     argp.add_argument('-w', '--warning', metavar='RANGE', default='',
                       help='return warning if load is outside RANGE')
     argp.add_argument('-c', '--critical', metavar='RANGE', default='',
@@ -64,7 +80,7 @@ def main(runtime):
         Load(args.percpu),
         nagiosplugin.ScalarContext('load', args.warning, args.critical),
         LoadSummary(args.percpu))
-    runtime.execute(check, verbose=args.verbose)
+    check.main(verbose=args.verbose)
 
 if __name__ == '__main__':
     main()

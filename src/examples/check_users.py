@@ -2,6 +2,8 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+"""Nagios plugin to check number of logged in users."""
+
 import argparse
 import logging
 import nagiosplugin
@@ -9,13 +11,26 @@ import subprocess
 
 
 class Users(nagiosplugin.Resource):
+    """Domain model: system logins.
 
-    def __init__(self, who_cmd='who'):
-        self.who_cmd = who_cmd
+    The `Users` class is a model of system aspects relevant for this
+    check. It determines the logged in users and counts them.
+    """
+
+    who_cmd = 'who'
+
+    def __init__(self):
         self.users = []
         self.unique_users = set()
 
     def list_users(self):
+        """Return list of logged in users.
+
+        The user list is determined by invoking an external command
+        defined in `who_cmd` (default: who) and parsing its output. The
+        command is expected to produce one line per user with the user
+        name at the beginning.
+        """
         logging.info('querying users with "%s" command', self.who_cmd)
         users = []
         try:
@@ -29,21 +44,40 @@ class Users(nagiosplugin.Resource):
         return users
 
     def survey(self):
+        """Create check metric for user counts.
+
+        This method returns two metrics: `total` is total number of user
+        logins including users with multiple logins. `unique` counts
+        only unique user id. This means that users with multiple logins
+        are only counted once.
+        """
         self.users = self.list_users()
         self.unique_users = set(self.users)
+        import time
+        time.sleep(2)
         return [nagiosplugin.Metric('total', len(self.users), min=0),
                 nagiosplugin.Metric('unique', len(self.unique_users), min=0)]
 
 
 class UsersSummary(nagiosplugin.Summary):
+    """Create status line and long output.
+
+    For the status line, the text snippets created by the contexts work
+    quite well, so leave `ok` and `problem` with their default
+    implementations. For the long output (-v) we wish to display *which*
+    users are actually logged in. Note how we use the `resource`
+    attribute in the resuls object to grab this piece of information
+    from the domain model object.
+    """
 
     def verbose(self, results):
         super(UsersSummary, self).verbose(results)
-        return 'users: ' + ', '.join(results['total'].resource.users)
+        if 'total' in results:
+            return 'users: ' + ', '.join(results['total'].resource.users)
 
 
-@nagiosplugin.managed
-def main(runtime):
+@nagiosplugin.guarded
+def main():
     argp = argparse.ArgumentParser()
     argp.add_argument('-w', '--warning', metavar='RANGE',
                       help='warning if total user count is outside RANGE'),
@@ -58,15 +92,15 @@ def main(runtime):
     argp.add_argument('-t', '--timeout', default=10,
                       help='abort execution after TIMEOUT seconds')
     args = argp.parse_args()
-    runtime.execute(nagiosplugin.Check(
+    check = nagiosplugin.Check(
         Users(),
         nagiosplugin.ScalarContext('total', args.warning, args.critical,
                                    fmt_metric='{value} users logged in'),
         nagiosplugin.ScalarContext(
             'unique', args.warning_unique, args.critical_unique,
             fmt_metric='{value} unique users logged in'),
-        UsersSummary()),
-        verbose=args.verbose, timeout=args.timeout)
+        UsersSummary())
+    check.main(args.verbose, args.timeout)
 
 if __name__ == '__main__':
     main()
