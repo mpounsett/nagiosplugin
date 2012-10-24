@@ -9,6 +9,7 @@ import itertools
 import logging
 import nagiosplugin
 import re
+import subprocess
 
 
 class Load(nagiosplugin.Resource):
@@ -23,12 +24,8 @@ class Load(nagiosplugin.Resource):
         self.percpu = percpu
 
     def cpus(self):
-        cpus = 0
-        logging.info('counting cpus in /proc/cpuinfo')
-        with open('/proc/cpuinfo') as cpuinfo:
-            for line in cpuinfo:
-                if re.match(r'^processor\s*:\s+\d+$', line):
-                    cpus += 1
+        logging.info('counting cpus with "nproc"')
+        cpus = int(subprocess.check_output(['nproc']))
         logging.debug('found %i cpus in total', cpus)
         return cpus
 
