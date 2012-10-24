@@ -8,7 +8,6 @@ import argparse
 import itertools
 import logging
 import nagiosplugin
-import re
 import subprocess
 
 
