@@ -17,8 +17,8 @@ First, we will subclass :py:class:`Resource` to generate metrics for the 1,
 5, and 15 minute load averages.
 
 .. literalinclude:: /../src/examples/check_load.py
-   :start-after: import re
-   :end-before: class LoadSummary
+   :start-after: # data acquisition
+   :end-before: # data presentation
 
 :program:`check_load` has two modes of operation: the load averages may either
 be takes as read from the kernel or normalized by cpu. Accordingly, the
@@ -71,8 +71,7 @@ the :py:func:`main` function looks like this:
 Note that the context name "load" is referenced by all three metrics returned by
 the :py:meth:`Load.probe` method.
 
-This version of :program:`check_load` is alreday functional, but the output is a
-little bit awkward:
+This version of :program:`check_load` is already functional:
 
 .. code-block:: bash
    :linenos:
@@ -81,7 +80,7 @@ little bit awkward:
    LOAD OK - load1 is 0.11
    | load15=0.21;;;0 load1=0.11;;;0 load5=0.18;;;0
    $ ./check_load.py -c 0.1:0.2
-   LOAD CRITICAL - load1 is 0.23 (outside range 0.1:0.2)
+   LOAD CRITICAL - load1 is 0.23 (outside 0.1:0.2)
    | load15=0.22;;0.1:0.2;0 load1=0.23;;0.1:0.2;0 load5=0.2;;0.1:0.2;0
    # exit status 2
    $ ./check_load.py -c 0.1:0.2 -r
@@ -94,3 +93,68 @@ first load value which looks a little bit arbitrary. In the second invocation
 automatically according to the Nagios plugin API and the first metric that lies
 outside is reported. In the third invocation (lines 8-10), we request
 normalization and all values fit in the range now.
+
+Result presentation
+-------------------
+
+Although we now have a running check, the output is not as informative as it
+could be. The first line of output (status line) is very important since the
+information presented therein should give the admin a clue what is going on.
+We want the first line to display:
+
+* a load overview when there is nothing wrong
+* which load value violates a threshold, if applicable
+* which threshold is being violated, if applicable.
+
+The last two points are already covered by the :py:class:`Result` default
+implementation, but we need to tweak the summary to display a load overview
+as stated in the first point:
+
+.. literalinclude:: /../src/examples/check_load.py
+   :start-after: # data presentation
+   :end-before: # runtime environment and data evaluation
+
+The :py:class:`Summary` class has three methods which can be specialized:
+:py:meth:`Summary.ok` to return a status line when there are no problems,
+:py:meth:`Summary.problem` to return a status line when the overall check status
+indicates problems, and :py:meth:`Summary.verbose` to generate additional
+output. All three methods get a set of :py:class:`Result` objects passed in. In
+our code, the :py:meth:`Summary.ok` method queries uses the original metrics
+referenced by the result objects to build an overview like `loadavg is 0.19,
+0.16, 0.14`.
+
+Check setup and evaluation
+--------------------------
+
+The last step in this tutorial is to put the pieces together:
+
+.. literalinclude:: /../src/examples/check_load.py
+   :start-after: # runtime environment and data evaluation
+
+In the :py:func:`main` function we parse the command line parameters using the
+standard :py:class:`argparse.ArgumentParser` class. Watch the :py:class:`Check`
+object creation: its constructor can be fed with a variable number of
+:py:class:`Resource`, :py:class:`Context` and :py:class:`Summary` objects. In
+this tutorial, instances of our specialized :py:class:`Load` and
+:py:class:`LoadSummary` classes go in.
+
+We did not specialize a :py:class:`Context` class to evaluate the load metrics.
+Instead, we use the supplied :py:class:`ScalarContext` which compares a scalar
+value against two ranges according to the range syntax defined by the Nagios
+plugin API. The default :py:class:`ScalarContext` implementation covers the
+majority of evaluation needs. Checks using non-scalar metrics or requiring special
+logic should subclass :py:class:`Context` to fit their needs.
+
+The :py:meth:`Check.main` method runs the check, prints the check's output
+including summary, log messages and performance data to stdout and exits the
+plugin with the appropriate exit code.
+
+Note the :py:func:`@guarded` decorator in front of the main function. It helps
+the code part outside :py:meth:`Check.main` to behave: in case of uncaught
+exceptions, it ensures that the exit code is **3** (unknown) and that the
+exception string is properly formatted. Additionally, logging is set up at an
+early stage so that even messages logged from constructors are captured and
+printed at the right place in the output (between status line and performance
+data).
+
+.. vim: set spell spelllang=en:

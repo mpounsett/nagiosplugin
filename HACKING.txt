@@ -29,9 +29,10 @@ Then launch the usual buildout three-step::
    bin/buildout
    bin/test
 
-Build the docs by invoking::
+Build the documentation (buildout should have been running before to install
+Sphinx etc.)::
 
-   bin/makedoc
+   make -C doc html
 
 Run the supplied examples with the local interpreter::
 
