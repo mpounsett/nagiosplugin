@@ -16,9 +16,10 @@ and default logic commonly found in Nagios checks, including:
 - Long output and performance data
 - Timeout handling
 - Persistent "cookies" to retain state information between check runs
+- Resume log file processing at the point where the last run left
 - No dependencies beyond the Python standard library.
 
-`nagiosplugin` runs on POSIX and Windows systems. It requires Python 3 but
+`nagiosplugin` runs on POSIX and Windows systems. It requires Python 3, but
 Python 2.7 compatibility is planned.
 
 

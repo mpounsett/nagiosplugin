@@ -9,8 +9,8 @@ check would not execute.
 
 This minimalistic check consists of a :py:class:`Resource` World which models
 the part of the world that is interesting for the purposes of our check.
-Resource classes must define a :py:meth:`Resource.survey` method which returns a
-list of metrics. We just return a single :py:class:`Metric` object which states
+Resource classes must define a :py:meth:`Resource.probe` method which returns a
+list of metrics. We just return a single :py:class:`Metric` object that states
 that the world exists.
 
 .. literalinclude:: /../src/examples/check_world.py
@@ -29,6 +29,7 @@ and exit with the appropriate status code.
 Running the plugin creates very simple output:
 
 .. code-block:: bash
+   :linenos:
 
    $ check_world.py
    WORLD OK
