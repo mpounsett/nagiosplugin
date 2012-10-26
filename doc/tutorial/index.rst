@@ -1,4 +1,4 @@
-.. _tutorial:
+.. _tutorials:
 
 *****************************
 First steps with nagiosplugin
