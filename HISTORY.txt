@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-1.0.0a2 (unreleased)
+1.0.0a2 (2012-10-26)
 --------------------
 
 - API docs for the most important classes (#7939).
