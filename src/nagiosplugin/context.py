@@ -62,7 +62,15 @@ class Contexts:
         self.by_name[context.name] = context
 
     def __getitem__(self, context_name):
-        return self.by_name[context_name]
+        try:
+            return self.by_name[context_name]
+        except KeyError:
+            raise KeyError('cannot find context', context_name,
+                           'known contexts: {}'.format(
+                               ', '.join(self.by_name.keys())))
+
+    def __contains__(self, context_name):
+        return context_name in self.by_name
 
     def __iter__(self):
         return iter(self.by_name)

@@ -148,4 +148,7 @@ class Check(object):
 
         Corresponds with :attr:`state`.
         """
-        return int(self.results.most_significant_state)
+        try:
+            return int(self.results.most_significant_state)
+        except ValueError:
+            return 3

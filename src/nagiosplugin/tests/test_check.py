@@ -109,6 +109,12 @@ class CheckTest(unittest.TestCase):
         c = Check()
         self.assertEqual('no check results', c.summary_str)
 
+    def test_state_if_resource_has_no_metrics(self):
+        c = Check(nagiosplugin.Resource())
+        c()
+        self.assertEqual(nagiosplugin.Unknown, c.state)
+        self.assertEqual(3, c.exitcode)
+
     def test_summary_str_calls_ok_if_state_ok(self):
         c = Check(FakeSummary())
         c._evaluate_resource(R1_MetricDefaultContext())

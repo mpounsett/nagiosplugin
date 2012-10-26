@@ -37,9 +37,10 @@ class Load(nagiosplugin.Resource):
         logging.debug('raw load is %s', load)
         cpus = self.cpus() if self.percpu else 1
         load = [float(l) / cpus for l in load]
-        return [nagiosplugin.Metric('load%d' % period, load[i], min=0,
-                                    context='load')
-                for period, i in zip([1, 5, 15], itertools.count())]
+        for period, i in zip([1, 5, 15], itertools.count()):
+            yield nagiosplugin.Metric('load%d' % period, load[i], min=0,
+                                      context='load')
+
 
 
 # data presentation

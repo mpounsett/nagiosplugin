@@ -1,5 +1,14 @@
-Development setup
-=================
+Development
+===========
+
+Getting the source
+------------------
+
+The source can be obtained via mercurial from
+https://code.gocept.com/hg/public/nagiosplugin::
+
+   hg clone https://code.gocept.com/hg/public/nagiosplugin
+
 
 Invoke setup.py directly
 ------------------------
