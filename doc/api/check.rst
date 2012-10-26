@@ -20,3 +20,5 @@ space so there is no need to import :mod:`nagiosplugin.check` directly.
    .. attribute:: perfdata
 
       List of strings representing a single bit of performance data each.
+
+.. vim: set spell spelllang=en:

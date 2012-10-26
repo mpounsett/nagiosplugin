@@ -5,7 +5,7 @@ API docs
 
 The :mod:`nagiosplugin` module consists of several submodules which are
 discussed in detail as follows. All classes you need to write plugins are
-imported directly to the nagiosplugin top-level namespace, so ::
+imported directly to the nagiosplugin top-level name space, so ::
 
    import nagiosplugin
 
@@ -18,6 +18,8 @@ use cases.
 .. toctree::
 
    check
+   metric
+   resource
 
 
-.. vim: set spell spelllang=en
+.. vim: set spell spelllang=en:

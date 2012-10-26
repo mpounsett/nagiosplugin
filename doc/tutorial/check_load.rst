@@ -1,3 +1,7 @@
+.. _tut2:
+
+.. currentmodule:: nagiosplugin
+
 Tutorial #2: check_load
 =======================
 
@@ -79,20 +83,22 @@ This version of :program:`check_load` is already functional:
    $ ./check_load.py
    LOAD OK - load1 is 0.11
    | load15=0.21;;;0 load1=0.11;;;0 load5=0.18;;;0
-   $ ./check_load.py -c 0.1:0.2
-   LOAD CRITICAL - load1 is 0.23 (outside 0.1:0.2)
-   | load15=0.22;;0.1:0.2;0 load1=0.23;;0.1:0.2;0 load5=0.2;;0.1:0.2;0
-   # exit status 2
-   $ ./check_load.py -c 0.1:0.2 -r
-   LOAD OK - load1 is 0.115
-   | load15=0.11;;0.1:0.2;0 load1=0.115;;0.1:0.2;0 load5=0.1;;0.1:0.2;0
 
-In the first invocation (lines 1-3), :program:`check_load` reports only the
-first load value which looks a little bit arbitrary. In the second invocation
-(lines 4-7), we set a critical threshold. The range specification is parsed
+   $ ./check_load.py -c 0.1:0.2
+   LOAD CRITICAL - load15 is 0.22 (outside 0.1:0.2)
+   | load15=0.22;;0.1:0.2;0 load1=0.11;;0.1:0.2;0 load5=0.2;;0.1:0.2;0
+   # exit status 2
+
+   $ ./check_load.py -c 0.1:0.2 -r
+   LOAD OK - load1 is 0.105
+   | load15=0.11;;0.1:0.2;0 load1=0.105;;0.1:0.2;0 load5=0.1;;0.1:0.2;0
+
+In the first invocation (lines 1--3), :program:`check_load` reports only the
+first load value which looks bit arbitrary. In the second invocation (lines
+5--8), we set a critical threshold. The range specification is parsed
 automatically according to the Nagios plugin API and the first metric that lies
-outside is reported. In the third invocation (lines 8-10), we request
-normalization and all values fit in the range now.
+outside is reported. In the third invocation (lines 10--12), we request
+normalization and all values fit in the range this time.
 
 Result presentation
 -------------------
@@ -123,8 +129,8 @@ our code, the :py:meth:`Summary.ok` method queries uses the original metrics
 referenced by the result objects to build an overview like `loadavg is 0.19,
 0.16, 0.14`.
 
-Check setup and evaluation
---------------------------
+Check setup
+-----------
 
 The last step in this tutorial is to put the pieces together:
 

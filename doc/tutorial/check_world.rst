@@ -1,5 +1,7 @@
 .. _tut1:
 
+.. currentmodule:: nagiosplugin
+
 Tutorial #1: 'Hello world' check
 ================================
 
