@@ -48,9 +48,10 @@ the standard procedure, which usually boils down to::
    fullrelease
 
 `nagiosplugin` tried to obey the semantic version numbering specification
-published on SemVer_ but adapts it a little bit to be PEP-386 compliant.
+published on SemVer_ but adapts it a little bit to be `PEP 386`_ compliant.
 
 .. _zest.releaser: http://pypi.python.org/pypi/zest.releaser/
 .. _SemVer: http://semver.org/
+.. _PEP 386: http://www.python.org/dev/peps/pep-0386/
 
 .. vim: set ft=rst sw=3 sts=3 et:

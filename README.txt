@@ -4,7 +4,7 @@ The nagiosplugin library
 About
 -----
 
-`nagiosplugin` is a class library which helps writing Nagios (or Icinga)
+`nagiosplugin` is a Python class library which helps writing Nagios (or Icinga)
 compatible plugins easily in Python. It cares for much of the boilerplate code
 and default logic commonly found in Nagios checks, including:
 
