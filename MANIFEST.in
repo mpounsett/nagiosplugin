@@ -1,3 +1,4 @@
+include HACKING.txt
 include HISTORY.txt
 include LICENSE.txt
 include README.txt
