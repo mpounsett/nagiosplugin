@@ -51,7 +51,7 @@ class CheckTest(unittest.TestCase):
 
     def test_evaluate_resource_populates_results_perfdata(self):
         c = Check()
-        c.evaluate_resource(R1_MetricDefaultContext())
+        c._evaluate_resource(R1_MetricDefaultContext())
         self.assertEqual(1, len(c.results))
         self.assertEqual('foo', c.results[0].metric.name)
         self.assertEqual(['foo=1'], c.perfdata)
@@ -63,7 +63,7 @@ class CheckTest(unittest.TestCase):
 
         ctx = nagiosplugin.ScalarContext('bar', '1', '1')
         c = Check(ctx)
-        c.evaluate_resource(R2_MetricCustomContext())
+        c._evaluate_resource(R2_MetricCustomContext())
         self.assertEqual(c.results[0].metric.contextobj, ctx)
 
     def test_evaluate_resource_catches_checkerror(self):
@@ -72,7 +72,7 @@ class CheckTest(unittest.TestCase):
                 raise nagiosplugin.CheckError('problem')
 
         c = Check()
-        c.evaluate_resource(R3_Faulty())
+        c._evaluate_resource(R3_Faulty())
         result = c.results[0]
         self.assertEqual(nagiosplugin.Unknown, result.state)
         self.assertEqual('problem', result.reason)
@@ -111,7 +111,7 @@ class CheckTest(unittest.TestCase):
 
     def test_summary_str_calls_ok_if_state_ok(self):
         c = Check(FakeSummary())
-        c.evaluate_resource(R1_MetricDefaultContext())
+        c._evaluate_resource(R1_MetricDefaultContext())
         self.assertEqual("I'm feelin' good", c.summary_str)
 
     def test_summary_str_calls_problem_if_state_not_ok(self):

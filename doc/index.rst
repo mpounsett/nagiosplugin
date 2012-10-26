@@ -1,19 +1,18 @@
-################################
-The `nagiosplugin` Class Library
-################################
-
-.. include:: ../README.txt
+############################
+`nagiosplugin` Documentation
+############################
 
 This documentation covers nagiosplugin |version|.
-
-.. py:currentmodule:: nagiosplugin
 
 Contents
 ========
 
 .. toctree::
+   :maxdepth: 3
 
+   readme
    tutorial/index
+   api/index
    glossary
    history
 
