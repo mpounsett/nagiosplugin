@@ -7,7 +7,7 @@ from .result import Result, ScalarResult
 from .state import Ok, Warn, Critical
 
 
-class Context(object):
+class Context:
 
     def __init__(self, name, fmt_metric=None, result_cls=Result):
         self.name = name

@@ -33,7 +33,7 @@ class Load(nagiosplugin.Resource):
     def probe(self):
         logging.info('reading load from /proc/loadavg')
         with open('/proc/loadavg') as loadavg:
-            load = loadavg.readline().split(None, 3)[0:3]
+            load = loadavg.readline().split()[0:3]
         logging.debug('raw load is %s', load)
         cpus = self.cpus() if self.percpu else 1
         load = [float(l) / cpus for l in load]
