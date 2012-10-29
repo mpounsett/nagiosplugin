@@ -32,7 +32,7 @@ class Runtime:
 
     instance = None
     check = None
-    _verbose = 0
+    _verbose = 1
     timeout = None
     logchan = None
     output = None
