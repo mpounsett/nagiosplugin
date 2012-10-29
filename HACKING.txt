@@ -5,9 +5,9 @@ Getting the source
 ------------------
 
 The source can be obtained via mercurial from
-https://code.gocept.com/hg/public/nagiosplugin::
+https://bitbucket.org/gocept/nagiosplugin::
 
-   hg clone https://code.gocept.com/hg/public/nagiosplugin
+   hg clone https://bitbucket.org/gocept/nagiosplugin
 
 
 Invoke setup.py directly

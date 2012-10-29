@@ -17,7 +17,7 @@ setup(
     description='Class library for writing Nagios (Icinga) plugins',
     long_description=README + '\n\n' + HISTORY + '\n\n' + HACKING,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Plugins',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',

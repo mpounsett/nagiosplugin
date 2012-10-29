@@ -8,6 +8,8 @@ Release History
 - Improve error reporting for missing contexts.
 - Exit with code 3 if no metrics have been generated.
 - Improve default Summary.verbose() to list all threshold violations.
+- Move main source repository to https://bitbucket.org/gocept/nagiosplugin/
+  (#11561).
 
 
 1.0.0a2 (2012-10-26)
