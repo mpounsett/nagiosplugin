@@ -2,13 +2,12 @@
 # See also LICENSE.txt
 
 from .state import Ok
-import logging
 
 
 class Summary:
 
     def ok(self, results):
-        return str(results.first_significant)
+        return str(results[0])
 
     def problem(self, results):
         try:
@@ -17,7 +16,9 @@ class Summary:
             return 'no check results'
 
     def verbose(self, results):
+        msgs = []
         for result in results:
             if result.state == Ok:
                 continue
-            logging.info('%s: %s', result.state, result)
+            msgs.append('{}: {}'.format(result.state, result))
+        return msgs
