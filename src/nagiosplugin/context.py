@@ -9,10 +9,15 @@ from .state import Ok, Warn, Critical
 
 class Context:
 
-    def __init__(self, name, fmt_metric=None, result_cls=Result):
+    fmt_metric = '{name} is {valueunit}'
+    result_cls = Result
+
+    def __init__(self, name, fmt_metric=None, result_cls=None):
         self.name = name
-        self.fmt_metric = fmt_metric or '{name} is {valueunit}'
-        self.result_cls = result_cls
+        if fmt_metric is not None:
+            self.fmt_metric = fmt_metric
+        if result_cls is not None:
+            self.result_cls = result_cls
 
     def evaluate(self, metric, resource):
         return self.result_cls(Ok, metric=metric)
