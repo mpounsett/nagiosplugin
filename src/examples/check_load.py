@@ -5,7 +5,6 @@
 """Nagios/Icinga plugin to check system load."""
 
 import argparse
-import itertools
 import logging
 import nagiosplugin
 import subprocess
@@ -37,7 +36,7 @@ class Load(nagiosplugin.Resource):
         logging.debug('raw load is %s', load)
         cpus = self.cpus() if self.percpu else 1
         load = [float(l) / cpus for l in load]
-        for period, i in zip([1, 5, 15], itertools.count()):
+        for i, period in enumerate([1, 5, 15]):
             yield nagiosplugin.Metric('load%d' % period, load[i], min=0,
                                       context='load')
 
