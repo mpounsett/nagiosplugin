@@ -60,8 +60,7 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     @classmethod
     def _verify(cls, start, end):
         """Throw ValueError if the range is not consistent."""
-        if (start is not None and end is not None and
-            start > end):
+        if (start is not None and end is not None and start > end):
             raise ValueError('start %s must not be greater than end %s' % (
                              start, end))
 

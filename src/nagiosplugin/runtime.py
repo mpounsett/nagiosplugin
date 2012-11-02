@@ -15,8 +15,6 @@ import functools
 import traceback
 
 
-
-
 def guarded(func):
     @functools.wraps(func)
     def wrapper():

@@ -16,7 +16,7 @@ def quote(label):
 
 
 class Performance(collections.namedtuple('Performance', [
-    'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
+        'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
 
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
         if len(label) > 20:
