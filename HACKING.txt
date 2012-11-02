@@ -24,6 +24,10 @@ Then launch the usual buildout steps::
    bin/python3.2 bootstrap.py
    bin/buildout
 
+If you experience version conflicts with distutils, be sure to use a current
+virtualenv version. The developers use virtualenv 1.8.2.
+
+
 Using zc.buildout with Python 2
 -------------------------------
 
