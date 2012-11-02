@@ -52,6 +52,13 @@ class CookieTest(unittest.TestCase):
         self.assertFalse(os.path.exists(self.tf.name + '.new'))
 
     def test_double_close_raises_no_exception(self):
-        with Cookie(self.tf.name) as c:
-            c.close()
+        c = Cookie(self.tf.name)
+        c.open()
+        c.close()
+        c.close()
         self.assertTrue(True)
+
+    def test_close_within_with_block_fails(self):
+        with self.assertRaises(IOError):
+            with Cookie(self.tf.name) as c:
+                c.close()

@@ -60,7 +60,7 @@ class Cookie(UserDict, object):
 
     def commit(self):
         if not self.fh:
-            return
+            raise IOError('cannot commit closed Cookie', self.path)
         self.fh.seek(0)
         self.fh.truncate()
         json.dump(self.data, self.fh, indent=1)
