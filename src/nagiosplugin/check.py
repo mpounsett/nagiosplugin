@@ -71,8 +71,8 @@ class Check(object):
             metric = None
             metrics = resource.probe()
             if not metrics:
-                logging.warn('resource %s did not produce any metric',
-                             resource.name)
+                logging.warning('resource %s did not produce any metric',
+                                resource.name)
             for metric in metrics:
                 context = self.contexts[metric.context]
                 metric = metric.replace(contextobj=context, resource=resource)
