@@ -4,6 +4,7 @@
 from nagiosplugin.multiarg import MultiArg
 import unittest
 
+
 class MultiargTest(unittest.TestCase):
 
     def test_len(self):

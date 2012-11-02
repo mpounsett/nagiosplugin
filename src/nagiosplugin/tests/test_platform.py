@@ -6,6 +6,7 @@ from nagiosplugin.error import Timeout
 import unittest
 import time
 
+
 class PlatformTest(unittest.TestCase):
 
     def test_timeout(self):

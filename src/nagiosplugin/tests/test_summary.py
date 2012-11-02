@@ -6,6 +6,7 @@ from nagiosplugin.result import Result
 from nagiosplugin import state
 import unittest
 
+
 class SummaryTest(unittest.TestCase):
 
     def test_ok_returns_first_result(self):

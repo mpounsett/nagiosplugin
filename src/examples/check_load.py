@@ -41,7 +41,6 @@ class Load(nagiosplugin.Resource):
                                       context='load')
 
 
-
 # data presentation
 
 class LoadSummary(nagiosplugin.Summary):
