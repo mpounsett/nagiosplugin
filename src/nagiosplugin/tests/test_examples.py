@@ -6,6 +6,9 @@ import re
 import subprocess
 import sys
 import unittest
+import os.path as p
+
+base_path = p.normpath(p.join(p.dirname(p.abspath(__file__)), '..', '..'))
 
 
 class ExamplesTest(unittest.TestCase):
@@ -21,13 +24,13 @@ USERS OK - \\d+ users logged in
 users: .*
 | total=\\d+;;;0 unique=\\d+;;;0
 """)]:
-            p = subprocess.Popen([
+            proc = subprocess.Popen([
                 sys.executable, pkg_resources.resource_filename(
                     'examples', program), '-v'], stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE)
-            out, err = p.communicate()
+                stderr=subprocess.PIPE, env={'PYTHONPATH': base_path})
+            out, err = proc.communicate()
+            self.assertEqual(err.decode(), '')
             self.assertTrue(re.match(regexp, out.decode()) is not None,
                             '"{}" does not match "{}"'.format(
                                 out.decode(), regexp))
-            self.assertEqual(err.decode(), '')
-            self.assertEqual(0, p.returncode)
+            self.assertEqual(0, proc.returncode)
