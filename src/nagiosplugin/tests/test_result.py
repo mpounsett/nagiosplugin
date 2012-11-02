@@ -44,6 +44,10 @@ class ScalarResultTest(unittest.TestCase):
             str(ScalarResult(Warn, 'bad day',
                              nagiosplugin.Metric('foo', 2))))
 
+    def test_str_fall_back_to_description_if_no_reason_given(self):
+        self.assertEqual('2s', str(ScalarResult(
+            Critical, None, nagiosplugin.Metric('time', 2, 's'))))
+
 
 class ResultsTest(unittest.TestCase):
 
