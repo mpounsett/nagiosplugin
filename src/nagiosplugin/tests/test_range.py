@@ -62,6 +62,9 @@ class RangeParseTest(unittest.TestCase):
         self.assertTrue(2.5 in r)
         self.assertFalse(2.6 in r)
 
+    def test_repr(self):
+        self.assertEqual("Range('2:3')", repr(Range('2:3')))
+
 
 class RangeStrTest(unittest.TestCase):
 
@@ -85,3 +88,9 @@ class RangeStrTest(unittest.TestCase):
 
     def test_large_number(self):
         self.assertEqual('2800000000', str(Range('2800000000')))
+
+    def test_violation_outside(self):
+        self.assertEqual('outside 2:3', Range('2:3').violation)
+
+    def test_violation_greater_than(self):
+        self.assertEqual('greater than 4', Range('4').violation)
