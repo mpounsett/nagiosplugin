@@ -64,7 +64,7 @@ class Runtime(object):
                 exc_type, value)[0].strip())
         if self.verbose > 0:
             self.output.add_longoutput(traceback.format_exc())
-        print(self.output, end='', file=self.stdout)
+        print('{}'.format(self.output), end='', file=self.stdout)
         self.exitcode = 3
         self.sysexit()
 
@@ -102,7 +102,7 @@ class Runtime(object):
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)
-        print(self.output, end='', file=self.stdout)
+        print('{}'.format(self.output), end='', file=self.stdout)
         self.sysexit()
 
     def sysexit(self):
