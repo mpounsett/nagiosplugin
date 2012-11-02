@@ -4,7 +4,7 @@
 from .state import Ok
 
 
-class Summary:
+class Summary(object):
 
     def ok(self, results):
         return str(results[0])

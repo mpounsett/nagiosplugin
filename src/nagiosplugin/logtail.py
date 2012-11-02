@@ -4,7 +4,7 @@
 import os
 
 
-class LogTail:
+class LogTail(object):
 
     def __init__(self, path, cookie, mode='r'):
         self.path = os.path.abspath(path)

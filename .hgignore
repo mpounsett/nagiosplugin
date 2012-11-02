@@ -20,3 +20,6 @@ setuptools_hg*
 tags
 tmp
 .todo
+eggs
+.coverage
+coverage

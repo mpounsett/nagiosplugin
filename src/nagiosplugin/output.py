@@ -4,10 +4,16 @@
 import itertools
 
 
-class Output:
+def filter_output(output, filtered):
+    """ Filters out characters from output """
+    for char in filtered:
+        output = output.replace(char, '')
+    return output
+
+
+class Output(object):
 
     ILLEGAL = '|'
-    ILLEGAL_TRANSLATE = ''.maketrans('', '', ILLEGAL)
 
     def __init__(self, logchan, verbose=0):
         self.logchan = logchan
@@ -65,7 +71,7 @@ class Output:
 
     def _screen_chars(self, text, where):
         text = text.rstrip('\n')
-        screened = text.translate(self.ILLEGAL_TRANSLATE)
+        screened = filter_output(text, self.ILLEGAL)
         if screened != text:
             self.warnings.append(self._illegal_chars_warning(
                 where, set(text) - set(screened)))

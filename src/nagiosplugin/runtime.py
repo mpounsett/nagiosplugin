@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 """System interface, exception handling, logging."""
+from __future__ import print_function, unicode_literals
 
 from .output import Output
 from .error import Timeout
@@ -12,6 +13,8 @@ import numbers
 import sys
 import functools
 import traceback
+
+
 
 
 def guarded(func):
@@ -28,7 +31,7 @@ def guarded(func):
     return wrapper
 
 
-class Runtime:
+class Runtime(object):
 
     instance = None
     check = None

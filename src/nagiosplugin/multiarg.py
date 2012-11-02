@@ -1,4 +1,4 @@
-class MultiArg:
+class MultiArg(object):
 
     def __init__(self, args, fill=None, splitchar=','):
         if isinstance(args, list):

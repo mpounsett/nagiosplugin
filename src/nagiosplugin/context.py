@@ -7,7 +7,7 @@ from .result import Result, ScalarResult
 from .state import Ok, Warn, Critical
 
 
-class Context:
+class Context(object):
 
     fmt_metric = '{name} is {valueunit}'
     result_cls = Result
