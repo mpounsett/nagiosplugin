@@ -37,6 +37,7 @@ class Runtime(object):
     timeout = None
     logchan = None
     output = None
+    stdout = sys.stdout
     exitcode = 70  # EX_SOFTWARE
 
     def __new__(cls):
@@ -63,8 +64,9 @@ class Runtime(object):
                 exc_type, value)[0].strip())
         if self.verbose > 0:
             self.output.add_longoutput(traceback.format_exc())
-        print(self.output, end='', file=sys.stdout)
-        sys.exit(3)
+        print(self.output, end='', file=self.stdout)
+        self.exitcode = 3
+        self.sysexit()
 
     @property
     def verbose(self):
@@ -78,6 +80,7 @@ class Runtime(object):
             self._verbose = len(verbose or [])
         if self._verbose >= 3:
             self.logchan.setLevel(logging.DEBUG)
+            self._verbose = 3
         elif self._verbose == 2:
             self.logchan.setLevel(logging.INFO)
         else:
@@ -99,5 +102,8 @@ class Runtime(object):
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)
-        print(self.output, end='', file=sys.stdout)
+        print(self.output, end='', file=self.stdout)
+        self.sysexit()
+
+    def sysexit(self):
         sys.exit(self.exitcode)
