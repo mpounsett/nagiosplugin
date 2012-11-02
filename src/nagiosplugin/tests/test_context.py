@@ -1,9 +1,28 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from nagiosplugin.context import Context, Contexts
+from nagiosplugin.context import Context, ScalarContext, Contexts
+from nagiosplugin.metric import Metric
+from nagiosplugin.range import Range
+from nagiosplugin.result import Result
+from nagiosplugin import state
 import nagiosplugin
 import unittest
+
+
+class ScalarContextTest(unittest.TestCase):
+
+    def test_state_ranges_values(self):
+        test_cases = [
+            (1, state.Ok, None),
+            (3, state.Warn, Range('2')),
+            (5, state.Critical, Range('4'))
+        ]
+        c = ScalarContext('ctx', Range('2'), Range('4'))
+        for value, exp_state, exp_reason in test_cases:
+            m = Metric('time', value)
+            self.assertEqual(Result(exp_state, exp_reason, m),
+                             c.evaluate(m, None))
 
 
 class ContextsTest(unittest.TestCase):
@@ -19,6 +38,12 @@ class ContextsTest(unittest.TestCase):
         ctx.add(Context('foo'))
         self.assertTrue('foo' in ctx)
         self.assertFalse('bar' in ctx)
+
+    def test_iter(self):
+        ctx = Contexts()
+        ctx.add(Context('foo'))
+        # includes default contexts
+        self.assertEqual(['default', 'foo', 'null'], sorted(list(ctx)))
 
     def test_fmt_template(self):
         m1 = nagiosplugin.Metric('foo', 1, 's', min=0)

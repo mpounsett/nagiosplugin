@@ -59,6 +59,8 @@ class Cookie(UserDict, object):
         self.fh = None
 
     def commit(self):
+        if not self.fh:
+            return
         self.fh.seek(0)
         self.fh.truncate()
         json.dump(self.data, self.fh, indent=1)
