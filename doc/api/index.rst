@@ -21,5 +21,11 @@ use cases.
    metric
    resource
 
+.. Style
+   * Talk about class/method/attribute in third person.
+   * Involved personas: 1. plugin authors, 2. library developers
+   * Address the documentation reader in second person, i.e. while referring to
+     another section.
+   * Use RFC2119 keywords where appropriate.
 
 .. vim: set spell spelllang=en:
