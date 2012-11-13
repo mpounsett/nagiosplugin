@@ -2,6 +2,9 @@
 branch = True
 source =
     src/nagiosplugin
+omit =
+    src/nagiosplugin/platform/*
+    src/nagiosplugin/compat.py
 
 [report]
 precision = 2

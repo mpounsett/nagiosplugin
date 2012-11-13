@@ -1,26 +1,10 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from .compat import UserDict, open_encoded
 from .platform import flock_exclusive
-
-try:
-    from collections import UserDict
-except ImportError:
-    from UserDict import UserDict
-
 import json
 import os
-
-
-def open_file(path, mode, buffering=-1, encoding=None):
-    """ Helper for opening a file with a specified encoding """
-    if not encoding:
-        return open(path, mode, buffering=buffering)
-    try:
-        return open(path, mode, buffering=buffering, encoding=encoding)
-    except TypeError:
-        import codecs
-        return codecs.open(path, mode, encoding, 'strict', buffering)
 
 
 class Cookie(UserDict, object):
@@ -41,7 +25,7 @@ class Cookie(UserDict, object):
         self.close()
 
     def open(self, mode='a+', encoding=None):
-        self.fh = open_file(self.path, mode, 16384, encoding)
+        self.fh = open_encoded(self.path, mode, 8 * 4096, encoding)
         flock_exclusive(self.fh)
         self.fh.seek(0)
         try:

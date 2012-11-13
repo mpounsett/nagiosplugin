@@ -48,7 +48,19 @@ When the buildout succeeds, run the unit test by invoking::
 
    bin/test
 
-Run the supplied examples with the local interpreter::
+nagiosplugin also includes support for coverage reports. It aims at 100% test
+coverage where possible. The preferred way to get a coverate report is to use ::
+
+   bin/createcoverage
+
+to determine test coverage and open the report in a web browser. Alternatively,
+run ::
+
+   bin/coverage run bin/test
+
+to get a purely text-based coverage report.
+
+You may run the supplied examples with the local interpreter::
 
    bin/py src/examples/check_load.py
 
