@@ -3,7 +3,7 @@
 
 """System interface, exception handling, logging."""
 
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
 from .output import Output
 from .error import Timeout
 from .platform import with_timeout

@@ -1,8 +1,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from __future__ import print_function
-
+from __future__ import unicode_literals, print_function
 from nagiosplugin.output import Output
 import nagiosplugin
 import io
