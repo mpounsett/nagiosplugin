@@ -8,29 +8,35 @@ import sys
 import unittest
 import os.path as p
 
-base_path = p.normpath(p.join(p.dirname(p.abspath(__file__)), '..', '..'))
-
 
 class ExamplesTest(unittest.TestCase):
+    base = p.normpath(p.join(p.dirname(p.abspath(__file__)), '..', '..'))
 
-    def test_integration(self):
-        for program, regexp in [
-            ('check_load.py', """\
+    def _run_example(self, program, regexp):
+        proc = subprocess.Popen([
+            sys.executable, pkg_resources.resource_filename(
+                'nagiosplugin.examples', program), '-v'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, env={'PYTHONPATH': self.base})
+        out, err = proc.communicate()
+        self.assertEqual(err.decode(), '')
+        self.assertTrue(re.match(regexp, out.decode()) is not None,
+                        '"{}" does not match "{}"'.format(
+                            out.decode(), regexp))
+        self.assertEqual(0, proc.returncode)
+
+    def test_check_load(self):
+        self._run_example('check_load.py', """\
 LOAD OK - loadavg is [0-9., ]+
 | load15=[0-9.]+;;;0 load1=[0-9.]+;;;0 load5=[0-9.]+;;;0
-"""),
-            ('check_users.py', """\
+""")
+
+    def test_check_users(self):
+        self._run_example('check_users.py', """\
 USERS OK - \\d+ users logged in
 users: .*
 | total=\\d+;;;0 unique=\\d+;;;0
-""")]:
-            proc = subprocess.Popen([
-                sys.executable, pkg_resources.resource_filename(
-                    'examples', program), '-v'], stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE, env={'PYTHONPATH': base_path})
-            out, err = proc.communicate()
-            self.assertEqual(err.decode(), '')
-            self.assertTrue(re.match(regexp, out.decode()) is not None,
-                            '"{}" does not match "{}"'.format(
-                                out.decode(), regexp))
-            self.assertEqual(0, proc.returncode)
+""")
+
+    def test_check_world(self):
+        self._run_example('check_world.py', '^WORLD OK$')

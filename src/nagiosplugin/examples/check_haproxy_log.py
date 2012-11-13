@@ -1,4 +1,4 @@
-#!/usr/bin/python3.2
+#!python
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 

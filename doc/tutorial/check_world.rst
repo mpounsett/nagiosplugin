@@ -15,7 +15,7 @@ Resource classes must define a :py:meth:`Resource.probe` method which returns a
 list of metrics. We just return a single :py:class:`Metric` object that states
 that the world exists.
 
-.. literalinclude:: /../src/examples/check_world.py
+.. literalinclude:: /../src/nagiosplugin/examples/check_world.py
 
 We don't have a context to evaluate the returned metric yet, so we resort to the
 built-in "null" context. The "null" context does nothing with its associated
