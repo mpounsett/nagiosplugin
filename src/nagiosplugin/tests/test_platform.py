@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from nagiosplugin.platform import with_timeout
-from nagiosplugin.error import Timeout
+import nagiosplugin
 import unittest
 import time
 
@@ -10,5 +10,5 @@ import time
 class PlatformTest(unittest.TestCase):
 
     def test_timeout(self):
-        with self.assertRaises(Timeout):
+        with self.assertRaises(nagiosplugin.Timeout):
             with_timeout(1, time.sleep, 2)

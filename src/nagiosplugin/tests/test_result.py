@@ -101,3 +101,14 @@ class ResultsTest(unittest.TestCase):
         r.add(Result(Critical), Result(Unknown, 'r1'), Result(Unknown, 'r2'),
               Result(Ok))
         self.assertEqual(Result(Unknown, 'r1'), r.first_significant)
+
+    def test_contains(self):
+        results = Results()
+        r1 = Result(Unknown, 'r1', nagiosplugin.Metric('m1', 1))
+        results.add(r1)
+        self.assertTrue('m1' in results)
+        self.assertFalse('m2' in results)
+
+    def test_add_in_init(self):
+        results = Results(Result(Unknown, 'r1'), Result(Unknown, 'r2'))
+        self.assertEqual(2, len(results))

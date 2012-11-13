@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 """System interface, exception handling, logging."""
-from __future__ import print_function, unicode_literals
 
+from __future__ import print_function
 from .output import Output
 from .error import Timeout
 from .platform import with_timeout

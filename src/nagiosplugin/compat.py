@@ -13,6 +13,12 @@ try:
 except ImportError:
     from UserDict import UserDict
 
+# StringIO
+try:
+    from io import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 
 # open has no encoding parameter in Python 2
 def open_encoded(path, mode, buffering=-1, encoding=None):

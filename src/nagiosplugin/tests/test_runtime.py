@@ -1,15 +1,9 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
-from __future__ import unicode_literals
-
-try:
-    from io import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 from nagiosplugin.runtime import Runtime, guarded
-from nagiosplugin import state
-from nagiosplugin.error import Timeout
+from nagiosplugin.compat import StringIO
+import nagiosplugin
 import logging
 import unittest
 
@@ -19,7 +13,7 @@ def make_check():
         summary_str = 'summary'
         verbose_str = 'long output'
         name = 'check'
-        state = state.Ok
+        state = nagiosplugin.Ok
         exitcode = 0
         perfdata = None
 
@@ -97,6 +91,6 @@ class RuntimeExceptionTest(RuntimeTestBase):
         self.assertIn('Traceback', self.r.stdout.getvalue())
 
     def test_handle_timeout_exception(self):
-        self.run_main_with_exception(Timeout('1s'))
+        self.run_main_with_exception(nagiosplugin.Timeout('1s'))
         self.assertIn('UNKNOWN: Timeout: check execution aborted after 1s',
                       self.r.stdout.getvalue())

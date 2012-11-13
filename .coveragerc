@@ -1,10 +1,13 @@
 [run]
 branch = True
 source =
-    src/nagiosplugin
+	src/nagiosplugin
 omit =
-    src/nagiosplugin/platform/*
-    src/nagiosplugin/compat.py
+	src/nagiosplugin/platform/*
+	src/nagiosplugin/compat.py
 
 [report]
 precision = 2
+exclude_lines =
+	pragma: no cover
+	sys.exit\(

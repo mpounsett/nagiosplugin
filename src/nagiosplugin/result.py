@@ -41,10 +41,12 @@ class ScalarResult(Result):
 
 class Results:
 
-    def __init__(self):
+    def __init__(self, *results):
         self.results = []
         self.by_state = collections.defaultdict(list)
         self.by_name = {}
+        if results:
+            self.add(*results)
 
     def add(self, *results):
         for result in results:
