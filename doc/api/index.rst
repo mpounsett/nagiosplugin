@@ -1,5 +1,6 @@
+********
 API docs
-========
+********
 
 .. module:: nagiosplugin
 
@@ -16,10 +17,13 @@ All relevant classes are documented below in alphabetical order. Refer to the
 use cases.
 
 .. toctree::
+   :maxdepth: 1
 
    check
-   metric
    resource
+   metric
+   context
+   summary
 
 .. Style
    * Talk about class/method/attribute in third person.
