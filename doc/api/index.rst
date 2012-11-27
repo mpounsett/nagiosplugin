@@ -24,6 +24,7 @@ use cases.
    metric
    context
    summary
+   state
 
 .. Style
    * Talk about class/method/attribute in third person.

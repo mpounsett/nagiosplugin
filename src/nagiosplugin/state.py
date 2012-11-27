@@ -1,6 +1,8 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+"""Classes (with singletons) to represent check outcomes."""
+
 import collections
 import functools
 
@@ -10,6 +12,12 @@ def worst(states):
 
 
 class ServiceState(collections.namedtuple('ServiceState', 'code text')):
+    """Abstract base class for all states.
+
+    Each state has two constant attributes: :attr:`text` is the short text
+    representation which is printed for example at the beginning of the summary
+    line. :attr:`code` is the corresponding exit code.
+    """
 
     def __str__(self):
         return self.text
