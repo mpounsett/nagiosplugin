@@ -12,34 +12,26 @@ https://bitbucket.org/gocept/nagiosplugin::
 This package supports installation in a virtualenv using zc.buildout.
 
 
-Using zc.buildout with Python 3
--------------------------------
+Creating a build with zc.buildout
+---------------------------------
 
 First, create a virtualenv if not already present::
 
-   virtualenv --python=python3.2 .
+   virtualenv -p python3.2 .
+
+If you want to use Python 2.7, specify this Python version while creating the
+virtualenv::
+
+   virtualenv -p python2.7 .
 
 Then launch the usual buildout steps::
 
-   bin/python3.2 bootstrap.py
+   bin/python3.2 bootstrap.py -t
    bin/buildout
 
 If you experience version conflicts with distutils, be sure to use a current
-virtualenv version. The developers use virtualenv 1.8.2.
+virtualenv version. The library developers use virtualenv 1.8.2.
 
-
-Using zc.buildout with Python 2
--------------------------------
-
-Currently we need a special configuration for Python 2. Create a virtualenv
-first::
-
-   virtualenv --python=python2.7 .
-
-Then run buildout with Python 2 specific configuration files::
-
-   bin/python2.7 bootstrap.py -c buildout-2.x.cfg
-   bin/buildout -c buildout-2.x.cfg
 
 Running tests
 -------------
@@ -62,7 +54,8 @@ to get a purely text-based coverage report.
 
 You may run the supplied examples with the local interpreter::
 
-   bin/py src/examples/check_load.py
+   bin/py src/nagiosplugin/examples/check_load.py
+
 
 Documentation
 -------------
@@ -73,8 +66,8 @@ been running before to install Sphinx etc.)::
    make -C doc html
 
 
-Release HOWTO
-=============
+How to release
+--------------
 
 To make a release, we prefer `zest.releaser`_. To make a release, follow
 the standard procedure, which usually boils down to::
