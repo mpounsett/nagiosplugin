@@ -7,18 +7,16 @@ nagiosplugin.context
 :class:`Context` and :class:`ScalarContext` are imported into the main
 :mod:`nagiosplugin` name space.
 
-.. currentmodule:: nagiosplugin
-
 
 Context
 -------
 
-.. autoclass:: nagiosplugin.Context
+.. autoclass:: nagiosplugin.context.Context
 
 
 ScalarContext
 -------------
 
-.. autoclass:: nagiosplugin.ScalarContext
+.. autoclass:: nagiosplugin.context.ScalarContext
 
 .. vim: set spell spelllang=en:

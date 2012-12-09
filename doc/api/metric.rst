@@ -7,11 +7,9 @@ nagiosplugin.metric
 The :class:`Metric` class is imported into the main :mod:`nagiosplugin` name
 space.
 
-.. currentmodule:: nagiosplugin
-
 
 Metric
 ------
 
-.. autoclass:: nagiosplugin.Metric
+.. autoclass:: nagiosplugin.metric.Metric
    :special-members:

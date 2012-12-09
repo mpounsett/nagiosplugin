@@ -7,12 +7,10 @@ nagiosplugin.resource
 The :class:`Resource` class is imported into the main :mod:`nagiosplugin` name
 space.
 
-.. currentmodule:: nagiosplugin
-
 
 Resource
 --------
 
-.. autoclass:: nagiosplugin.Resource
+.. autoclass:: nagiosplugin.resource.Resource
 
 .. vim: set spell spelllang=en:

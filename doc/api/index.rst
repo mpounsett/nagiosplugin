@@ -26,6 +26,7 @@ use cases.
    summary
    state
 
+
 .. Style
    * Talk about class/method/attribute in third person.
    * Involved personas: 1. plugin authors, 2. library developers

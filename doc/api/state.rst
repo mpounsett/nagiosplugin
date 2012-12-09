@@ -4,11 +4,9 @@ nagiosplugin.state
 .. automodule:: nagiosplugin.state
    :no-members:
 
-.. currentmodule:: nagiosplugin
-
 The singletons :class:`Ok`, :class:`Warn`, :class:`Critical`, and
 :class:`Unknown` are imported into the main :mod:`nagiosplugin` name space. The
-:class:`nagiosplugin.state.ServiceState` base class is not since it is usually
+:class:`ServiceState` base class is not since it is usually
 not needed by plugin authors.
 
 
@@ -26,10 +24,10 @@ name to access the instance. Example::
    check_state = nagiosplugin.Critical
 
 
-.. autoclass:: nagiosplugin.Ok
-.. autoclass:: nagiosplugin.Warn
-.. autoclass:: nagiosplugin.Critical
-.. autoclass:: nagiosplugin.Unknown
+.. autoclass:: nagiosplugin.state.Ok
+.. autoclass:: nagiosplugin.state.Warn
+.. autoclass:: nagiosplugin.state.Critical
+.. autoclass:: nagiosplugin.state.Unknown
 
 .. vim: set spell spelllang=en:
 

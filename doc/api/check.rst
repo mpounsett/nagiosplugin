@@ -5,14 +5,13 @@ nagiosplugin.check
    :no-members:
 
 The :class:`Check` class is imported into the main :mod:`nagiosplugin` name
-space so there is no need to import :mod:`nagiosplugin.check` directly.
+space so there is no need to import :mod:`nagiosplugin.check`.
 
-.. currentmodule:: nagiosplugin
 
 Check
 -----
 
-.. autoclass:: nagiosplugin.Check
+.. autoclass:: nagiosplugin.check.Check
    :special-members:
 
    .. attribute:: results

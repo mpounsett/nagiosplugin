@@ -6,12 +6,10 @@ nagiosplugin.summary
 
 :class:`Summary` is imported into the main :mod:`nagiosplugin` name space.
 
-.. currentmodule:: nagiosplugin
-
 
 Summary
 -------
 
-.. autoclass:: nagiosplugin.Summary
+.. autoclass:: nagiosplugin.summary.Summary
 
 .. vim: set spell spelllang=en:
