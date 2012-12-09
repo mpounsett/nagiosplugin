@@ -75,7 +75,7 @@ class CheckTest(unittest.TestCase):
         c._evaluate_resource(R3_Faulty())
         result = c.results[0]
         self.assertEqual(nagiosplugin.Unknown, result.state)
-        self.assertEqual('problem', result.reason)
+        self.assertEqual('problem', result.hint)
 
     def test_call_evaluates_resources_and_compacts_perfdata(self):
         class R4_NoPerfdata(nagiosplugin.Resource):

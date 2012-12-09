@@ -16,8 +16,8 @@ import collections
 import numbers
 
 
-class Result(collections.namedtuple('Result', 'state reason metric')):
-    """Result(state[, reason[, metric]])
+class Result(collections.namedtuple('Result', 'state hint metric')):
+    """Result(state[, hint[, metric]])
 
     A Result object is
     typically emitted by a :class:`~nagiosplugin.context.Context` object
@@ -26,14 +26,14 @@ class Result(collections.namedtuple('Result', 'state reason metric')):
     authors may subclass Result to implement specific features.
 
     :param state: state object
-    :param reason: reason why this result arose
+    :param hint: reason why this result arose
     :param metric: reference to the
         :class:`~nagiosplugin.metric.Metric` this result was derived
         from
     """
 
-    def __new__(cls, state, reason=None, metric=None):
-        return tuple.__new__(cls, (state, reason, metric))
+    def __new__(cls, state, hint=None, metric=None):
+        return tuple.__new__(cls, (state, hint, metric))
 
     def __str__(self):
         """Textual result explanation.
@@ -41,7 +41,7 @@ class Result(collections.namedtuple('Result', 'state reason metric')):
         This method's output should return only a textual representation
         of the reason but not of the result's state.
         """
-        return self.reason or ''
+        return self.hint or ''
 
     @property
     def resource(self):
@@ -61,19 +61,19 @@ class ScalarResult(Result):
 
     A ScalarResult differs from Result in two ways: First, when the
     :class:`~nagiosplugin.range.Range` object which led to its creation
-    is passed as reason, it constructs an explanation automatically.
+    is passed as hint, it constructs an explanation automatically.
     Second, it always expects a metric to be present.
     """
 
-    def __new__(cls, state, reason, metric):
+    def __new__(cls, state, hint, metric):
         if not metric:
             raise RuntimeError('ScalarResult always needs metric')
-        return tuple.__new__(cls, (state, reason, metric))
+        return tuple.__new__(cls, (state, hint, metric))
 
     def __str__(self):
-        if self.reason:
-            hint = (self.reason.violation if hasattr(self.reason, 'violation')
-                    else self.reason)
+        if self.hint:
+            hint = (self.hint.violation if hasattr(self.hint, 'violation')
+                    else self.hint)
             return '{} ({})'.format(self.metric.description, hint)
         return str(self.metric.description)
 
