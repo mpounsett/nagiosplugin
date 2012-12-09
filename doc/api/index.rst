@@ -23,8 +23,9 @@ use cases.
    resource
    metric
    context
-   summary
    state
+   result
+   summary
 
 
 .. Style
