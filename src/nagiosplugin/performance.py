@@ -1,3 +1,8 @@
+# Copyright (c) 2012 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+"""Performace data (perfdata) representation and associated functions. """
+
 import collections
 import itertools
 import re
@@ -17,6 +22,20 @@ def quote(label):
 
 class Performance(collections.namedtuple('Performance', [
         'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
+    """Performance(label, value[, uom[, warn[, crit[, min[, max]]]]])
+
+    Performance data record created from a metric in a context
+    (usually a :class:`nagiosplugin.context.ScalarContext`).
+
+    :param label: short identifier (20 chars max), results in graph titles for
+        example
+    :param value: measured value (usually an int, float, or bool)
+    :param uom: unit of measure -- use base units whereever possible
+    :param warn: warning range
+    :param crit: critical range
+    :param min: known value minimum (None for no minimum)
+    :param max: known value maximum (None for no maximum)
+    """
 
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
         if len(label) > 20:
@@ -29,6 +48,7 @@ class Performance(collections.namedtuple('Performance', [
             zap_none(min), zap_none(max))
 
     def __str__(self):
+        """String representation conforming to the plugin API."""
         out = ['%s=%s%s' % (quote(self.label), self.value, self.uom),
                str(self.warn), str(self.crit), str(self.min), str(self.max)]
         out = reversed(list(

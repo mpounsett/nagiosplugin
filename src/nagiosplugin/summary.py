@@ -13,7 +13,9 @@ class Summary(object):
     returned from a check. It must lead directly to the problem in the
     most concise way. To do so, :class:`Summary` has methods for
     status output in different situations which may be overriden
-    individuall by plugin authors.
+    individuall by plugin authors. This base class takes no parameters
+    in its constructor, but subclasses may provide more elaborate
+    constructures to represent global plugin state for example.
     """
 
     def ok(self, results):
@@ -23,7 +25,7 @@ class Summary(object):
         the first result. Thin usually corresponds with the first metric
         returned.
 
-        :param results: :class:`Results` container.
+        :param results: :class:`~nagiosplugin.result.Results` container.
         :returns: single-line string.
         """
 
@@ -36,7 +38,7 @@ class Summary(object):
         first significant result, i.e. the result with the "worst"
         state.
 
-        :param results: :class:`Results` container.
+        :param results: :class:`~nagiosplugin.result.Results` container.
         :returns: single-line string.
         """
 
@@ -51,7 +53,7 @@ class Summary(object):
         The default implementation returns a list of all non-ok states,
         one a line.
 
-        :param results: :class:`Results` container.
+        :param results: :class:`~nagiosplugin.result.Results` container.
         :returns: list of strings.
         """
 

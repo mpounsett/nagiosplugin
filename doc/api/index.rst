@@ -24,6 +24,7 @@ use cases.
    metric
    context
    state
+   performance
    result
    summary
 
