@@ -17,29 +17,32 @@ import numbers
 
 
 class Result(collections.namedtuple('Result', 'state hint metric')):
-    """Result(state[, hint[, metric]])
+    """Check result value.
 
     A Result object is
     typically emitted by a :class:`~nagiosplugin.context.Context` object
-    and represents the outcome of an evaluation. It typically contains a
+    and represents the outcome of an evaluation. It contains a
     :class:`~nagiosplugin.state.State` as well as an explanation. Plugin
     authors may subclass Result to implement specific features.
-
-    :param state: state object
-    :param hint: reason why this result arose
-    :param metric: reference to the
-        :class:`~nagiosplugin.metric.Metric` this result was derived
-        from
     """
 
     def __new__(cls, state, hint=None, metric=None):
+        """Create new Result object.
+
+        :param state: state object
+        :param hint: reason why this result arose
+        :param metric: reference to the
+            :class:`~nagiosplugin.metric.Metric` this result was derived
+            from
+        """
         return tuple.__new__(cls, (state, hint, metric))
 
     def __str__(self):
         """Textual result explanation.
 
-        This method's output should return only a textual representation
-        of the reason but not of the result's state.
+        This method's output should return only a text for the reason
+        but not the result's state. The latter is rendered
+        independently.
         """
         return self.hint or ''
 

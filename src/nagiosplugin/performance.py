@@ -1,7 +1,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Performace data (perfdata) representation and associated functions. """
+"""Performance data (perfdata) representation and associated functions. """
 
 import collections
 import itertools
@@ -22,22 +22,23 @@ def quote(label):
 
 class Performance(collections.namedtuple('Performance', [
         'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
-    """Performance(label, value[, uom[, warn[, crit[, min[, max]]]]])
-
+    """
     Performance data record created from a metric in a context
-    (usually a :class:`nagiosplugin.context.ScalarContext`).
-
-    :param label: short identifier (20 chars max), results in graph titles for
-        example
-    :param value: measured value (usually an int, float, or bool)
-    :param uom: unit of measure -- use base units whereever possible
-    :param warn: warning range
-    :param crit: critical range
-    :param min: known value minimum (None for no minimum)
-    :param max: known value maximum (None for no maximum)
+    (usually a :class:`~nagiosplugin.context.ScalarContext`).
     """
 
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
+        """Create new Performance object.
+
+        :param label: short identifier (20 chars max), results in graph titles
+            for example
+        :param value: measured value (usually an int, float, or bool)
+        :param uom: unit of measure -- use base units whereever possible
+        :param warn: warning range
+        :param crit: critical range
+        :param min: known value minimum (None for no minimum)
+        :param max: known value maximum (None for no maximum)
+        """
         if len(label) > 20:
             raise RuntimeError('label is too long (20 chars max)', label)
         if "'" in label:

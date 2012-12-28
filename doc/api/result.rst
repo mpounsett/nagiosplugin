@@ -12,7 +12,10 @@ Result
 ------
 
 .. autoclass:: nagiosplugin.result.Result
-   :special-members: __str__
+
+   .. automethod:: __new__
+
+   .. automethod:: __str__
 
 
 ScalarResult
@@ -25,7 +28,14 @@ Results
 -------
 
 .. autoclass:: nagiosplugin.result.Results
-   :special-members: __iter__, __len__, __getitem__, __contains__
+
+   .. automethod:: __iter__
+
+   .. automethod:: __len__
+
+   .. automethod:: __getitem__
+
+   .. automethod:: __contains__
 
 
 .. vim: set spell spelllang=en:

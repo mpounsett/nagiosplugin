@@ -13,29 +13,31 @@ class Metric(collections.namedtuple(
 
     The value should be expressed in terms of base units, so
     Metric('swap', 10240, 'B') is better than Metric('swap', 10, 'kiB').
-
-    :param name: short internal identifier for the value -- appears also
-        in the performance data
-    :param value: data point, usually has a boolen or numeric type,
-        but other types are also possible
-    :param uom: :term:`unit of measure`, preferrably as ISO abbreviation like
-        "s"
-    :param min: minimum value or None if there is no known minimum
-    :param max: maximum value or None if there is no known maximum
-    :param context: name of the associated context
-    :param contextobj: reference to the associated context object (set
-        automatically by :class:`Check`)
-    :param resource: reference to the originating :class:`Resource` (set
-        automatically by :class:`Check`)
     """
 
     def __new__(cls, name, value, uom=None, min=None, max=None, context=None,
                 contextobj=None, resource=None):
+        """Create new Metric instance.
+
+        :param name: short internal identifier for the value -- appears
+            also in the performance data
+        :param value: data point, usually has a boolen or numeric type,
+            but other types are also possible
+        :param uom: :term:`unit of measure`, preferrably as ISO
+            abbreviation like "s"
+        :param min: minimum value or None if there is no known minimum
+        :param max: maximum value or None if there is no known maximum
+        :param context: name of the associated context
+        :param contextobj: reference to the associated context object
+            (set automatically by :class:`Check`)
+        :param resource: reference to the originating :class:`Resource`
+            (set automatically by :class:`Check`)
+        """
         return tuple. __new__(cls, (
             name, value, uom, min, max, context or name, contextobj, resource))
 
     def __str__(self):
-        """:attr:`valueunit` string representation."""
+        """Same as :attr:`valueunit`."""
         return self.valueunit
 
     def replace(self, **attr):

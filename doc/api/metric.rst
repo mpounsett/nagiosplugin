@@ -12,4 +12,7 @@ Metric
 ------
 
 .. autoclass:: nagiosplugin.metric.Metric
-   :special-members:
+
+   .. automethod:: __new__
+
+   .. automethod:: __str__

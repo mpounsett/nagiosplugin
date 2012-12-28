@@ -19,7 +19,10 @@ Performance
 -----------
 
 .. autoclass:: nagiosplugin.performance.Performance
-   :special-members: __str__
+
+   .. automethod:: __new__
+
+   .. automethod:: __str__
 
 .. vim: set spell spelllang=en:
 

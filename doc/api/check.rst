@@ -12,7 +12,8 @@ Check
 -----
 
 .. autoclass:: nagiosplugin.check.Check
-   :special-members:
+
+   .. automethod:: __call__
 
    .. attribute:: results
 
