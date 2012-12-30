@@ -1,15 +1,19 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
+"""Access previously unseen parts of a growing text file."""
+
+from .compat import open_encoded
 import os
 
 
 class LogTail(object):
 
-    def __init__(self, path, cookie, mode='r'):
+    def __init__(self, path, cookie, mode='r', encoding=None):
         self.path = os.path.abspath(path)
         self.cookie = cookie
         self.mode = mode
+        self.encoding = encoding
         self.logfile = None
         self.stat = None
 
@@ -20,10 +24,14 @@ class LogTail(object):
             self.logfile.seek(fileinfo['pos'])
 
     def __enter__(self):
-        self.logfile = open(self.path, self.mode)
+        self.logfile = open_encoded(
+            self.path, self.mode, encoding=self.encoding)
         self.cookie.open()
         self.seek_if_applicable(self.cookie.get(self.path, {}))
-        return self.logfile
+        line = self.logfile.readline()
+        while line != '':
+            yield line
+            line = self.logfile.readline()
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if not exc_type:

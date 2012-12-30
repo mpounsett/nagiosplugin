@@ -5,8 +5,9 @@ Release History
 1.0.0b2 (unreleased)
 --------------------
 
+- LogTail gives a line-based iterator instead of a file object (#11564).
 - Basic API docs for the most important classes (#11612).
-- Made compatible with Python 2.7.
+- Made compatible with Python 2.7 (#11533).
 - Made compatible with Python 3.3.
 
 

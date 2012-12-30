@@ -20,29 +20,30 @@ class LogTailTest(unittest.TestCase):
 
     def test_empty_file(self):
         with LogTail(self.lf.name, self.cookie) as tail:
-            self.assertEqual('', tail.read())
+            self.assertEqual([], list(tail))
 
     def test_successive_reads(self):
         self.lf.write('first line\n')
         self.lf.flush()
         with LogTail(self.lf.name, self.cookie) as tail:
-            self.assertEqual('first line\n', tail.read())
+            self.assertEqual('first line\n', next(tail))
         self.lf.write('second line\n')
         self.lf.flush()
         with LogTail(self.lf.name, self.cookie) as tail:
-            self.assertEqual('second line\n', tail.read())
+            self.assertEqual('second line\n', next(tail))
         # no write
         with LogTail(self.lf.name, self.cookie) as tail:
-            self.assertEqual('', tail.read())
+            with self.assertRaises(StopIteration):
+                next(tail)
 
     def test_offer_same_content_again_after_exception(self):
         self.lf.write('first line\n')
         self.lf.flush()
         try:
             with LogTail(self.lf.name, self.cookie) as tail:
-                self.assertEqual('first line\n', tail.read())
+                self.assertEqual(['first line\n'], list(tail))
                 raise RuntimeError()
         except RuntimeError:
             pass
         with LogTail(self.lf.name, self.cookie) as tail:
-            self.assertEqual('first line\n', tail.read())
+            self.assertEqual(['first line\n'], list(tail))
