@@ -9,7 +9,7 @@ function that creates a :class:`~nagiosplugin.check.Check` instance. The check
 instance is fed with instances of :class:`~nagiosplugin.resource.Resource`,
 :class:`~nagiosplugin.context.Context`, or
 :class:`~nagiosplugin.summary.Summary` (respective custom subclasses). Finally,
-control is passed to the check's :meth:`~nagiosplugin.check.Check.__call__`
+control is passed to the check's :meth:`~nagiosplugin.check.Check.main`
 method.
 
 .. note::
@@ -24,8 +24,8 @@ method.
    to get a :class:`~nagiosplugin.check.Check` instance.
 
 
-nagiosplugin module-level functions
------------------------------------
+Module-level functions
+----------------------
 
 .. currentmodule:: nagiosplugin.runtime
 
@@ -49,7 +49,8 @@ Check
 
    .. attribute:: perfdata
 
-      List of strings representing a single bit of performance data each.
+      List of strings representing a single bit of :term:`performance data`
+      each.
 
 
 Resource

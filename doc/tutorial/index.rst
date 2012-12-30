@@ -83,7 +83,13 @@ Summary
    *Example: LOAD WARNING - load1 is 0.75 (greater than 0.5)*
 
 The following tutorials which will guide you through the most important
-features of :py:mod:`nagiosplugin`.
+features of :mod:`nagiosplugin`.
+
+.. hint::
+
+   Study the source code in the :file:`src/nagiosplugin/examples` directory for
+   complete examples.
+
 
 Tutorials
 =========
