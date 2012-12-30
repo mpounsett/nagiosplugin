@@ -1,6 +1,6 @@
-############################
-`nagiosplugin` Documentation
-############################
+##########################
+nagiosplugin Documentation
+##########################
 
 This documentation covers nagiosplugin |version|.
 
@@ -8,7 +8,7 @@ Contents
 ========
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    readme
    tutorial/index

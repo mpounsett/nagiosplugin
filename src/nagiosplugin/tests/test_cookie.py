@@ -1,4 +1,4 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from nagiosplugin.cookie import Cookie
@@ -62,3 +62,14 @@ class CookieTest(unittest.TestCase):
         with self.assertRaises(IOError):
             with Cookie(self.tf.name) as c:
                 c.close()
+
+    def test_multiple_commit(self):
+        with Cookie(self.tf.name) as c:
+            c['key'] = 1
+            c.commit()
+            with open(self.tf.name) as f:
+                self.assertEqual('{\n "key": 1\n}', f.read())
+            c['key'] = 2
+            c.commit()
+            with open(self.tf.name) as f:
+                self.assertEqual('{\n "key": 2\n}', f.read())

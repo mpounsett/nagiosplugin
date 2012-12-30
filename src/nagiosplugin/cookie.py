@@ -1,4 +1,4 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from .compat import UserDict, open_encoded
@@ -12,7 +12,7 @@ class Cookie(UserDict, object):
     def __init__(self, path):
         super(Cookie, self).__init__()
         self.path = path
-        self.fh = None
+        self.fobj = None
         self.new = not os.path.exists(path)
 
     def __enter__(self):
@@ -25,27 +25,27 @@ class Cookie(UserDict, object):
         self.close()
 
     def open(self, mode='a+', encoding=None):
-        self.fh = open_encoded(self.path, mode, 8 * 4096, encoding)
-        flock_exclusive(self.fh)
-        self.fh.seek(0)
+        self.fobj = open_encoded(self.path, mode, encoding=encoding)
+        flock_exclusive(self.fobj)
+        self.fobj.seek(0)
         try:
-            self.data = json.load(self.fh)
+            self.data = json.load(self.fobj)
         except ValueError:
             self.data = {}
 
     def close(self):
-        if not self.fh:
+        if not self.fobj:
             return
-        self.fh.close()
+        self.fobj.close()
         if self.new and self.data == {}:
             os.unlink(self.path)
         self.data = {}
-        self.fh = None
+        self.fobj = None
 
     def commit(self):
-        if not self.fh:
+        if not self.fobj:
             raise IOError('cannot commit closed Cookie', self.path)
-        self.fh.seek(0)
-        self.fh.truncate()
-        json.dump(self.data, self.fh, indent=1)
-        self.fh.flush()
+        self.fobj.seek(0)
+        self.fobj.truncate()
+        json.dump(self.data, self.fobj, indent=1)
+        self.fobj.flush()
