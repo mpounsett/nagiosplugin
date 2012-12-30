@@ -23,15 +23,12 @@ class Check(object):
     A Check instance controls the various stages of check execution.
     Specialized objects representing resources, contexts and a summary
     are expected to be passed to the constructor. Alternatively, objects
-    can be added later using the :py:meth:`add` method.
+    can be added later using the :meth:`add` method.
 
     When a check is called, a check probes all resources and evaluates
     the returned metrics to results and performance data. A typical
     usage pattern would be to populate a check with domain objects and
-    then call :meth:`main` to delegate control::
-
-        check = Check(... domain objects ...)
-        check.main()
+    then delegate control to it.
     """
 
     def __init__(self, *objects):

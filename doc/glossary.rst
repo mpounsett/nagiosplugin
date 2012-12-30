@@ -33,19 +33,20 @@ Glossary
       library. Data is retrieved from the system under surveillance using custom
       code. This is where the meat of a plugin is. Data acquisition is performed
       by one or more :term:`domain model` objects which are usually
-      :class:`Resource` subclasses.
+      :class:`~nagiosplugin.resource.Resource` subclasses.
 
    evaluation
       Second step of check execution in the context of the nagiosplugin library.
       Data generated in the :term:`acquisition` step is evaluated according to
-      criteria specified in :class:`Context` objects.
+      criteria specified in :class:`~nagiosplugin.context.Context` objects.
 
    presentation
       Third step of check execution in the context of the nagiosplugin library.
       Outcomes from the :term:`evaluation` step are condensed into a compact
       summary which is suited to inform the admin about relevant system state.
-      Data presentation is the responsibility of :class:`Summary` objects which
-      also generate the :term:`performance data` output section.
+      Data presentation is the responsibility of
+      :class:`~nagiosplugin.summary.Summary` objects which also generate the
+      :term:`performance data` output section.
 
    domain model
       One or more classes that abstract the properties of the system under

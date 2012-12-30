@@ -16,6 +16,15 @@ import traceback
 
 
 def guarded(func):
+    """Wraps a main function with nagiosplugin runtime environment.
+
+    A wrapped main function behaves correctly with respect to the Nagios
+    plugin API when aborted with an uncaught exception or after a
+    timeout. It exits with an *unknown* exit code and prints a traceback
+    in a format acceptable by Nagios.
+
+    This function is meant to decorate the plugin's `main` function.
+    """
     @functools.wraps(func)
     def wrapper():
         runtime = Runtime()

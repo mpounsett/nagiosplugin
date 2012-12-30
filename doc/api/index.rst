@@ -11,6 +11,7 @@ introduction on how to use them for typical use cases.
 .. toctree::
 
    core
+   intermediate
 
 
 .. Style
