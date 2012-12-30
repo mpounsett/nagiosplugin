@@ -1,16 +1,7 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Outcomes from evaluating metrics in contexts.
-
-This module contains the :class:`Result` base class which is the base
-class for all evaluation results together with its common special case
-:class:`ScalarResult` which occurs from evaluating a
-:class:`~nagiosplugin.context.ScalarContext`.
-
-The :class:`Results` class provides a result container together with
-convenient access functions.
-"""
+"""Outcomes from evaluating metrics in contexts."""
 
 import collections
 import numbers
@@ -22,8 +13,8 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
     A Result object is
     typically emitted by a :class:`~nagiosplugin.context.Context` object
     and represents the outcome of an evaluation. It contains a
-    :class:`~nagiosplugin.state.State` as well as an explanation. Plugin
-    authors may subclass Result to implement specific features.
+    :class:`~nagiosplugin.state.ServiceState` as well as an explanation.
+    Plugin authors may subclass Result to implement specific features.
     """
 
     def __new__(cls, state, hint=None, metric=None):
@@ -32,8 +23,8 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
         :param state: state object
         :param hint: reason why this result arose
         :param metric: reference to the
-            :class:`~nagiosplugin.metric.Metric` this result was derived
-            from
+            :class:`~nagiosplugin.metric.Metric` from which this result
+            was derived
         """
         return tuple.__new__(cls, (state, hint, metric))
 
@@ -41,7 +32,7 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
         """Textual result explanation.
 
         This method's output should return only a text for the reason
-        but not the result's state. The latter is rendered
+        but not for the result's state. The latter is rendered
         independently.
         """
         return self.hint or ''
@@ -116,7 +107,13 @@ class Results:
         return self
 
     def __iter__(self):
-        """Iterates over results in order of decreasing state significance."""
+        """Iterates over all results.
+
+        The iterator is sorted in order of decreasing state
+        significance (unknown > critical > warning > ok).
+
+        :returns: result object iterator
+        """
         for state in reversed(sorted(self.by_state)):
             for result in self.by_state[state]:
                 yield result
@@ -125,34 +122,45 @@ class Results:
         """Number of results in this container."""
         return len(self.results)
 
-    def __getitem__(self, value):
+    def __getitem__(self, item):
         """Access result by index or name.
 
-        If *value* is an integer, the *value*th element in the container
-        is returned. If *value* is a string, it is used to look up a
-        result with the giiven name.
+        If *item* is an integer, the *item*\ th element in the
+        container is returned. If *item* is a string, it is used to
+        look up a result with the given name.
 
+        :returns: :class:`Result` object
         :raises KeyError: if no matching result is found
         """
-        if isinstance(value, numbers.Number):
-            return self.results[value]
-        return self.by_name[value]
+        if isinstance(item, numbers.Number):
+            return self.results[item]
+        return self.by_name[item]
 
     def __contains__(self, name):
-        """Tests if a result with given name is present."""
+        """Tests if a result with given name is present.
+
+        :returns: boolean
+        """
         return name in self.by_name
 
     @property
     def most_significant_state(self):
-        """Returns the "worst" of all states present in the results."""
+        """The "worst" state found in all results.
+
+        :returns: :obj:`~nagiosplugin.state.ServiceState` object
+        :raises ValueError: if no results are present
+        """
         return max(self.by_state.keys())
 
     @property
     def most_significant(self):
-        """Returns list of results with the most significant state.
+        """Returns list of results with most significant state.
 
         From all results present, a subset with the "worst" state is
         selected.
+
+        :returns: list of :class:`Result` objects or empty list if no
+            results are present
         """
         try:
             return self.by_state[self.most_significant_state]
@@ -161,5 +169,9 @@ class Results:
 
     @property
     def first_significant(self):
-        """Returns one of the results with the most significant state."""
+        """Selects one of the results with most significant state.
+
+        :returns: :class:`Result` object
+        :raises IndexError: if no results are present
+        """
         return self.most_significant[0]

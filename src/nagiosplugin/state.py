@@ -14,15 +14,17 @@ def worst(states):
 class ServiceState(collections.namedtuple('ServiceState', 'code text')):
     """Abstract base class for all states.
 
-    Each state has two constant attributes: :attr:`text` is the short text
-    representation which is printed for example at the beginning of the summary
-    line. :attr:`code` is the corresponding exit code.
+    Each state has two constant attributes: :attr:`text` is the short
+    text representation which is printed for example at the beginning of
+    the summary line. :attr:`code` is the corresponding exit code.
     """
 
     def __str__(self):
+        """Plugin-API compliant text representation."""
         return self.text
 
     def __int__(self):
+        """Plugin-API compliant exit code."""
         return self.code
 
 

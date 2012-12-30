@@ -29,9 +29,10 @@ class Metric(collections.namedtuple(
         :param max: maximum value or None if there is no known maximum
         :param context: name of the associated context
         :param contextobj: reference to the associated context object
-            (set automatically by :class:`Check`)
-        :param resource: reference to the originating :class:`Resource`
-            (set automatically by :class:`Check`)
+            (set automatically by :class:`~nagiosplugin.check.Check`)
+        :param resource: reference to the originating
+            :class:`~nagiosplugin.resource.Resource` (set automatically
+            by :class:`~nagiosplugin.check.Check`)
         """
         return tuple. __new__(cls, (
             name, value, uom, min, max, context or name, contextobj, resource))
@@ -76,7 +77,7 @@ class Metric(collections.namedtuple(
     def evaluate(self):
         """Evaluates this instance according to the context.
 
-        :return: :class:`Result` object
+        :return: :class:`~nagiosplugin.result.Result` object
         :raise RuntimeError: if no context has been associated yet
         """
         if not self.contextobj:
@@ -86,7 +87,7 @@ class Metric(collections.namedtuple(
     def performance(self):
         """Generates performance data according to the context.
 
-        :return: :class:`Performance` object
+        :return: :class:`~nagiosplugin.performance.Performance` object
         :raise RuntimeError: if no context has been associated yet
         """
         if not self.contextobj:

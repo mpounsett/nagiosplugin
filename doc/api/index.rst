@@ -5,28 +5,12 @@ API docs
 .. module:: nagiosplugin
 
 The :mod:`nagiosplugin` module consists of several submodules which are
-discussed in detail as follows. All classes you need to write plugins are
-imported directly to the nagiosplugin top-level name space, so ::
-
-   import nagiosplugin
-
-should be sufficient to access the functionality.
-
-All relevant classes are documented below in alphabetical order. Refer to the
-":ref:`tutorials`" section for an introduction on how to use them for typical
-use cases.
+discussed in detail as follows. Refer to the ":ref:`tutorials`" section for an
+introduction on how to use them for typical use cases.
 
 .. toctree::
-   :maxdepth: 1
 
-   check
-   resource
-   metric
-   context
-   state
-   performance
-   result
-   summary
+   core
 
 
 .. Style

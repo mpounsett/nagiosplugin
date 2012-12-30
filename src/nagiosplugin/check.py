@@ -47,8 +47,10 @@ class Check(object):
         """Add domain objects to a check.
 
         :param objects: one or more objects that are descendants from
-            :class:`Resource`, :class:`Context`,
-            :class:`Summary`, or :class:`Results`.
+            :class:`~nagiosplugin.resource.Resource`,
+            :class:`~nagiosplugin.context.Context`,
+            :class:`~nagiosplugin.summary.Summary`, or
+            :class:`~nagiosplugin.result.Results`.
         """
         for obj in objects:
             if isinstance(obj, Resource):
@@ -97,13 +99,13 @@ class Check(object):
     def main(self, verbose=1, timeout=10):
         """All-in-one control delegation to the runtime environment.
 
-        Get a :class:`Runtime` instance and perform all phases: run the
-        check (via :meth:`__call__`), print results and exit the program
-        with an appropriate status code.
+        Get a :class:`~nagiosplugin.runtime.Runtime` instance and
+        perform all phases: run the check (via :meth:`__call__`), print
+        results and exit the program with an appropriate status code.
 
         :param verbose: output verbosity level between 0 and 3
-        :param timeout: abort check execution with :exc:`Timeout` after
-            so many seconds
+        :param timeout: abort check execution with a :exc:`Timeout`
+            exception after so many seconds
         """
         runtime = Runtime()
         runtime.execute(self, verbose, timeout)
@@ -113,8 +115,8 @@ class Check(object):
         """Overall check state.
 
         The most significant (=worst) state seen in :attr:`results` to
-        far. :obj:`Unknown` if no results have been collected yet.
-        Corresponds with :attr:`exitcode`.
+        far. :obj:`~nagiosplugin.state.Unknown` if no results have been
+        collected yet. Corresponds with :attr:`exitcode`.
         """
         try:
             return self.results.most_significant_state
@@ -138,7 +140,7 @@ class Check(object):
         """Additional lines of output.
 
         Long text output if check runs in verbose mode. Also queried
-        from :class:`Summary`.
+        from :class:`~nagiosplugin.summary.Summary`.
         """
         return self.summary.verbose(self.results) or ''
 

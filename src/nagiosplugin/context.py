@@ -23,21 +23,22 @@ class Context(object):
 
     def __init__(self, name, fmt_metric=None, result_cls=None):
         """Bare contexts just format assiociated metrics and evaluate
-        always to :class:`Ok`. Metric formatting is controlled with the
-        :attr:`fmt_metric` attribute. It can either be a string or a
-        callable. See the :meth:`describe` method for how formatting is
-        done.
+        always to :obj:`~nagiosplugin.state.Ok`. Metric formatting is
+        controlled with the :attr:`fmt_metric` attribute. It can either
+        be a string or a callable. See the :meth:`describe` method for
+        how formatting is done.
 
         Plugin authors may subclass :class:`Context` to specialize
         behaviour. This may be necessary to introduce custom evaluation
         of performance data logic.
 
-        :param name: context name that is matched by
-            :attr:`Metric.context`.
+        :param name: context name that is matched by the context
+            attribute of :class:`~nagiosplugin.metric.Metric`.
         :param fmt_metric: optional string or callable to convert
             context and associated metric to a human readable string.
-        :param result_cls: optional :class:`Result` subclass that is
-            used to represent the product of a metric and a context.
+        :param result_cls: optional :class:`~nagiosplugin.result.Result`
+            subclass that is used to represent the product of a metric
+            and a context.
         """
 
         self.name = name
@@ -49,9 +50,9 @@ class Context(object):
     def evaluate(self, metric, resource):
         """Determines state of a given metric.
 
-        This base implementation returns :class:`Ok` in all cases. Plugin
-        authors may override this method in subclasses to specialize
-        behaviour.
+        This base implementation returns :class:`~nagiosplugin.state.Ok`
+        in all cases. Plugin authors may override this method in
+        subclasses to specialize behaviour.
 
         :param metric: associated metric that is to be evaluated.
         :param resource: resource that produced the associated metric
@@ -82,8 +83,9 @@ class Context(object):
         Formats the metric according to the :attr:`fmt_metric`
         attribute. If :attr:`fmt_metric` is a string, it is evaluated as
         format string with all metric attributes in the root namespace.
-        The default is `{name} is {valueunit}`. If :attr:`fmt_metric` is
-        a callable, it is called with metric and this context.
+        The default is the interpolated string "`{name} is {valueunit}`".
+        If :attr:`fmt_metric` is callable, it is called with metric and
+        this context.
 
         :param metric: associated metric that must be formatted.
         :returns: string
@@ -113,10 +115,10 @@ class ScalarContext(Context):
         """:attr:`name`, :attr:`fmt_metric`, and :attr:`result_cls`,
         are described in the :class:`Context` base class.
 
-        :param warning: Warning threshold as :class:`Range` or range
-            string.
-        :param critical: Critical threshold as :class:`Range` or range
-            string.
+        :param warning: Warning threshold as
+            :class:`~nagiosplugin.range.Range` object or range string.
+        :param critical: Critical threshold as
+            :class:`~nagiosplugin.range.Range` object or range string.
         """
 
         super(ScalarContext, self).__init__(name, fmt_metric, result_cls)
@@ -131,7 +133,7 @@ class ScalarContext(Context):
 
         :param metric: metric that is to be evaluated.
         :param resource: not used.
-        :returns: :class:`Result` object.
+        :returns: :class:`~nagiosplugin.result.Result` object.
         """
 
         if not self.critical.match(metric.value):
@@ -146,19 +148,20 @@ class ScalarContext(Context):
 
         The metric's attributes are combined with the local
         :attr:`warning` and :attr:`critical` ranges to get a
-        fully populated :class:`Performance` object.
+        fully populated :class:`~nagiosplugin.performance.Performance`
+        object.
 
         :param metric: metric from which performance data are derived.
         :param resource: not used.
-        :returns: :class:`Performance` object.
+        :returns: :class:`~nagiosplugin.performance.Performance` object.
         """
-
         return Performance(metric.name, metric.value, metric.uom,
                            self.warning, self.critical,
                            metric.min, metric.max)
 
 
 class Contexts:
+    """Container for collecting all generated contexts."""
 
     def __init__(self):
         self.by_name = dict(
