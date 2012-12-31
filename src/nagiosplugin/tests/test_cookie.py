@@ -21,7 +21,7 @@ class CookieTest(unittest.TestCase):
 
     def test_get_file_contents(self):
         with open(self.tf.name, 'w') as f:
-            f.write('{"hello": "world"}')
+            f.write('{"hello": "world"}\n')
         with Cookie(self.tf.name) as c:
             self.assertEqual('world', c['hello'])
 
@@ -30,11 +30,11 @@ class CookieTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             c['foo']
 
-    def test_set_should_write_content(self):
+    def test_exit_should_write_content(self):
         with Cookie(self.tf.name) as c:
-            c['inode'] = 188219
+            c['hello'] = 'wörld'
         with open(self.tf.name) as f:
-            self.assertEqual('{\n "inode": 188219\n}', f.read())
+            self.assertEqual('{"hello": "w\\u00f6rld"}\n', f.read())
 
     def test_should_not_commit_on_exception(self):
         try:
@@ -45,11 +45,6 @@ class CookieTest(unittest.TestCase):
             pass
         with open(self.tf.name) as f:
             self.assertEqual('', f.read())
-
-    def test_should_not_create_file_unless_value_set(self):
-        with Cookie(self.tf.name + '.new') as c:
-            pass
-        self.assertFalse(os.path.exists(self.tf.name + '.new'))
 
     def test_double_close_raises_no_exception(self):
         c = Cookie(self.tf.name)
@@ -64,12 +59,37 @@ class CookieTest(unittest.TestCase):
                 c.close()
 
     def test_multiple_commit(self):
-        with Cookie(self.tf.name) as c:
-            c['key'] = 1
-            c.commit()
-            with open(self.tf.name) as f:
-                self.assertEqual('{\n "key": 1\n}', f.read())
-            c['key'] = 2
-            c.commit()
-            with open(self.tf.name) as f:
-                self.assertEqual('{\n "key": 2\n}', f.read())
+        c = Cookie(self.tf.name)
+        c.open()
+        c['key'] = 1
+        c.commit()
+        with open(self.tf.name) as f:
+            self.assertIn('"key": 1', f.read())
+        c['key'] = 2
+        c.commit()
+        with open(self.tf.name) as f:
+            self.assertIn('"key": 2', f.read())
+        c.close()
+
+    def test_corrupted_cookie_should_raise(self):
+        with open(self.tf.name, 'w') as f:
+            f.write('{{{')
+        with self.assertRaises(ValueError):
+            with Cookie(self.tf.name):
+                pass
+
+    def test_wrong_cookie_format(self):
+        with open(self.tf.name, 'w') as f:
+            f.write('[1, 2, 3]\n')
+        with self.assertRaises(ValueError):
+            with Cookie(self.tf.name):
+                pass
+
+    def test_cookie_format_exception_truncates_file(self):
+        with open(self.tf.name, 'w') as f:
+            f.write('{slö@@ä')
+        try:
+            with Cookie(self.tf.name):
+                pass
+        except ValueError:
+            self.assertEqual(0, os.stat(self.tf.name).st_size)

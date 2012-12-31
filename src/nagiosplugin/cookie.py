@@ -13,7 +13,6 @@ class Cookie(UserDict, object):
         super(Cookie, self).__init__()
         self.path = path
         self.fobj = None
-        self.new = not os.path.exists(path)
 
     def __enter__(self):
         self.open()
@@ -24,28 +23,39 @@ class Cookie(UserDict, object):
             self.commit()
         self.close()
 
-    def open(self, mode='a+', encoding=None):
-        self.fobj = open_encoded(self.path, mode, encoding=encoding)
+    def open(self):
+        self.fobj = open_encoded(self.path, 'a+', encoding='ascii')
         flock_exclusive(self.fobj)
-        self.fobj.seek(0)
+        if not os.fstat(self.fobj.fileno()).st_size:
+            # file is empty
+            return
         try:
-            self.data = json.load(self.fobj)
+            self.data = self.load()
         except ValueError:
-            self.data = {}
+            self.fobj.truncate(0)
+            raise
+
+    def load(self):
+        self.fobj.seek(0)
+        data = json.load(self.fobj)
+        if not isinstance(data, dict):
+            raise ValueError('format error: cookie does not contain dict',
+                             self.path, data)
+        return data
 
     def close(self):
         if not self.fobj:
             return
-        self.fobj.close()
-        if self.new and self.data == {}:
-            os.unlink(self.path)
         self.data = {}
+        self.fobj.close()
         self.fobj = None
 
     def commit(self):
         if not self.fobj:
-            raise IOError('cannot commit closed Cookie', self.path)
+            raise IOError('cannot commit closed cookie', self.path)
         self.fobj.seek(0)
-        self.fobj.truncate()
-        json.dump(self.data, self.fobj, indent=1)
+        self.fobj.truncate(0)
+        json.dump(self.data, self.fobj)
+        self.fobj.write('\n')
         self.fobj.flush()
+        os.fsync(self.fobj)

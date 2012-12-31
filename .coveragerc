@@ -3,11 +3,13 @@ branch = True
 source =
 	src/nagiosplugin
 omit =
-	src/nagiosplugin/platform/*
 	src/nagiosplugin/compat.py
+	src/nagiosplugin/examples/*
+	src/nagiosplugin/platform/*
 
 [report]
 precision = 2
 exclude_lines =
 	pragma: no cover
+	^\s*pass\b
 	sys.exit\(

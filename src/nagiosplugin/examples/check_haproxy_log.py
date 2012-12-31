@@ -1,5 +1,5 @@
 #!python
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 """haproxy log check for request time and error rate.
@@ -46,7 +46,7 @@ class HAProxyLog(nagiosplugin.Resource):
         cookie = nagiosplugin.Cookie(self.statefile)
         with nagiosplugin.LogTail(self.logfile, cookie) as lf:
             for line in lf:
-                match = self.r_logline.search(line)
+                match = self.r_logline.search(line.decode())
                 if not match:
                     continue
                 ttot, stat = match.groups()
