@@ -1,3 +1,4 @@
+# vim: set fileencoding=utf-8 :
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
