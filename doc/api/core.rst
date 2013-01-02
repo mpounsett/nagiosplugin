@@ -3,18 +3,18 @@
 Core API
 ========
 
-The core API consists of all functions and classes which are typically called in
-the `main` function of a plugin. A typical plugin has a :func:`guarded` main
-function that creates a :class:`~nagiosplugin.check.Check` instance. The check
-instance is fed with instances of :class:`~nagiosplugin.resource.Resource`,
+The core API consists of all functions and classes which are called in
+a plugin's `main` function. A typical main function is decorated with
+:func:`~nagiosplugin.runtime.guarded` and creates a
+:class:`~nagiosplugin.check.Check` object. The check instance is fed with
+instances of :class:`~nagiosplugin.resource.Resource`,
 :class:`~nagiosplugin.context.Context`, or
 :class:`~nagiosplugin.summary.Summary` (respective custom subclasses). Finally,
-control is passed to the check's :meth:`~nagiosplugin.check.Check.main`
-method.
+control is passed to the check's :meth:`~nagiosplugin.check.Check.main` method.
 
 .. note::
 
-   All classes that plugin authors typically need are imported directly into the
+   All classes that plugin authors typically need are imported into the
    :mod:`nagiosplugin` name space. For example, use ::
 
       import nagiosplugin
@@ -24,18 +24,11 @@ method.
    to get a :class:`~nagiosplugin.check.Check` instance.
 
 
-Module-level functions
-----------------------
+nagiosplugin.check
+------------------
 
-.. currentmodule:: nagiosplugin.runtime
-
-.. autofunction:: guarded
-
-
-Check
------
-
-.. currentmodule:: nagiosplugin.check
+.. automodule:: nagiosplugin.check
+   :no-members:
 
 .. autoclass:: Check
 
@@ -52,30 +45,60 @@ Check
       List of strings representing a single bit of :term:`performance data`
       each.
 
+.. topic:: Example: Skeleton main function
 
-Resource
---------
+   The following pseudo code outlines how :class:`Check` is typically used in
+   the main function of a plugin::
 
-.. currentmodule:: nagiosplugin.resource
+      def main():
+         check = nagiosplugin.Check(MyResource1(...), MyResource2(...),
+                                    MyContext1(...), MyContext2(...),
+                                    MySummary(...))
+         check.main()
+
+
+nagiosplugin.resource
+---------------------
+
+.. automodule:: nagiosplugin.resource
+   :no-members:
 
 .. autoclass:: Resource
 
 
-Context
--------
+nagiosplugin.context
+--------------------
 
-.. currentmodule:: nagiosplugin.context
+.. automodule:: nagiosplugin.context
+   :no-members:
 
 .. autoclass:: Context
 
 .. autoclass:: ScalarContext
 
+.. topic:: Example ScalarContext usage
 
-Summary
--------
+   Configure a ScalarContext with warning and critical ranges found in
+   ArgumentParser's result object `args` and add it to a check::
 
-.. currentmodule:: nagiosplugin.summary
+      c = Check(..., ScalarContext('metric', args.warning, args.critical), ...)
+
+
+nagiosplugin.summary
+--------------------
+
+.. automodule:: nagiosplugin.summary
+   :no-members:
 
 .. autoclass:: Summary
+
+
+nagiosplugin.runtime
+--------------------
+
+.. automodule:: nagiosplugin.runtime
+   :no-members:
+
+.. autofunction:: guarded
 
 .. vim: set spell spelllang=en:

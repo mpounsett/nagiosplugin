@@ -1,17 +1,22 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Domain model for data acquisition."""
+"""Domain model for data :term:`acquisition`.
+
+:class:`Resource` is the base class for the plugin's :term:`domain
+model`. It shoul model the relevant details of reality that a plugin is
+supposed to check. The :class:`~.check.Check` controller calls
+:meth:`Resource.probe` on all passed resource objects to acquire data.
+
+Plugin authors should subclass :class:`Resource` and write
+whatever methods are needed to get the interesting bits of information.
+The most important resource subclass should be named after the plugin
+itself.
+"""
 
 
 class Resource(object):
-    """Base class for resource :term:`domain model`.
-
-    A resource models anything that a plugin is supposed to check. You
-    should subclass :class:`Resource` in your check and write whatever
-    methods are needed to get the interesting bits of information. The
-    most important resource subclass of a check (if there are several)
-    should have the same name as the whole check.
+    """Abstract base class for custom domain models.
 
     Subclasses may add arguments to the constructor to parametrize
     information retrieval.

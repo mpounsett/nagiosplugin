@@ -1,10 +1,17 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Central logic for check execution.
+"""Controller logic for check execution.
 
-The check object controls the domain logic. Interfacing with the
+This module contains the :class:`Check` class which orchestrates the
+the various stages of check execution. Interfacing with the
 outside system is done via a separate :class:`Runtime` object.
+
+When a check is called (using :meth:`Check.main` or
+:meth:`Check.__call__`), it probes all resources and evaluates the
+returned metrics to results and performance data. A typical usage
+pattern would be to populate a check with domain objects and then
+delegate control to it.
 """
 
 from .context import Context, Contexts
@@ -18,20 +25,15 @@ import logging
 
 
 class Check(object):
-    """Main controller object.
-
-    A Check instance controls the various stages of check execution.
-    Specialized objects representing resources, contexts and a summary
-    are expected to be passed to the constructor. Alternatively, objects
-    can be added later using the :meth:`add` method.
-
-    When a check is called, a check probes all resources and evaluates
-    the returned metrics to results and performance data. A typical
-    usage pattern would be to populate a check with domain objects and
-    then delegate control to it.
-    """
 
     def __init__(self, *objects):
+        """Creates and configures a check.
+
+        Specialized *objects* representing resources, contexts and a
+        summary are expected to be passed to the constructor.
+        Alternatively, objects can be added later using the :meth:`add`
+        method.
+        """
         self.resources = []
         self.contexts = Contexts()
         self.summary = Summary()
@@ -41,7 +43,7 @@ class Check(object):
         self.add(*objects)
 
     def add(self, *objects):
-        """Add domain objects to a check.
+        """Adds domain objects to a check.
 
         :param objects: one or more objects that are descendants from
             :class:`~nagiosplugin.resource.Resource`,

@@ -1,7 +1,12 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""System interface, exception handling, logging."""
+"""Functions and classes to interface with the system.
+
+This module contains the :class:`Runtime` class that handles exceptions,
+timeouts and logging. Plugin authors should not use Runtime directly,
+but decorate the plugin's main function with :func:`~.runtime.guarded`.
+"""
 
 from __future__ import unicode_literals, print_function
 from .output import Output
@@ -16,14 +21,15 @@ import traceback
 
 
 def guarded(func):
-    """Wraps a main function with nagiosplugin runtime environment.
+    """Runs a function in a newly created runtime environment.
 
-    A wrapped main function behaves correctly with respect to the Nagios
-    plugin API when aborted with an uncaught exception or after a
+    A guarded function behaves correctly with respect to the Nagios
+    plugin API if it aborts with an uncaught exception or a
     timeout. It exits with an *unknown* exit code and prints a traceback
     in a format acceptable by Nagios.
 
-    This function is meant to decorate the plugin's `main` function.
+    This function should be used as a decorator for the plugin's `main`
+    function.
     """
     @functools.wraps(func)
     def wrapper():
