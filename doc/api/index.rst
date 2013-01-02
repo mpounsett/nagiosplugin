@@ -6,12 +6,13 @@ API docs
 
 The :mod:`nagiosplugin` module consists of several submodules which are
 discussed in detail as follows. Refer to the ":ref:`tutorials`" section for an
-introduction on how to use them for typical use cases.
+introduction on how to use them for typical plugins.
 
 .. toctree::
 
    core
    intermediate
+   auxiliary
 
 
 .. Style

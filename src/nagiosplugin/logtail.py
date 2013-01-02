@@ -1,29 +1,55 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Access previously unseen parts of a growing text file."""
+"""Access previously unseen parts of a growing file."""
 
 import os
 
 
 class LogTail(object):
+    """Context to iterate over new lines of a log file.
+
+    LogTail builds on :class:`~.cookie.Cookie` to access new lines in a
+    continuosly growing log file. It should be used as context manager
+    that provides an iterator over new lines to the subordinate context.
+    LogTail saves the last file position into a cookie object that must
+    be provided separately by the plugin author. As the path to the log
+    file is saved in the cookie, several LogTail instances may share the
+    same cookie.
+    """
 
     def __init__(self, path, cookie):
+        """
+        :param path: path to the log file that is to be observed
+        :param cookie: :class:`~.cookie.Cookie` object to save the last
+            file position
+        """
         self.path = os.path.abspath(path)
         self.cookie = cookie
         self.logfile = None
         self.stat = None
 
-    def seek_if_applicable(self, fileinfo):
+    def _seek_if_applicable(self, fileinfo):
         self.stat = os.stat(self.path)
         if (self.stat.st_ino == fileinfo.get('inode', -1) and
                 self.stat.st_size >= fileinfo.get('pos', 0)):
             self.logfile.seek(fileinfo['pos'])
 
     def __enter__(self):
+        """Seeks to the last seen position and reads new lines.
+
+        The last file position is read from the cookie. If the log file
+        has not been changed since the last invocation, LogTail seeks to
+        that position and reads new lines. Otherwise, the position saved
+        in the cookie is reset and LogTail reads from the beginning.
+        After leaving the subordinate context, the new position is saved
+        in the cookie and the cookie is closed.
+
+        :yields: new lines as bytes strings
+        """
         self.logfile = open(self.path, 'rb')
         self.cookie.open()
-        self.seek_if_applicable(self.cookie.get(self.path, {}))
+        self._seek_if_applicable(self.cookie.get(self.path, {}))
         line = self.logfile.readline()
         while len(line):
             yield line
