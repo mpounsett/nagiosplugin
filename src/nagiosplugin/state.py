@@ -1,13 +1,24 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Classes (with singletons) to represent check outcomes."""
+"""Classes  to represent check outcomes.
+
+This module defines :class:`ServiceState` which is the abstract base
+class for check outcomes. class for check outcomes. class for check
+outcomes. The four states defined by the :term:`Nagios plugin API` are
+represented as singleton subclasses.
+
+Note that the *warning* state is defined by the :class:`Warn` class. The
+class has not been named `Warning` to avoid being confused with the
+built-in Python exception of the same name.
+"""
 
 import collections
 import functools
 
 
 def worst(states):
+    """Reduce list of *states* to the most significant state."""
     return functools.reduce(lambda a, b: a if a > b else b, states, Ok)
 
 
@@ -24,7 +35,7 @@ class ServiceState(collections.namedtuple('ServiceState', 'code text')):
         return self.text
 
     def __int__(self):
-        """Plugin-API compliant exit code."""
+        """Plugin API compliant exit code."""
         return self.code
 
 

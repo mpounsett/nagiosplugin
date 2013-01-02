@@ -1,7 +1,13 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Structured representation for data points."""
+"""Structured representation for data points.
+
+This module contains the :class:`Metric` class whose instances are
+passed as value objects between most of nagiosplugin's core classes.
+Typically, :class:`~.resource.Resource` objects emit a list of metrics
+as result of their :meth:`~.resource.Resource.probe` methods.
+"""
 
 import numbers
 import collections
@@ -17,7 +23,7 @@ class Metric(collections.namedtuple(
 
     def __new__(cls, name, value, uom=None, min=None, max=None, context=None,
                 contextobj=None, resource=None):
-        """Create new Metric instance.
+        """Creates new Metric instance.
 
         :param name: short internal identifier for the value -- appears
             also in the performance data
@@ -49,9 +55,10 @@ class Metric(collections.namedtuple(
     def description(self):
         """Human-readable, detailed string representation.
 
-        Delegates to the context to format the value. Returns compact
-        :attr:`valueunit` representation if no context has been
-        associated yet.
+        Delegates to the :class:`~.context.Context` to format the value.
+
+        :returns: :meth:`~.context.Context.describe` output or
+            :attr:`valueunit` if no context has been associated yet
         """
         if self.contextobj:
             return self.contextobj.describe(self)

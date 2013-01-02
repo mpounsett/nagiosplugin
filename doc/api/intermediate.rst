@@ -22,10 +22,11 @@ intermediate data during :term:`acquisition` or :term:`evaluation` steps.
    to get a :class:`~nagiosplugin.result.Result` instance.
 
 
-Metric
-------
+nagiosplugin.metric
+-------------------
 
-.. currentmodule:: nagiosplugin.metric
+.. automodule:: nagiosplugin.metric
+   :no-members:
 
 .. autoclass:: Metric
 
@@ -33,13 +34,11 @@ Metric
    .. automethod:: __str__
 
 
-State
------
+nagiosplugin.state
+------------------
 
-ServiceState base class
-^^^^^^^^^^^^^^^^^^^^^^^
-
-.. currentmodule:: nagiosplugin.state
+.. automodule:: nagiosplugin.state
+   :no-members:
 
 .. autoclass:: ServiceState
 
@@ -51,13 +50,15 @@ ServiceState base class
    :class:`ServiceState` is not imported into the :mod:`nagiosplugin`
    top-level name space since there is usually no need to access it directly.
 
+.. autofunction:: nagiosplugin.state.worst
+
 State subclasses
 ^^^^^^^^^^^^^^^^
 
 The state subclasses are singletons. Plugin authors should use the class
 name (without parentheses) to access the instance. For example::
 
-   check_state = nagiosplugin.Critical
+   state = nagiosplugin.Critical
 
 
 .. autoclass:: nagiosplugin.state.Ok
@@ -66,16 +67,11 @@ name (without parentheses) to access the instance. For example::
 .. autoclass:: nagiosplugin.state.Unknown
 
 
-Performance
------------
+nagiosplugin.performance
+------------------------
 
-.. currentmodule:: nagiosplugin.performance
-
-:term:`Performance data` are created during metric evaluation in a context and
-are written into the *perfdata* section of the plugin's output.
-For sake of consistency, performance data should represent their values in their
-respective base unit, so `Performance('size', 10000, 'B')` is better than
-`Performance('size', 10, 'kB')`.
+.. automodule:: nagiosplugin.performance
+   :no-members:
 
 .. autoclass:: Performance
 
@@ -83,16 +79,11 @@ respective base unit, so `Performance('size', 10000, 'B')` is better than
    .. automethod:: __str__
 
 
-Result
-------
+nagiosplugin.result
+-------------------
 
-.. currentmodule:: nagiosplugin.result
-
-The :class:`Result` class is the base class for all evaluation results. The
-:class:`ScalarResult` class provides convenient access for the common special
-case when evaluating :class:`~nagiosplugin.context.ScalarContext`. The
-:class:`Results` class (plural form) provides a result container with access
-functions and iterators.
+.. automodule:: nagiosplugin.result
+   :no-members:
 
 .. autoclass:: Result
 

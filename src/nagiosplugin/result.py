@@ -1,24 +1,36 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Outcomes from evaluating metrics in contexts."""
+"""Outcomes from evaluating metrics in contexts.
+
+The :class:`Result` class is the base class for all evaluation results.
+The :class:`ScalarResult` class provides convenient access for the
+common special case when evaluating
+:class:`~nagiosplugin.context.ScalarContext`. The :class:`Results` class
+(plural form) provides a result container with access functions and
+iterators.
+
+Plugin authors may create their own :class:`Result` subclass to
+accomodate for special needs. :class:`~.context.Context` constructors
+accept custom Result subclasses in the `result_cls` parameter.
+"""
 
 import collections
 import numbers
 
 
 class Result(collections.namedtuple('Result', 'state hint metric')):
-    """Check result value.
+    """Evaluation outcome consisting of state and explanation.
 
-    A Result object is
-    typically emitted by a :class:`~nagiosplugin.context.Context` object
-    and represents the outcome of an evaluation. It contains a
+    A Result object is typically emitted by a
+    :class:`~nagiosplugin.context.Context` object and represents the
+    outcome of an evaluation. It contains a
     :class:`~nagiosplugin.state.ServiceState` as well as an explanation.
     Plugin authors may subclass Result to implement specific features.
     """
 
     def __new__(cls, state, hint=None, metric=None):
-        """Create new Result object.
+        """Creates a Result object.
 
         :param state: state object
         :param hint: reason why this result arose
@@ -31,9 +43,11 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
     def __str__(self):
         """Textual result explanation.
 
-        This method's output should return only a text for the reason
-        but not for the result's state. The latter is rendered
+        This method's output should consist only of a text for the
+        reason but not for the result's state. The latter is rendered
         independently.
+
+        :returns: hint value if set
         """
         return self.hint or ''
 
@@ -73,11 +87,11 @@ class ScalarResult(Result):
 
 
 class Results:
-    """Result container.
+    """Container for result sets.
 
     Basically, this class manages a set of results and provides
     convenient access methods by index, name, or result state. It is
-    meant to make queries in :class:`~nagiosplugin.summary.Summary`
+    meant to make queries in :class:`~.summary.Summary`
     implementations compact and readable.
 
     The constructor accepts an arbitrary number of result objects and

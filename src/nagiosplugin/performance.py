@@ -1,7 +1,17 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Performance data (perfdata) representation and associated functions. """
+"""Performance data (perfdata) representation.
+
+:term:`Performance data` are created during metric evaluation in a
+context and are written into the *perfdata* section of the plugin's
+output. :class:`Performance` allows to create value objects that are
+passed between other nagiosplugin objects.
+
+For sake of consistency, performance data should represent their values
+in their respective base unit, so `Performance('size', 10000, 'B')` is
+better than `Performance('size', 10, 'kB')`.
+"""
 
 import collections
 import itertools
@@ -22,16 +32,12 @@ def quote(label):
 
 class Performance(collections.namedtuple('Performance', [
         'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
-    """
-    Performance data record created from a metric in a context
-    (usually a :class:`~nagiosplugin.context.ScalarContext`).
-    """
 
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
-        """Create new Performance object.
+        """Create new performance data object.
 
-        :param label: short identifier (20 chars max), results in graph titles
-            for example
+        :param label: short identifier (20 chars max), results in graph
+            titles for example
         :param value: measured value (usually an int, float, or bool)
         :param uom: unit of measure -- use base units whereever possible
         :param warn: warning range
@@ -49,7 +55,10 @@ class Performance(collections.namedtuple('Performance', [
             zap_none(min), zap_none(max))
 
     def __str__(self):
-        """String representation conforming to the plugin API."""
+        """String representation conforming to the plugin API.
+
+        Labels containing spaces or special characters will be quoted.
+        """
         out = ['%s=%s%s' % (quote(self.label), self.value, self.uom),
                str(self.warn), str(self.crit), str(self.min), str(self.max)]
         out = reversed(list(
