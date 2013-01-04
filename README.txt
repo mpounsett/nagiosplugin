@@ -19,8 +19,8 @@ and default logic commonly found in Nagios checks, including:
 - Resume log file processing at the point where the last run left
 - No dependencies beyond the Python standard library.
 
-`nagiosplugin` runs on POSIX and Windows systems. It requires Python 3, but
-Python 2.7 compatibility is planned.
+`nagiosplugin` runs on POSIX and Windows systems. It is compatible with Python
+3.3, Python 3.2, and Python 2.7.
 
 
 Feedback and Suggestions
