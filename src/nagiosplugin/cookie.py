@@ -1,7 +1,21 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Persistent dict to remember state between invocations."""
+"""Persistent dict to remember state between invocations.
+
+Cookies are used to remember file positions, counters and the like
+between plugin invocations. It is not intended for substantial amounts
+of data. Cookies are serialized into JSON and saved to a state file. We
+prefer a plain text format to allow administrators to inspect and edit
+its content. See :class:`~nagiosplugin.logtail.LogTail` for an
+application of cookies to get only new lines of a continuously growing
+file.
+
+Cookies are locked exclusively so that at most one process at a time has
+access to it. Changes to the dict are not reflected in the file until
+:meth:`Cookie.commit` is called. It is recommended to use Cookie as
+context manager to get it opened and committed automatically.
+"""
 
 from .compat import UserDict, open_encoded
 from .platform import flock_exclusive
@@ -10,24 +24,12 @@ import os
 
 
 class Cookie(UserDict, object):
-    """Creates a persistent dict to keep state.
-
-    A cookie should be used to remember file positions, counters and the
-    like between plugin invocations. It is not intended for substantial
-    amounts of data. Cookies are serialized into JSON and saved to a
-    state file. We prefer a plain text format to allow administrators to
-    inspect and edit its content. See
-    :class:`~nagiosplugin.logtail.LogTail` for an application of cookies
-    to get only new lines of a continuously growing file. 
-
-    Cookies are locked exclusively so that at most one process at a time
-    has access to it. Changes to the dict are not reflected in the state
-    file until :meth:`commit` is called. It is recommended to use
-    Cookie as context manager to get it opened and commtted automatically.
-    """
 
     def __init__(self, path):
-        """
+        """Creates a persistent dict to keep state.
+
+        After creation, a cookie behaves like a normal dict.
+
         :param path: file to save the dict in (state file)
         """
         super(Cookie, self).__init__()
@@ -35,7 +37,7 @@ class Cookie(UserDict, object):
         self.fobj = None
 
     def __enter__(self):
-        """Allows Cookie to be used as contexgt manager.
+        """Allows Cookie to be used as context manager.
 
         Opens the file and passes a dict-like object into the
         subordinate context. See :meth:`open` for details about opening

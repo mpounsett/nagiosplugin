@@ -1,25 +1,24 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-"""Access previously unseen parts of a growing file."""
+"""Access previously unseen parts of a growing file.
+
+LogTail builds on :class:`~.cookie.Cookie` to access new lines of a
+continuosly growing log file. It should be used as context manager that
+provides an iterator over new lines to the subordinate context. LogTail
+saves the last file position into the provided cookie object.
+As the path to the log file is saved in the cookie, several LogTail
+instances may share the same cookie.
+"""
 
 import os
 
 
 class LogTail(object):
-    """Context to iterate over new lines of a log file.
-
-    LogTail builds on :class:`~.cookie.Cookie` to access new lines in a
-    continuosly growing log file. It should be used as context manager
-    that provides an iterator over new lines to the subordinate context.
-    LogTail saves the last file position into a cookie object that must
-    be provided separately by the plugin author. As the path to the log
-    file is saved in the cookie, several LogTail instances may share the
-    same cookie.
-    """
 
     def __init__(self, path, cookie):
-        """
+        """Creates new LogTail context.
+
         :param path: path to the log file that is to be observed
         :param cookie: :class:`~.cookie.Cookie` object to save the last
             file position

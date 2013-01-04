@@ -20,10 +20,11 @@ regularly needed by plugin authors.
    to get a cookie.
 
 
-Cookie
-------
+nagiosplugin.cookie
+-------------------
 
-.. currentmodule:: nagiosplugin.cookie
+.. automodule:: nagiosplugin.cookie
+   :no-members:
 
 .. autoclass:: Cookie
 
@@ -34,14 +35,17 @@ Cookie
    Increment a connection count saved in the cookie by `self.new_conns`::
 
       with nagiosplugin.Cookie(self.statefile) as cookie:
-         connections = cookie.get('connections', 0)
-         cookie['connections'] += self.new_conns
+         cookie['connections'] = cookie.get('connections', 0) + self.new_conns
+
+   Note that the new content is committed automatically when exiting the `with`
+   block.
 
 
-LogTail
--------
+nagiosplugin.logtail
+--------------------
 
-.. currentmodule:: nagiosplugin.logtail
+.. automodule:: nagiosplugin.logtail
+   :no-members:
 
 .. autoclass:: LogTail
 
