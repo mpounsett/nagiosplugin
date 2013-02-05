@@ -1,5 +1,5 @@
 #!python
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 """Nagios/Icinga plugin to check system load."""
