@@ -1,4 +1,4 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from setuptools import setup, find_packages
@@ -17,7 +17,7 @@ setup(
     description='Class library for writing Nagios (Icinga) plugins',
     long_description=README + '\n\n' + HISTORY + '\n\n' + HACKING,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
