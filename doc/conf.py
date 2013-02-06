@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'nagiosplugin'
-copyright = '2012, gocept gmbh & co. kg'
+copyright = 'gocept gmbh & co. kg'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -255,7 +255,7 @@ texinfo_documents = [
 epub_title = u'nagiosplugin'
 epub_author = 'gocept gmbh & co. kg'
 epub_publisher = 'gocept gmbh & co. kg'
-epub_copyright = u'2012, gocept gmbh & co. kg'
+epub_copyright = u'gocept gmbh & co. kg'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
