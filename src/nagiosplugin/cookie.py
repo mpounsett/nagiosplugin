@@ -64,19 +64,19 @@ class Cookie(UserDict, object):
         plugins will not fail repeatedly when their state files get
         damaged.
 
+        :returns: Cookie object (self)
         :raises ValueError: if the state file is corrupted or does not
             deserialize into a dict
         """
         self.fobj = open_encoded(self.path, 'a+', encoding='ascii')
         flock_exclusive(self.fobj)
-        if not os.fstat(self.fobj.fileno()).st_size:
-            # file is empty
-            return
-        try:
-            self.data = self._load()
-        except ValueError:
-            self.fobj.truncate(0)
-            raise
+        if os.fstat(self.fobj.fileno()).st_size:
+            try:
+                self.data = self._load()
+            except ValueError:
+                self.fobj.truncate(0)
+                raise
+        return self
 
     def _load(self):
         self.fobj.seek(0)

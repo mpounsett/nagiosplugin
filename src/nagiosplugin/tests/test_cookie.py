@@ -75,22 +75,27 @@ class CookieTest(unittest.TestCase):
     def test_corrupted_cookie_should_raise(self):
         with open(self.tf.name, 'w') as f:
             f.write('{{{')
+        c = Cookie(self.tf.name)
         with self.assertRaises(ValueError):
-            with Cookie(self.tf.name):
-                pass
+            c.open()
+        c.close()
 
     def test_wrong_cookie_format(self):
         with open(self.tf.name, 'w') as f:
             f.write('[1, 2, 3]\n')
+        c = Cookie(self.tf.name)
         with self.assertRaises(ValueError):
-            with Cookie(self.tf.name):
-                pass
+            c.open()
+        c.close()
 
     def test_cookie_format_exception_truncates_file(self):
         with open(self.tf.name, 'w') as f:
             f.write('{slö@@ä')
+        c = Cookie(self.tf.name)
         try:
-            with Cookie(self.tf.name):
-                pass
+            c.open()
         except ValueError:
-            self.assertEqual(0, os.stat(self.tf.name).st_size)
+            pass
+        finally:
+            c.close()
+        self.assertEqual(0, os.stat(self.tf.name).st_size)
