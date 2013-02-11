@@ -18,6 +18,8 @@ class Load(nagiosplugin.Resource):
     Determines the system load parameters and (optionally) cpu count.
     The `probe` method returns the three standard load average numbers.
     If `percpu` is true, the load average will be normalized.
+
+    This check requires Linux-style /proc files to be present.
     """
 
     def __init__(self, percpu=False):

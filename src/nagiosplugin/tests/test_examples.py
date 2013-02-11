@@ -25,6 +25,7 @@ class ExamplesTest(unittest.TestCase):
                             out.decode(), regexp))
         self.assertEqual(0, proc.returncode)
 
+    @unittest.skipUnless(sys.platform.startswith('linux'), 'requires Linux')
     def test_check_load(self):
         self._run_example('check_load.py', """\
 LOAD OK - loadavg is [0-9., ]+
