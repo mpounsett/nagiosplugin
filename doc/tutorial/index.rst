@@ -98,5 +98,6 @@ Tutorials
 
    check_world
    check_load
+   check_users
 
 .. vim: set spell spelllang=en:
