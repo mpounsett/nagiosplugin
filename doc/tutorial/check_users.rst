@@ -5,8 +5,8 @@
 Tutorial #3: check_users
 ========================
 
-In the third tutorial, we will learn how to process multiple metrics. Apart from
-that, we will see how to use logging and verbosity levels.
+In the third tutorial, we will learn how to process multiple metrics.
+Additionally, we will see how to use logging and verbosity levels.
 
 
 Multiple metrics
@@ -114,8 +114,8 @@ Of course, we need to define two contexts names "total" and "unique" in the
 Alternatively, we can require every context that fits in metric definitions.
 
 
-Logging and verbose levels
---------------------------
+Logging and verbosity levels
+----------------------------
 
 `nagiosplugin` integrates with the `logging`_ module from Python's standard
 library. If the main function is decorated with `guarded` (which is heavily
@@ -149,9 +149,72 @@ Consider the following example check::
    if __name__ == '__main__':
        main()
 
-.. TODO:: explain source
-.. TODO:: explain output without -v and with one to three -v
+The verbosity level is set in the :meth:`check.main()` invocation depending on
+the number of "-v" flags. Let's test this check:
+
+.. code-block:: bash
+
+   $ check_verbose.py
+   LOGGING OK - zero is 0 | zero=0
+   warning message (check_verbose.py:11)
+   $ check_verbose.py -v
+   LOGGING OK - zero is 0
+   warning message (check_verbose.py:11)
+   | zero=0
+   $ check_verbose.py -vv
+   LOGGING OK - zero is 0
+   warning message (check_verbose.py:11)
+   info message (check_verbose.py:12)
+   | zero=0
+   $ check_verbose.py -vvv
+   LOGGING OK - zero is 0
+   warning message (check_verbose.py:11)
+   info message (check_verbose.py:12)
+   debug message (check_verbose.py:13)
+   | zero=0
+
+When called with *verbose=0,* both the summary and the performance data are
+printed on one line and the warning message is displayed. Messages logged with
+*warning* or *error* level are always printed.
+Setting *verbose* to 1 does not change the logging level but enable multi-line
+output. Additionally, full tracebacks would be printed in the case of an
+uncaught exception.
+Verbosity levels of 2 and 3 enable logging with *info* or *debug* levels.
+
+This behaviour conforms to the "Verbose output" suggestions found in the
+`Nagios plug-in development guidelines`_.
+
+It is advisable to sprinkle logging statements in the plugin code, especially
+into the resource model classes. A logging example for a users check could look
+like this:
+
+.. code-block:: python
+
+   class Users(nagiosplugin.Resource):
+
+       [...]
+
+       def list_users(self):
+           """Return list of logged in users."""
+           logging.info('querying users with "%s" command', self.who_cmd)
+           users = []
+           try:
+               for line in subprocess.check_output([self.who_cmd]).splitlines():
+                   logging.debug('who output: %s', line.strip())
+                   users.append(line.split()[0].decode())
+           except OSError:
+               raise nagiosplugin.CheckError(
+                   'cannot determine number of users ({} failed)'.format(
+                       self.who_cmd))
+           logging.debug('found users: %r', users)
+           return users
+
+Interesting items to log are: the command which is invoked to query the
+information from the system, or the raw result to verify that parsing works
+correctly.
 
 .. _logging: http://docs.python.org/3/library/logging.html
+
+.. _Nagios plug-in development guidelines: http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN39
 
 .. vim: set spell spelllang=en:
