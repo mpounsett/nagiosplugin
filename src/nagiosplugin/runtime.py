@@ -38,7 +38,8 @@ def guarded(func):
             return func()
         except Timeout as exc:
             runtime._handle_exception(
-                'Timeout: check execution aborted after {}'.format(exc))
+                'Timeout: check execution aborted after {0}'.format(
+                        exc))
         except Exception:
             runtime._handle_exception()
     return wrapper
@@ -74,12 +75,12 @@ class Runtime(object):
     def _handle_exception(self, statusline=None):
         exc_type, value = sys.exc_info()[0:2]
         name = self.check.name.upper() + ' ' if self.check else ''
-        self.output.status = '{}UNKNOWN: {}'.format(
+        self.output.status = '{0}UNKNOWN: {1}'.format(
             name, statusline or traceback.format_exception_only(
                 exc_type, value)[0].strip())
         if self.verbose > 0:
             self.output.add_longoutput(traceback.format_exc())
-        print('{}'.format(self.output), end='', file=self.stdout)
+        print('{0}'.format(self.output), end='', file=self.stdout)
         self.exitcode = 3
         self.sysexit()
 
@@ -117,7 +118,7 @@ class Runtime(object):
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)
-        print('{}'.format(self.output), end='', file=self.stdout)
+        print('{0}'.format(self.output), end='', file=self.stdout)
         self.sysexit()
 
     def sysexit(self):

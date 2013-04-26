@@ -49,7 +49,7 @@ class ContextsTest(unittest.TestCase):
 
     def test_fmt_callable(self):
         def format_metric(metric, context):
-            return '{} formatted by {}'.format(metric.name, context.name)
+            return '{0} formatted by {1}'.format(metric.name, context.name)
 
         m1 = nagiosplugin.Metric('foo', 1, 's', min=0)
         c = Context('describe_callable', fmt_metric=format_metric)

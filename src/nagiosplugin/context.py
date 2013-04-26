@@ -168,7 +168,7 @@ class Contexts:
             return self.by_name[context_name]
         except KeyError:
             raise KeyError('cannot find context', context_name,
-                           'known contexts: {}'.format(
+                           'known contexts: {0}'.format(
                                ', '.join(self.by_name.keys())))
 
     def __contains__(self, context_name):
