@@ -63,7 +63,7 @@ class Check(object):
             elif isinstance(obj, Results):
                 self.results = obj
             else:
-                raise TypeError('cannot add type {} to check'.format(
+                raise TypeError('cannot add type {0} to check'.format(
                     type(obj)), obj)
         return self
 

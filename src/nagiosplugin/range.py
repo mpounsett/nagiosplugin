@@ -96,5 +96,5 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     def violation(self):
         """Human-readable description why a value does not match."""
         if self.start:
-            return 'outside {}'.format(self)
-        return 'greater than {}'.format(self)
+            return 'outside {0}'.format(self)
+        return 'greater than {0}'.format(self)

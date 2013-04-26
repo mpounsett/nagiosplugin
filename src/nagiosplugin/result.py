@@ -82,7 +82,7 @@ class ScalarResult(Result):
         if self.hint:
             hint = (self.hint.violation if hasattr(self.hint, 'violation')
                     else self.hint)
-            return '{} ({})'.format(self.metric.description, hint)
+            return '{0} ({1})'.format(self.metric.description, hint)
         return str(self.metric.description)
 
 

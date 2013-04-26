@@ -21,7 +21,7 @@ class ExamplesTest(unittest.TestCase):
         out, err = proc.communicate()
         self.assertEqual(err.decode(), '')
         self.assertTrue(re.match(regexp, out.decode()) is not None,
-                        '"{}" does not match "{}"'.format(
+                        '"{0}" does not match "{1}"'.format(
                             out.decode(), regexp))
         self.assertEqual(0, proc.returncode)
 

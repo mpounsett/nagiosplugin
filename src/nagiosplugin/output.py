@@ -35,7 +35,7 @@ class Output(object):
 
     def format_status(self, check):
         summary_str = check.summary_str.strip()
-        return self._screen_chars('{} {}{}'.format(
+        return self._screen_chars('{0} {1}{2}'.format(
             check.name.upper(), str(check.state).upper(),
             ' - ' + summary_str if summary_str else ''), 'status line')
 
@@ -48,7 +48,7 @@ class Output(object):
                 lines.append(item)
             else:
                 lines[-1] += ' ' + self._screen_chars(
-                    item, 'perfdata {}'.format(i))
+                    item, 'perfdata {0}'.format(i))
         return '\n'.join(lines)
 
     def add_longoutput(self, text):
@@ -78,6 +78,6 @@ class Output(object):
         return screened
 
     def _illegal_chars_warning(self, where, removed_chars):
-        hex_chars = ', '.join('0x{:x}'.format(ord(c)) for c in removed_chars)
-        return 'warning: removed illegal characters ({}) from {}'.format(
+        hex_chars = ', '.join('0x{0:x}'.format(ord(c)) for c in removed_chars)
+        return 'warning: removed illegal characters ({0}) from {1}'.format(
             hex_chars, where)
