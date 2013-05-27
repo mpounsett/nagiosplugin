@@ -1,8 +1,8 @@
 syntax: glob
 bin
 build
-coverage/
 .coverage
+coverage/
 develop-eggs/
 dist/
 doc/_build
@@ -23,5 +23,6 @@ parts/
 setuptools_hg*
 *.sw[po]
 tags
+tests.xml
 tmp
 .todo
