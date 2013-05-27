@@ -5,7 +5,11 @@ from nagiosplugin.runtime import Runtime, guarded
 from nagiosplugin.compat import StringIO
 import nagiosplugin
 import logging
-import unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 def make_check():

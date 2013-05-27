@@ -1,8 +1,12 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
 from nagiosplugin.range import Range
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class RangeParseTest(unittest.TestCase):

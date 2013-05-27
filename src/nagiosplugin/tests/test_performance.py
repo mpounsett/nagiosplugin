@@ -2,7 +2,11 @@
 # See also LICENSE.txt
 
 from nagiosplugin.performance import Performance
-import unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class PerformanceTest(unittest.TestCase):

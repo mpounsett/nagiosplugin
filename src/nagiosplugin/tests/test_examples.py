@@ -5,8 +5,15 @@ import pkg_resources
 import re
 import subprocess
 import sys
-import unittest
 import os.path as p
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
+# assume that buildout creates bin/py which has all modules in its path
+_py = p.join(p.dirname(sys.executable), 'py')
 
 
 class ExamplesTest(unittest.TestCase):
@@ -14,7 +21,7 @@ class ExamplesTest(unittest.TestCase):
 
     def _run_example(self, program, regexp):
         proc = subprocess.Popen([
-            sys.executable, pkg_resources.resource_filename(
+            _py, pkg_resources.resource_filename(
                 'nagiosplugin.examples', program), '-v'],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, env={'PYTHONPATH': self.base})
@@ -25,8 +32,9 @@ class ExamplesTest(unittest.TestCase):
                             out.decode(), regexp))
         self.assertEqual(0, proc.returncode)
 
-    @unittest.skipUnless(sys.platform.startswith('linux'), 'requires Linux')
     def test_check_load(self):
+        if not sys.platform.startswith('linux'):
+            self.skipTest('requires Linux')
         self._run_example('check_load.py', """\
 LOAD OK - loadavg is [0-9., ]+
 | load15=[0-9.]+;;;0 load1=[0-9.]+;;;0 load5=[0-9.]+;;;0

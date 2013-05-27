@@ -3,9 +3,13 @@
 # See also LICENSE.txt
 
 from nagiosplugin.cookie import Cookie
-import unittest
 import tempfile
 import os
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class CookieTest(unittest.TestCase):

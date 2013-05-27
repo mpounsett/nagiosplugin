@@ -3,12 +3,18 @@
 
 from setuptools import setup, find_packages
 import os
+import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 HISTORY = open(os.path.join(here, 'HISTORY.txt')).read()
 HACKING = open(os.path.join(here, 'HACKING.txt')).read()
 version = open(os.path.join(here, 'version.txt')).read().strip()
+
+if sys.hexversion < 0x2070000:
+    extras_require = {'test': ['unittest2', 'argparse']}
+else:
+    extras_require = {'test': []}
 
 
 setup(
@@ -24,6 +30,7 @@ setup(
         'License :: OSI Approved :: Zope Public License',
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
@@ -40,6 +47,6 @@ setup(
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    install_requires=[],
     test_suite='nagiosplugin.tests',
+    extras_require=extras_require,
 )

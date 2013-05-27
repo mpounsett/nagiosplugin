@@ -3,8 +3,12 @@
 
 from nagiosplugin.logtail import LogTail
 import nagiosplugin
-import unittest
 import tempfile
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class LogTailTest(unittest.TestCase):

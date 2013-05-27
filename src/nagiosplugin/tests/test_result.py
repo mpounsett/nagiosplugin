@@ -4,7 +4,11 @@
 from nagiosplugin.result import Result, ScalarResult, Results
 from nagiosplugin.state import Ok, Warn, Critical, Unknown
 import nagiosplugin
-import unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class ResultTest(unittest.TestCase):

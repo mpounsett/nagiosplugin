@@ -3,8 +3,12 @@
 
 from nagiosplugin.platform import with_timeout
 import nagiosplugin
-import unittest
 import time
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class PlatformTest(unittest.TestCase):

@@ -3,7 +3,11 @@
 
 from nagiosplugin.context import Context, ScalarContext, Contexts
 import nagiosplugin
-import unittest
+
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
 
 
 class ScalarContextTest(unittest.TestCase):
