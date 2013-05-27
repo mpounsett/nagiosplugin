@@ -1,0 +1,17 @@
+Contributors
+============
+
+`nagiosplugin` has become what it is now with the help of many contributors from
+the community. We want to thank everyone who has invested time and energy to
+make `nagiosplugin` better:
+
+* Wolfgang Schnerring <ws@gocept.com> for thoughts on the design.
+* Thomas Lotze <thomas@thomas-lotze.de> for improving the test infrastructure.
+* Christian Theune <ct@gocept.com> for comments and general feedback.
+* Michael Howitz <mh@gocept.com> and Andrei Chirila <andreich@gmail.com> for the
+  Python 3 port.
+* Birger Schmidt <birger.schmidt@netways.de> for bug reports.
+* Florian Lagg <LaggAt@lagg-asus1.lan> for Windows compatibility fixes
+* Jeff Goldschrafe <jeff@holyhandgrenade.org> for the Python 2.6 backport.
+
+.. vim: set ft=rst sw=3 sts=3 et:

@@ -6,10 +6,12 @@ import os
 import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.txt')).read()
-HISTORY = open(os.path.join(here, 'HISTORY.txt')).read()
-HACKING = open(os.path.join(here, 'HACKING.txt')).read()
-version = open(os.path.join(here, 'version.txt')).read().strip()
+longdesc = []
+for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
+    with open(readme) as f:
+        longdesc.append(f.read())
+with open('version.txt') as f:
+    version = f.read().strip()
 
 if sys.hexversion < 0x2070000:
     extras_require = {'test': ['unittest2', 'argparse']}
@@ -21,7 +23,7 @@ setup(
     name='nagiosplugin',
     version=version,
     description='Class library for writing Nagios (Icinga) plugins',
-    long_description=README + '\n\n' + HISTORY + '\n\n' + HACKING,
+    long_description='\n\n'.join(longdesc),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',

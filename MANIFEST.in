@@ -1,5 +1,6 @@
 include bootstrap.py
 include buildout.cfg
+include CONTRIBUTORS.txt
 include HACKING.txt
 include HISTORY.txt
 include LICENSE.txt
