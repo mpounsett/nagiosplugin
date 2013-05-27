@@ -44,7 +44,7 @@ setup(
     author_email='kc@gocept.com',
     url='http://projects.gocept.com/projects/nagiosplugin/wiki',
     download_url='http://pypi.python.org/pypi/nagiosplugin',
-    license='ZPL',
+    license='ZPL-2.1',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
