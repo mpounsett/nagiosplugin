@@ -9,11 +9,8 @@ import os.path as p
 
 try:
     import unittest2 as unittest
-except ImportError:
+except ImportError:  # pragma: no cover
     import unittest
-
-# assume that buildout creates bin/py which has all modules in its path
-_py = p.join(p.dirname(sys.executable), 'py')
 
 
 class ExamplesTest(unittest.TestCase):
@@ -21,10 +18,10 @@ class ExamplesTest(unittest.TestCase):
 
     def _run_example(self, program, regexp):
         proc = subprocess.Popen([
-            _py, pkg_resources.resource_filename(
+            sys.executable, pkg_resources.resource_filename(
                 'nagiosplugin.examples', program), '-v'],
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, env={'PYTHONPATH': self.base})
+            stderr=subprocess.PIPE, env={'PYTHONPATH': ':'.join(sys.path)})
         out, err = proc.communicate()
         self.assertEqual(err.decode(), '')
         self.assertTrue(re.match(regexp, out.decode()) is not None,
@@ -33,7 +30,7 @@ class ExamplesTest(unittest.TestCase):
         self.assertEqual(0, proc.returncode)
 
     def test_check_load(self):
-        if not sys.platform.startswith('linux'):
+        if not sys.platform.startswith('linux'):  # pragma: no cover
             self.skipTest('requires Linux')
         self._run_example('check_load.py', """\
 LOAD OK - loadavg is [0-9., ]+
