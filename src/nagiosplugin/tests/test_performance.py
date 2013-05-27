@@ -5,7 +5,7 @@ from nagiosplugin.performance import Performance
 
 try:
     import unittest2 as unittest
-except ImportError:
+except ImportError:  # pragma: no cover
     import unittest
 
 
