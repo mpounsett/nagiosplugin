@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-1.0.1 (unreleased)
+1.1b1 (2013-05-28)
 ------------------
 
 - Made compatible with Python 2.6 (#12297).
