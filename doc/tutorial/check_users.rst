@@ -59,9 +59,11 @@ metrics:
 This may be more comfortable than constructing a list of metrics first and
 returning them all at once.
 
-Note that both metrics in the example use the same context *users*. This way,
-the main function needs to define only one context that provides the same
-thresholds for both metrics:
+To assign a :class:`~nagiosplugin.context.Context` to a
+:class:`~nagiosplugin.metric.Metric`, pass the context's name in the metric's
+**context** parameter. Both metrics use the same context "users". This way, the
+main function must define only one context that applies the same thresholds to
+both metrics:
 
 .. code-block:: python
 
@@ -81,10 +83,9 @@ Multiple contexts
 -----------------
 
 The above example defines only one context for all metrics. This may not be
-practical. Each metric should get its own context now.
-In the simplest case we can rely on the fact that each metric takes by default a
-context with the same name as the metric itself. So just leave out the
-`context=` parameters:
+practical. Each metric should get its own context now. By default, a metric is
+matched by a context of the same name. So we just leave out the **context**
+parameters:
 
 .. code-block:: python
 
@@ -93,8 +94,7 @@ context with the same name as the metric itself. So just leave out the
        return [nagiosplugin.Metric('total', len(self.users), min=0),
                nagiosplugin.Metric('unique', len(self.unique_users), min=0)]
 
-Of course, we need to define two contexts names "total" and "unique" in the
-`main()` function:
+We then define two contexts (one for each metric) in the `main()` function:
 
 .. code-block:: python
 
@@ -117,7 +117,7 @@ Alternatively, we can require every context that fits in metric definitions.
 Logging and verbosity levels
 ----------------------------
 
-`nagiosplugin` integrates with the `logging`_ module from Python's standard
+**nagiosplugin** integrates with the `logging`_ module from Python's standard
 library. If the main function is decorated with `guarded` (which is heavily
 recommended), the logging module gets automatically configured before the
 execution of the `main()` function starts.

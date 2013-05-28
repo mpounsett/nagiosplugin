@@ -33,7 +33,8 @@ class Metric(collections.namedtuple(
             abbreviation like "s"
         :param min: minimum value or None if there is no known minimum
         :param max: maximum value or None if there is no known maximum
-        :param context: name of the associated context
+        :param context: name of the associated context (defaults to the
+            metric's name if left out)
         :param contextobj: reference to the associated context object
             (set automatically by :class:`~nagiosplugin.check.Check`)
         :param resource: reference to the originating
