@@ -32,10 +32,10 @@ def guarded(func):
     function.
     """
     @functools.wraps(func)
-    def wrapper():
+    def wrapper(*args, **kwds):
         runtime = Runtime()
         try:
-            return func()
+            return func(*args, **kwds)
         except Timeout as exc:
             runtime._handle_exception(
                 'Timeout: check execution aborted after {0}'.format(
