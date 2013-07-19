@@ -2,16 +2,17 @@ Release History
 ===============
 
 
-1.2 (unreleased)
-----------------
+1.1.1 (unreleased)
+------------------
 
-- Nothing changed yet.
+- Add debugging topic guide. Explain how to disable the timeout when using pdb
+  (#11592).
 
 
 1.1 (2013-06-19)
 ----------------
 
-- Nothing changed.
+- Identical to 1.1b1.
 
 
 1.1b1 (2013-05-28)

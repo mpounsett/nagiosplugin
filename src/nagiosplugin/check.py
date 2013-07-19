@@ -29,10 +29,9 @@ class Check(object):
     def __init__(self, *objects):
         """Creates and configures a check.
 
-        Specialized *objects* representing resources, contexts and a
-        summary are expected to be passed to the constructor.
-        Alternatively, objects can be added later using the :meth:`add`
-        method.
+        Specialized *objects* representing resources, contexts,
+        summary, or results are passed to the the :meth:`add` method.
+        Alternatively, objects can be added later manually.
         """
         self.resources = []
         self.contexts = Contexts()
@@ -104,7 +103,7 @@ class Check(object):
 
         :param verbose: output verbosity level between 0 and 3
         :param timeout: abort check execution with a :exc:`Timeout`
-            exception after so many seconds
+            exception after so many seconds (use 0 for no timeout)
         """
         runtime = Runtime()
         runtime.execute(self, verbose, timeout)

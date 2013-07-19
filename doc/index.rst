@@ -12,6 +12,7 @@ Contents
 
    readme
    tutorial/index
+   topic/index
    api/index
    glossary
    history
