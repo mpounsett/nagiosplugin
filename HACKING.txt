@@ -24,13 +24,18 @@ virtualenv::
 
    virtualenv -p python2.7 .
 
+Sometimes, you will run into strange setuptools/distribute version conflicts.
+The best way around is to keep setuptools and distribute entirely out of the
+virtualenv::
+
+   virtualenv -p python3.2 --no-setuptools .
+
+`bootstrap.py` and zc.buildout will take care of all required dependencies.
+
 Then launch the usual buildout steps::
 
-   bin/python3.2 bootstrap.py -t
+   bin/python3.2 bootstrap.py
    bin/buildout
-
-If you experience version conflicts with distutils, be sure to use a current
-virtualenv version. The library developers use virtualenv 1.8.2.
 
 
 Running tests

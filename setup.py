@@ -13,10 +13,10 @@ for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
 with open('version.txt') as f:
     version = f.read().strip()
 
-if sys.hexversion < 0x2070000:
-    extras_require = {'test': ['unittest2', 'argparse']}
+if sys.version_info < (2, 7):
+    extras_require = {'test': ['setuptools', 'unittest2', 'argparse']}
 else:
-    extras_require = {'test': []}
+    extras_require = {'test': ['setuptools']}
 
 
 setup(
