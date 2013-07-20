@@ -98,7 +98,7 @@ class Context(object):
 
 class ScalarContext(Context):
 
-    def __init__(self, name, warning, critical, fmt_metric=None,
+    def __init__(self, name, warning=None, critical=None, fmt_metric=None,
                  result_cls=ScalarResult):
         """Ready-to-use :class:`Context` subclass for scalar values.
 

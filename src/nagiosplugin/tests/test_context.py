@@ -25,6 +25,11 @@ class ScalarContextTest(unittest.TestCase):
             self.assertEqual(nagiosplugin.Result(exp_state, exp_reason, m),
                              c.evaluate(m, None))
 
+    def test_accept_none_warning_critical(self):
+        c = ScalarContext('ctx')
+        self.assertEqual(nagiosplugin.Range(), c.warning)
+        self.assertEqual(nagiosplugin.Range(), c.critical)
+
 
 class ContextsTest(unittest.TestCase):
 
