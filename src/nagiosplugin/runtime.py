@@ -62,7 +62,7 @@ class Runtime(object):
         return cls.instance
 
     def __init__(self):
-        rootlogger = logging.getLogger()
+        rootlogger = logging.getLogger(__name__)
         rootlogger.setLevel(logging.DEBUG)
         if not self.logchan:
             self.logchan = logging.StreamHandler(io.StringIO())
