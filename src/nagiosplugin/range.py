@@ -39,7 +39,7 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         else:
             start, end = '', spec
         if start == '~':
-            start = None
+            start = float('-inf')
         elif start is not '':
             if '.' in start:
                 start = float(start)
@@ -53,22 +53,22 @@ class Range(collections.namedtuple('Range', 'invert start end')):
             else:
                 end = int(end)
         else:
-            end = None
+            end = float('inf')
         cls._verify(start, end)
         return (invert, start, end)
 
     @classmethod
     def _verify(cls, start, end):
         """Throw ValueError if the range is not consistent."""
-        if (start is not None and end is not None and start > end):
+        if start > end:
             raise ValueError('start %s must not be greater than end %s' % (
                              start, end))
 
     def match(self, value):
         """Decide if `value` is inside/outside the bounds."""
-        if self.start is not None and value < self.start:
+        if value < self.start:
             return False ^ self.invert
-        if self.end is not None and value > self.end:
+        if value > self.end:
             return False ^ self.invert
         return True ^ self.invert
 
@@ -79,11 +79,11 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         result = []
         if self.invert:
             result.append('@')
-        if self.start is None:
+        if self.start == float('-inf'):
             result.append('~:')
         elif not omit_zero_start or self.start != 0:
             result.append(('%s:' % self.start))
-        if self.end is not None:
+        if self.end != float('inf'):
             result.append(('%s' % self.end))
         return ''.join(result)
 

@@ -15,7 +15,7 @@ class RangeParseTest(unittest.TestCase):
         r = Range('')
         self.assertFalse(r.invert)
         self.assertEqual(r.start, 0)
-        self.assertIsNone(r.end)
+        self.assertEqual(r.end, float('inf'))
 
     def test_null_range(self):
         self.assertEqual(Range(), Range(''))
@@ -40,12 +40,12 @@ class RangeParseTest(unittest.TestCase):
         r = Range('7.7:')
         self.assertFalse(r.invert)
         self.assertEqual(r.start, 7.7)
-        self.assertIsNone(r.end)
+        self.assertEqual(r.end, float('inf'))
 
     def test_start_is_neg_infinity(self):
         r = Range('~:5.5')
         self.assertFalse(r.invert)
-        self.assertIsNone(r.start)
+        self.assertEqual(r.start, float('-inf'))
         self.assertEqual(r.end, 5.5)
 
     def test_invert(self):
