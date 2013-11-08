@@ -37,10 +37,10 @@ class ScalarResultTest(unittest.TestCase):
             ScalarResult(nagiosplugin.Unknown, None, None)
 
     def test_str_gives_range_violation_hint(self):
+        r = nagiosplugin.Range('2:3')
         self.assertEqual(
-            '2 (greater than 1)',
-            str(ScalarResult(Warn, nagiosplugin.Range('1'),
-                             nagiosplugin.Metric('foo', 2))))
+            '2 ({0})'.format(r.violation),
+            str(ScalarResult(Warn, r, nagiosplugin.Metric('foo', 2))))
 
     def test_str_gives_plain_reason(self):
         self.assertEqual(

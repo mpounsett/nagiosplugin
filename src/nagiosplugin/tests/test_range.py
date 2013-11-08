@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from nagiosplugin.range import Range
@@ -94,7 +94,10 @@ class RangeStrTest(unittest.TestCase):
         self.assertEqual('2800000000', str(Range('2800000000')))
 
     def test_violation_outside(self):
-        self.assertEqual('outside 2:3', Range('2:3').violation)
+        self.assertEqual('outside range 2:3', Range('2:3').violation)
 
     def test_violation_greater_than(self):
-        self.assertEqual('greater than 4', Range('4').violation)
+        self.assertEqual('outside range 0:4', Range('4').violation)
+
+    def test_violation_empty_range(self):
+        self.assertEqual('outside range 0:', Range('').violation)

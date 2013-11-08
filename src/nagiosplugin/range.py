@@ -75,18 +75,21 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     def __contains__(self, value):
         return self.match(value)
 
-    def __str__(self):
-        """Return a human-readable range specification."""
+    def _format(self, omit_zero_start=True):
         result = []
         if self.invert:
             result.append('@')
         if self.start is None:
             result.append('~:')
-        elif self.start != 0:
+        elif not omit_zero_start or self.start != 0:
             result.append(('%s:' % self.start))
         if self.end is not None:
             result.append(('%s' % self.end))
         return ''.join(result)
+
+    def __str__(self):
+        """Return a human-readable range specification."""
+        return self._format()
 
     def __repr__(self):
         """Return a parseable range specification."""
@@ -95,6 +98,4 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     @property
     def violation(self):
         """Human-readable description why a value does not match."""
-        if self.start:
-            return 'outside {0}'.format(self)
-        return 'greater than {0}'.format(self)
+        return 'outside range {0}'.format(self._format(False))
