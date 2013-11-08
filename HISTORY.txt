@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-1.2 (unreleased)
+1.2 (2013-11-08)
 ----------------
 
 - New `Summary.empty` method is called if there are no results present (#11593).
