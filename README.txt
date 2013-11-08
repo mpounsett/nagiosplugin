@@ -45,13 +45,11 @@ BSD-style Open Source license.
 Documentation
 -------------
 
-To get started writing Nagios plugins, see the examples in the `examples`
-subdirectory.
+Comprehensive documentation is `available online`_. The examples mentioned in
+the `tutorials`_ can also be found in the `nagiosplugin/examples` directory of
+the source distribution.
 
-More documentation on using this package can be found in the `doc`
-directory of the source distribution.  There is also an `online copy`_ of the
-docs available.
-
-.. _online copy: http://pythonhosted.org/nagiosplugin/
+.. _available online: http://pythonhosted.org/nagiosplugin/
+.. _tutorials: http://pythonhosted.org/nagiosplugin/tutorial/
 
 .. vim: set ft=rst:

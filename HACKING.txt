@@ -38,12 +38,18 @@ Then launch the usual buildout steps::
    bin/buildout
 
 
-Running tests
--------------
+Tests
+-----
 
 When the buildout succeeds, run the unit test by invoking::
 
    bin/test
+
+Our `build server`_ runs test against the trunk on a regular basis.
+
+.. image:: https://builds.gocept.com/job/nagiosplugin/badge/icon
+   :target: https://builds.gocept.com/job/nagiosplugin/
+.. _build server: https://builds.gocept.com/job/nagiosplugin/
 
 nagiosplugin also includes support for coverage reports. It aims at 100% test
 coverage where possible. The preferred way to get a coverate report is to use ::
@@ -60,9 +66,6 @@ to get a purely text-based coverage report.
 You may run the supplied examples with the local interpreter::
 
    bin/py src/nagiosplugin/examples/check_load.py
-
-.. image:: https://builds.gocept.com/job/nagiosplugin/badge/icon
-   :target: https://builds.gocept.com/job/nagiosplugin/
 
 
 Documentation
