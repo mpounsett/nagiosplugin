@@ -131,7 +131,9 @@ class Check(object):
         perceived by the check. The string is usually queried from a
         :class:`Summary` object.
         """
-        if self.state == Ok:
+        if not self.results:
+            return self.summary.empty() or ''
+        elif self.state == Ok:
             return self.summary.ok(self.results) or ''
         return self.summary.problem(self.results) or ''
 

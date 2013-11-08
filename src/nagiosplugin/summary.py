@@ -48,10 +48,7 @@ class Summary(object):
         :param results: :class:`~.result.Results` container
         :returns: status line
         """
-        try:
-            return str(results.first_significant)
-        except IndexError:
-            return 'no check results'
+        return str(results.first_significant)
 
     def verbose(self, results):
         """Provides extra lines if verbose plugin execution is requested.
@@ -68,3 +65,10 @@ class Summary(object):
                 continue
             msgs.append('{0}: {1}'.format(result.state, result))
         return msgs
+
+    def empty(self):
+        """Formats status line when the result set is empty.
+
+        :returns: status line
+        """
+        return 'no check results'
