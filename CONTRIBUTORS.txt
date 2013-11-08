@@ -13,5 +13,6 @@ make `nagiosplugin` better:
 * Birger Schmidt <birger.schmidt@netways.de> for bug reports.
 * Florian Lagg <LaggAt@lagg-asus1.lan> for Windows compatibility fixes
 * Jeff Goldschrafe <jeff@holyhandgrenade.org> for the Python 2.6 backport.
+* José Manuel Fardello <jmfardello@gmail.com> for a logging fix.
 
 .. vim: set ft=rst sw=3 sts=3 et:

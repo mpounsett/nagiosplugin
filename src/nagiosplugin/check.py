@@ -23,6 +23,8 @@ from .state import Ok, Unknown
 from .summary import Summary
 import logging
 
+_log = logging.getLogger(__name__)
+
 
 class Check(object):
 
@@ -71,7 +73,7 @@ class Check(object):
             metric = None
             metrics = resource.probe()
             if not metrics:
-                logging.warning('resource %s did not produce any metric',
+                _log.warning('resource %s did not produce any metric',
                                 resource.name)
             for metric in metrics:
                 context = self.contexts[metric.context]

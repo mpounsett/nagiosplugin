@@ -39,7 +39,7 @@ def guarded(func):
         except Timeout as exc:
             runtime._handle_exception(
                 'Timeout: check execution aborted after {0}'.format(
-                        exc))
+                    exc))
         except Exception:
             runtime._handle_exception()
     return wrapper
@@ -62,7 +62,7 @@ class Runtime(object):
         return cls.instance
 
     def __init__(self):
-        rootlogger = logging.getLogger(__name__)
+        rootlogger = logging.getLogger(__name__.split('.', 1)[0])
         rootlogger.setLevel(logging.DEBUG)
         if not self.logchan:
             self.logchan = logging.StreamHandler(io.StringIO())

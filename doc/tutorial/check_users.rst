@@ -120,7 +120,8 @@ Logging and verbosity levels
 **nagiosplugin** integrates with the `logging`_ module from Python's standard
 library. If the main function is decorated with `guarded` (which is heavily
 recommended), the logging module gets automatically configured before the
-execution of the `main()` function starts.
+execution of the `main()` function starts. Messages logged to the *nagiosplugin*
+logger (or any sublogger) are processed with nagiosplugin's integrated logging.
 
 Consider the following example check::
 
@@ -128,13 +129,15 @@ Consider the following example check::
    import nagiosplugin
    import logging
 
+   _log = logging.getLogger('nagiosplugin')
+
 
    class Logging(nagiosplugin.Resource):
 
        def probe(self):
-           logging.warning('warning message')
-           logging.info('info message')
-           logging.debug('debug message')
+           _log.warning('warning message')
+           _log.info('info message')
+           _log.debug('debug message')
            return [nagiosplugin.Metric('zero', 0, context='default')]
 
 
@@ -196,17 +199,17 @@ like this:
 
        def list_users(self):
            """Return list of logged in users."""
-           logging.info('querying users with "%s" command', self.who_cmd)
+           _log.info('querying users with "%s" command', self.who_cmd)
            users = []
            try:
                for line in subprocess.check_output([self.who_cmd]).splitlines():
-                   logging.debug('who output: %s', line.strip())
+                   _log.debug('who output: %s', line.strip())
                    users.append(line.split()[0].decode())
            except OSError:
                raise nagiosplugin.CheckError(
                    'cannot determine number of users ({} failed)'.format(
                        self.who_cmd))
-           logging.debug('found users: %r', users)
+           _log.debug('found users: %r', users)
            return users
 
 Interesting items to log are: the command which is invoked to query the

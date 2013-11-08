@@ -9,6 +9,8 @@ import logging
 import nagiosplugin
 import subprocess
 
+_log = logging.getLogger('nagiosplugin')
+
 
 # data acquisition
 
@@ -26,16 +28,16 @@ class Load(nagiosplugin.Resource):
         self.percpu = percpu
 
     def cpus(self):
-        logging.info('counting cpus with "nproc"')
+        _log.info('counting cpus with "nproc"')
         cpus = int(subprocess.check_output(['nproc']))
-        logging.debug('found %i cpus in total', cpus)
+        _log.debug('found %i cpus in total', cpus)
         return cpus
 
     def probe(self):
-        logging.info('reading load from /proc/loadavg')
+        _log.info('reading load from /proc/loadavg')
         with open('/proc/loadavg') as loadavg:
             load = loadavg.readline().split()[0:3]
-        logging.debug('raw load is %s', load)
+        _log.debug('raw load is %s', load)
         cpus = self.cpus() if self.percpu else 1
         load = [float(l) / cpus for l in load]
         for i, period in enumerate([1, 5, 15]):
