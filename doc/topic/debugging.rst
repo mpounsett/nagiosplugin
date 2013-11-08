@@ -2,8 +2,8 @@
 
 .. index:: debugging
 
-Debugging Plugins
-=================
+Plugin Debugging
+================
 
 Debugging plugins can sometimes be complicated since there are so many classes,
 which are tied together in an implicit way. I have collected some frequent

@@ -2,9 +2,13 @@ Release History
 ===============
 
 
-1.1.1 (unreleased)
-------------------
+1.2 (unreleased)
+----------------
 
+- New `Summary.empty` method is called if there are no results present (#11593).
+- Improve range violation wording (#11597).
+- Ensure that nagiosplugin install correctly with current setuptools (#12660).
+- Behave and do not attach anything to the root logger.
 - Add debugging topic guide. Explain how to disable the timeout when using pdb
   (#11592).
 

@@ -54,7 +54,8 @@ copyright = 'gocept gmbh & co. kg'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = open('../version.txt').read().strip()
+with open('../version.txt') as f:
+    release = f.read().strip()
 # The short X.Y version.
 version = re.sub(r'-.*|[abc]\d+|rc\d+|.dev\d+', '', release)
 
