@@ -7,10 +7,14 @@ import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 longdesc = []
+if sys.version_info < (3,):
+    open_file = lambda x: open(x, encoding='utf-8')
+else:
+    open_file = open
 for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
-    with open(readme) as f:
+    with open_file(readme) as f:
         longdesc.append(f.read())
-with open('version.txt') as f:
+with open_file('version.txt') as f:
     version = f.read().strip()
 
 if sys.version_info < (2, 7):
