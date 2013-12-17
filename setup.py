@@ -8,9 +8,9 @@ import sys
 here = os.path.abspath(os.path.dirname(__file__))
 longdesc = []
 if sys.version_info < (3,):
-    open_file = lambda x: open(x, encoding='utf-8')
-else:
     open_file = open
+else:
+    open_file = lambda x: open(x, encoding='utf-8')
 for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
     with open_file(readme) as f:
         longdesc.append(f.read())
