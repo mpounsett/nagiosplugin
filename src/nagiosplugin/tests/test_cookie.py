@@ -2,6 +2,7 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import unicode_literals, print_function
 from nagiosplugin.cookie import Cookie
 import codecs
 import os
@@ -94,7 +95,7 @@ class CookieTest(unittest.TestCase):
         c.close()
 
     def test_cookie_format_exception_truncates_file(self):
-        with codecs.open(self.tf.name, 'w', encoding='utf-8') as f:
+        with codecs.open(self.tf.name, 'w', 'utf-8') as f:
             f.write('{slö@@ä')
         c = Cookie(self.tf.name)
         try:
