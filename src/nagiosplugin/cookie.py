@@ -22,16 +22,12 @@ from .platform import flock_exclusive
 import codecs
 import json
 import os
+import tempfile
 
 
 class Cookie(UserDict, object):
 
-    def __new__(cls, statefile=None):
-        if statefile:
-            return super(cls, Cookie).__new__(cls, statefile)
-        return super(cls, Cookie).__new__(ObliviousCookie)
-
-    def __init__(self, statefile):
+    def __init__(self, statefile=None):
         """Creates a persistent dict to keep state.
 
         After creation, a cookie behaves like a normal dict.
@@ -80,10 +76,7 @@ class Cookie(UserDict, object):
         :raises ValueError: if the state file is corrupted or does not
             deserialize into a dict
         """
-        try:
-            self.fobj = codecs.open(self.path, 'r+', encoding='ascii')
-        except IOError:
-            self.fobj = codecs.open(self.path, 'w+', encoding='ascii')
+        self.fobj = self._create_fobj()
         flock_exclusive(self.fobj)
         if os.fstat(self.fobj.fileno()).st_size:
             try:
@@ -92,6 +85,16 @@ class Cookie(UserDict, object):
                 self.fobj.truncate(0)
                 raise
         return self
+
+    def _create_fobj(self):
+        if not self.path:
+            return tempfile.TemporaryFile('w+', encoding='ascii',
+                                          prefix='oblivious_cookie_')
+        # mode='a+' has problems with mixed R/W operation on Mac OS X
+        try:
+            return codecs.open(self.path, 'r+', encoding='ascii')
+        except IOError:
+            return codecs.open(self.path, 'w+', encoding='ascii')
 
     def _load(self):
         self.fobj.seek(0)
@@ -110,7 +113,6 @@ class Cookie(UserDict, object):
         """
         if not self.fobj:
             return
-        self.data = {}
         self.fobj.close()
         self.fobj = None
 
@@ -124,29 +126,8 @@ class Cookie(UserDict, object):
         if not self.fobj:
             raise IOError('cannot commit closed cookie', self.path)
         self.fobj.seek(0)
-        self.fobj.truncate(0)
+        self.fobj.truncate()
         json.dump(self.data, self.fobj)
         self.fobj.write('\n')
         self.fobj.flush()
         os.fsync(self.fobj)
-
-
-class ObliviousCookie(Cookie):
-    """Special-case Cookie that does not persist anything.
-
-    This Cookie variant behaves just like a normal dict. Nothing is
-    saved.
-    """
-
-    def __init__(self, _statefile=None):
-        super(Cookie, self).__init__()
-
-    def open(self):
-        pass
-
-    def close(self):
-        pass
-
-    def commit(self):
-        pass
-
