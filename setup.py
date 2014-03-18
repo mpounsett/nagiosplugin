@@ -2,19 +2,16 @@
 # See also LICENSE.txt
 
 from setuptools import setup, find_packages
+import codecs
 import os
 import sys
 
 here = os.path.abspath(os.path.dirname(__file__))
 longdesc = []
-if sys.version_info < (3,):
-    open_file = open
-else:
-    open_file = lambda x: open(x, encoding='utf-8')
 for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
-    with open_file(readme) as f:
+    with codecs.open(readme, encoding='utf-8') as f:
         longdesc.append(f.read())
-with open_file('version.txt') as f:
+with open('version.txt') as f:
     version = f.read().strip()
 
 if sys.version_info < (2, 7):

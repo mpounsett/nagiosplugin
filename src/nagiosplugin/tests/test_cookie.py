@@ -3,8 +3,8 @@
 # See also LICENSE.txt
 
 from nagiosplugin.cookie import Cookie
+import codecs
 import os
-import sys
 import tempfile
 
 try:
@@ -94,12 +94,7 @@ class CookieTest(unittest.TestCase):
         c.close()
 
     def test_cookie_format_exception_truncates_file(self):
-        if sys.version_info < (3,):
-            open_file = open
-        else:
-            open_file = lambda *args: open(*args, encoding='utf-8')
-
-        with open_file(self.tf.name, 'w') as f:
+        with codecs.open(self.tf.name, 'w', encoding='utf-8') as f:
             f.write('{slö@@ä')
         c = Cookie(self.tf.name)
         try:
