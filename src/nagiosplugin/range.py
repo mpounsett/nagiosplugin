@@ -7,7 +7,7 @@ import collections
 class Range(collections.namedtuple('Range', 'invert start end')):
     """Represents a threshold range.
 
-    The general format is `[@][start:][end]`. "start:" may be omitted if
+    The general format is "[@][start:][end]". "start:" may be omitted if
     start==0. "~:" means that start is negative infinity. If `end` is
     omitted, infinity is assumed. To invert the match condition, prefix
     the range expression with "@".
@@ -18,9 +18,10 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     """
 
     def __new__(cls, spec=''):
-        """Create a Range object according to `spec`.
+        """Creates a Range object according to `spec`.
 
-        `spec` may be either a string, and int, or another Range object.
+        :param spec: may be either a string, an int, or another
+            Range object.
         """
         spec = spec or ''
         if isinstance(spec, Range):
@@ -62,16 +63,18 @@ class Range(collections.namedtuple('Range', 'invert start end')):
 
     @staticmethod
     def _verify(start, end):
-        """Throw ValueError if the range is not consistent."""
+        """Throws ValueError if the range is not consistent."""
         if start > end:
             raise ValueError('start %s must not be greater than end %s' % (
                              start, end))
 
     def match(self, value):
-        """Decide if `value` is inside/outside the threshold.
+        """Decides if `value` is inside/outside the threshold.
 
-        Returns True if value is inside the bounds for non-inverted
-        Ranges. Also available with the `in` operator.
+        :returns: `True` if value is inside the bounds for non-inverted
+            Ranges.
+
+        Also available as `in` operator.
         """
         if value < self.start:
             return False ^ self.invert
@@ -95,11 +98,11 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         return ''.join(result)
 
     def __str__(self):
-        """Return a human-readable range specification."""
+        """Human-readable range specification."""
         return self._format()
 
     def __repr__(self):
-        """Return a parseable range specification."""
+        """Parseable range specification."""
         return 'Range(%r)' % str(self)
 
     @property

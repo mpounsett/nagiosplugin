@@ -89,6 +89,7 @@ nagiosplugin.range
 
    .. automethod:: __new__
    .. automethod:: __str__
+   .. automethod:: __repr__
 
 
 nagiosplugin.result
