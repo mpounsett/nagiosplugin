@@ -6,6 +6,8 @@ Release History
 ------------------
 
 - Fix build failures with LANG=C (#13140).
+- Remove length limitation of perfdata labels (#13214).
+- Fix formatting of large integers as Metric values (#13287).
 
 
 1.2 (2013-11-08)

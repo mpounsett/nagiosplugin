@@ -78,7 +78,8 @@ class Metric(collections.namedtuple(
     @property
     def _human_readable_value(self):
         """Limit number of digits for floats."""
-        if isinstance(self.value, numbers.Real):
+        if (isinstance(self.value, numbers.Real) and
+            not isinstance(self.value, numbers.Integral)):
             return '%.4g' % self.value
         return str(self.value)
 

@@ -16,7 +16,7 @@ make `nagiosplugin` better:
 * José Manuel Fardello <jmfardello@gmail.com> for a logging fix.
 * Jordan Metzmeier <jmetzmeier01@gmail.com> for build fixes and Debian
   packaging.
-* Andrey Panfilov <andrew@panfilov.tel> and Mihai Limbășan <mihai@limbasan.ro>
-  for perfdata fixes.
+* Andrey Panfilov <andrew@panfilov.tel> for a perfdata fix.
+* Mihai Limbășan <mihai@limbasan.ro> for various output formatting fixes.
 
 .. vim: set ft=rst sw=3 sts=3 et:
