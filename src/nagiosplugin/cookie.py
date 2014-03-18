@@ -17,7 +17,7 @@ access to it. Changes to the dict are not reflected in the file until
 context manager to get it opened and committed automatically.
 """
 
-from .compat import UserDict
+from .compat import UserDict, TemporaryFile
 from .platform import flock_exclusive
 import codecs
 import json
@@ -88,8 +88,8 @@ class Cookie(UserDict, object):
 
     def _create_fobj(self):
         if not self.path:
-            return tempfile.TemporaryFile('w+', encoding='ascii',
-                                          prefix='oblivious_cookie_')
+            return TemporaryFile('w+', encoding='ascii',
+                                 prefix='oblivious_cookie_')
         # mode='a+' has problems with mixed R/W operation on Mac OS X
         try:
             return codecs.open(self.path, 'r+', encoding='ascii')
