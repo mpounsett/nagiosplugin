@@ -79,6 +79,18 @@ nagiosplugin.performance
    .. automethod:: __str__
 
 
+nagiosplugin.range
+------------------
+
+.. automodule:: nagiosplugin.range
+   :no-members:
+
+.. autoclass:: Range
+
+   .. automethod:: __new__
+   .. automethod:: __str__
+
+
 nagiosplugin.result
 -------------------
 

@@ -30,6 +30,22 @@ class RangeParseTest(unittest.TestCase):
     def test_fail_if_start_gt_end(self):
         self.assertRaises(ValueError, Range, '4:3')
 
+    def test_int(self):
+        r = Range(42)
+        self.assertFalse(r.invert)
+        self.assertEqual(r.start, 0)
+        self.assertEqual(r.end, 42)
+
+    def test_float(self):
+        r = Range(0.12)
+        self.assertFalse(r.invert)
+        self.assertEqual(r.start, 0)
+        self.assertEqual(r.end, 0.12)
+
+    def test_spec_with_unknown_type_should_raise(self):
+        with self.assertRaises(TypeError):
+            Range([1, 2])
+
     def test_omit_start(self):
         r = Range('5')
         self.assertFalse(r.invert)

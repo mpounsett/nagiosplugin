@@ -7,10 +7,10 @@ import collections
 class Range(collections.namedtuple('Range', 'invert start end')):
     """Represents a threshold range.
 
-    The general format is `[@][start:][end]`. `start:` may be omitted if
-    start==0. `~:` means that start is negative infinity. If `end` is
+    The general format is `[@][start:][end]`. "start:" may be omitted if
+    start==0. "~:" means that start is negative infinity. If `end` is
     omitted, infinity is assumed. To invert the match condition, prefix
-    the range expression with `@`.
+    the range expression with "@".
 
     See
     http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
@@ -20,17 +20,24 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     def __new__(cls, spec=''):
         """Create a Range object according to `spec`.
 
-        `spec` may be either a string or another Range object.
+        `spec` may be either a string, and int, or another Range object.
         """
+        spec = spec or ''
         if isinstance(spec, Range):
             return super(cls, Range).__new__(
                 cls, spec.invert, spec.start, spec.end)
-        return super(cls, Range).__new__(cls, *cls._parse(spec))
+        elif isinstance(spec, str):
+            start, end, invert = cls._parse(spec)
+        elif (isinstance(spec, int) or isinstance(spec, float)):
+            start, end, invert = 0, spec, False
+        else:
+            raise TypeError('cannot recognize type of Range', spec)
+        cls._verify(start, end)
+        return super(cls, Range).__new__(cls, invert, start, end)
 
     @classmethod
     def _parse(cls, spec):
         invert = False
-        spec = spec or ''
         if spec.startswith('@'):
             invert = True
             spec = spec[1:]
@@ -40,32 +47,32 @@ class Range(collections.namedtuple('Range', 'invert start end')):
             start, end = '', spec
         if start == '~':
             start = float('-inf')
-        elif start is not '':
-            if '.' in start:
-                start = float(start)
-            else:
-                start = int(start)
         else:
-            start = 0
-        if end is not '':
-            if '.' in end:
-                end = float(end)
-            else:
-                end = int(end)
-        else:
-            end = float('inf')
-        cls._verify(start, end)
-        return (invert, start, end)
+            start = cls._parse_atom(start, 0)
+        end = cls._parse_atom(end, float('inf'))
+        return start, end, invert
 
-    @classmethod
-    def _verify(cls, start, end):
+    @staticmethod
+    def _parse_atom(atom, default):
+        if atom is '':
+            return default
+        if '.' in atom:
+            return float(atom)
+        return int(atom)
+
+    @staticmethod
+    def _verify(start, end):
         """Throw ValueError if the range is not consistent."""
         if start > end:
             raise ValueError('start %s must not be greater than end %s' % (
                              start, end))
 
     def match(self, value):
-        """Decide if `value` is inside/outside the bounds."""
+        """Decide if `value` is inside/outside the threshold.
+
+        Returns True if value is inside the bounds for non-inverted
+        Ranges. Also available with the `in` operator.
+        """
         if value < self.start:
             return False ^ self.invert
         if value > self.end:
