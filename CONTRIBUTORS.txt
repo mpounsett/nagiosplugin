@@ -14,5 +14,9 @@ make `nagiosplugin` better:
 * Florian Lagg <LaggAt@lagg-asus1.lan> for Windows compatibility fixes
 * Jeff Goldschrafe <jeff@holyhandgrenade.org> for the Python 2.6 backport.
 * José Manuel Fardello <jmfardello@gmail.com> for a logging fix.
+* Jordan Metzmeier <jmetzmeier01@gmail.com> for build fixes and Debian
+  packaging.
+* Andrey Panfilov <andrew@panfilov.tel> and Mihai Limbășan <mihai@limbasan.ro>
+  for perfdata fixes.
 
 .. vim: set ft=rst sw=3 sts=3 et:

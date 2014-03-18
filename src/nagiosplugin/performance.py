@@ -36,8 +36,8 @@ class Performance(collections.namedtuple('Performance', [
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
         """Create new performance data object.
 
-        :param label: short identifier (20 chars max), results in graph
-            titles for example
+        :param label: short identifier, results in graph
+            titles for example (20 chars or less recommended)
         :param value: measured value (usually an int, float, or bool)
         :param uom: unit of measure -- use base units whereever possible
         :param warn: warning range
@@ -45,11 +45,8 @@ class Performance(collections.namedtuple('Performance', [
         :param min: known value minimum (None for no minimum)
         :param max: known value maximum (None for no maximum)
         """
-        if len(label) > 20:
-            raise RuntimeError('label is too long (20 chars max)', label)
-        if "'" in label:
-            raise RuntimeError('label contains illegal character "\'"',
-                               label)
+        if "'" in label or "=" in label:
+            raise RuntimeError('label contains illegal characters', label)
         return super(cls, Performance).__new__(
             cls, label, value, zap_none(uom), zap_none(warn), zap_none(crit),
             zap_none(min), zap_none(max))
