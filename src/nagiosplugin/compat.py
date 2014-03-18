@@ -18,15 +18,3 @@ try:
     from io import StringIO
 except ImportError:
     from StringIO import StringIO
-
-
-# open has no encoding parameter in Python 2
-def open_encoded(path, mode, buffering=-1, encoding=None):
-    """Opens a file with specific encoding."""
-    if not encoding:
-        return open(path, mode, buffering=buffering)
-    try:
-        return open(path, mode, buffering=buffering, encoding=encoding)
-    except TypeError:
-        import codecs
-        return codecs.open(path, mode, encoding, 'strict', buffering)

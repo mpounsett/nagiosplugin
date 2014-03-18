@@ -17,23 +17,35 @@ access to it. Changes to the dict are not reflected in the file until
 context manager to get it opened and committed automatically.
 """
 
-from .compat import UserDict, open_encoded
+from .compat import UserDict
 from .platform import flock_exclusive
+import codecs
 import json
 import os
 
 
 class Cookie(UserDict, object):
 
-    def __init__(self, path):
+    def __new__(cls, statefile=None):
+        if statefile:
+            return super(cls, Cookie).__new__(cls, statefile)
+        return super(cls, Cookie).__new__(ObliviousCookie)
+
+    def __init__(self, statefile):
         """Creates a persistent dict to keep state.
 
         After creation, a cookie behaves like a normal dict.
 
-        :param path: file to save the dict in (state file)
+        :param statefile: file name to save the dict's contents
+
+        .. note:: If `statefile` is empty or None, the Cookie will be
+           oblivous, i.e., it will forget its contents on garbage
+           collection. This makes it possible to explicitely throw away
+           state between plugin runs (for example by a command line
+           argument).
         """
         super(Cookie, self).__init__()
-        self.path = path
+        self.path = statefile
         self.fobj = None
 
     def __enter__(self):
@@ -68,7 +80,10 @@ class Cookie(UserDict, object):
         :raises ValueError: if the state file is corrupted or does not
             deserialize into a dict
         """
-        self.fobj = open_encoded(self.path, 'a+', encoding='ascii')
+        try:
+            self.fobj = codecs.open(self.path, 'r+', encoding='ascii')
+        except IOError:
+            self.fobj = codecs.open(self.path, 'w+', encoding='ascii')
         flock_exclusive(self.fobj)
         if os.fstat(self.fobj.fileno()).st_size:
             try:
@@ -114,3 +129,24 @@ class Cookie(UserDict, object):
         self.fobj.write('\n')
         self.fobj.flush()
         os.fsync(self.fobj)
+
+
+class ObliviousCookie(Cookie):
+    """Special-case Cookie that does not persist anything.
+
+    This Cookie variant behaves just like a normal dict. Nothing is
+    saved.
+    """
+
+    def __init__(self, _statefile=None):
+        super(Cookie, self).__init__()
+
+    def open(self):
+        pass
+
+    def close(self):
+        pass
+
+    def commit(self):
+        pass
+

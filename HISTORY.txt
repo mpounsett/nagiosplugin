@@ -9,6 +9,7 @@ Release History
 - Remove length limitation of perfdata labels (#13214).
 - Fix formatting of large integers as Metric values (#13287).
 - Range: allow simple numerals as argument to Range() (#12658).
+- Cookie: allow for empty state file specification (#12788).
 
 
 1.2 (2013-11-08)

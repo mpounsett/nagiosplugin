@@ -38,6 +38,7 @@ class CookieTest(unittest.TestCase):
             c['foo']
 
     def test_exit_should_write_content(self):
+        os.unlink(self.tf.name)
         with Cookie(self.tf.name) as c:
             c['hello'] = 'wörld'
         with open(self.tf.name) as f:
@@ -105,3 +106,12 @@ class CookieTest(unittest.TestCase):
         finally:
             c.close()
         self.assertEqual(0, os.stat(self.tf.name).st_size)
+
+    def test_oblivious_cookie(self):
+        c = Cookie('')
+        # the following method calls are not expected to perfom any function
+        c.open()
+        c['key'] = 1
+        c.commit()
+        c.close()
+        self.assertEqual(c['key'], 1)
