@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-1.2.1 (unreleased)
+1.2.1 (2014-03-19)
 ------------------
 
 - Fix build failures with LANG=C (#13140).
