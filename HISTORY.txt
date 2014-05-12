@@ -7,6 +7,8 @@ Release History
 
 - Mention that nagiosplugin also runs with Python 3.4 (no code changes
   necessary).
+- Make name prefix in status output optional by allowing to assign None to
+  Check.name.
 
 
 1.2.1 (2014-03-19)

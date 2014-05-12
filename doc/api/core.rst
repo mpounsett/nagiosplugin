@@ -34,16 +34,19 @@ nagiosplugin.check
 
    .. automethod:: __call__
 
+   .. attribute:: name
+
+      Short name which is used to prefix the check's status output (as commonly
+      found in plugins shipped with Nagios). It defaults to the uppercased class
+      name of the first resource added. However, plugin authors may override
+      this by assigning an user-defined name. If this attribute is None, status
+      output will not be prefixed with a check name.
+
    .. attribute:: results
 
       :class:`~nagiosplugin.result.Results` container that allows accessing the
       :class:`~nagiosplugin.result.Result` objects generated during the
       evaluation.
-
-   .. attribute:: perfdata
-
-      List of strings representing a single bit of :term:`performance data`
-      each.
 
 .. topic:: Example: Skeleton main function
 

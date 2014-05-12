@@ -52,6 +52,14 @@ class OutputTest(unittest.TestCase):
         o.add(check)
         self.assertEqual('FAKE OK\n', str(o))
 
+    def test_empty_name(self):
+        o = Output(self.logchan)
+        check = FakeCheck()
+        check.name = None
+        check.perfdata = []
+        o.add(check)
+        self.assertEqual('OK - check summary\n', str(o))
+
     def test_add_check_singleline(self):
         o = Output(self.logchan)
         o.add(FakeCheck())
