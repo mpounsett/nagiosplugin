@@ -5,7 +5,8 @@ Release History
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Mention that nagiosplugin also runs with Python 3.4 (no code changes
+  necessary).
 
 
 1.2.1 (2014-03-19)
