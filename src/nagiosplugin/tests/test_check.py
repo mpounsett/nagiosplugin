@@ -53,6 +53,15 @@ class CheckTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             Check(object())
 
+    def test_check_should_accept_resource_returning_bare_metric(self):
+        class R_ReturnsBareMetric(nagiosplugin.Resource):
+            def probe(self):
+                return nagiosplugin.Metric('foo', 0, context='default')
+        res = R_ReturnsBareMetric()
+        c = Check(res)
+        c()
+        self.assertIn(res, c.resources)
+
     def test_evaluate_resource_populates_results_perfdata(self):
         c = Check()
         c._evaluate_resource(R1_MetricDefaultContext())

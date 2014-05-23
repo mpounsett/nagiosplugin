@@ -32,6 +32,9 @@ class Resource(object):
         This is the only method called by the check controller.
         It should trigger all necessary actions and create metrics.
 
-        :return: list of :class:`~nagiosplugin.metric.Metric` objects.
+        :return: list of :class:`~nagiosplugin.metric.Metric` objects,
+            or generator that emits :class:`~nagiosplugin.metric.Metric`
+            objects, or single :class:`~nagiosplugin.metric.Metric`
+            object
         """
         return []

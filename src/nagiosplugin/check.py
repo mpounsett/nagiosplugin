@@ -16,6 +16,7 @@ delegate control to it.
 
 from .context import Context, Contexts
 from .error import CheckError
+from .metric import Metric
 from .resource import Resource
 from .result import Result, Results
 from .runtime import Runtime
@@ -74,7 +75,10 @@ class Check(object):
             metrics = resource.probe()
             if not metrics:
                 _log.warning('resource %s did not produce any metric',
-                                resource.name)
+                             resource.name)
+            if isinstance(metrics, Metric):
+                # resource returned a bare metric instead of list/generator
+                metrics = [metrics]
             for metric in metrics:
                 context = self.contexts[metric.context]
                 metric = metric.replace(contextobj=context, resource=resource)

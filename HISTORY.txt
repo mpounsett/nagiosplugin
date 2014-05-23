@@ -9,6 +9,7 @@ Release History
   necessary).
 - Make name prefix in status output optional by allowing to assign None to
   Check.name.
+- Accept bare metric as return value from Resource.probe().
 
 
 1.2.1 (2014-03-19)
