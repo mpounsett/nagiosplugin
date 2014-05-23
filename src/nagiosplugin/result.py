@@ -4,9 +4,8 @@
 """Outcomes from evaluating metrics in contexts.
 
 The :class:`Result` class is the base class for all evaluation results.
-:class:`~nagiosplugin.context.ScalarContext`. The :class:`Results` class
-(plural form) provides a result container with access functions and
-iterators.
+The :class:`Results` class (plural form) provides a result container with
+access functions and iterators.
 
 Plugin authors may create their own :class:`Result` subclass to
 accomodate for special needs. :class:`~.context.Context` constructors
@@ -76,15 +75,10 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
             return self.metric.contextobj
 
 
-class ScalarResult(Result):
+class ScalarResult(Result):  # pragma: no cover
     """Special-case result for evaluation in a ScalarContext.
 
-    XXX deprecated
-
-#    A ScalarResult differs from Result in two ways: First, when the
-#    :class:`~nagiosplugin.range.Range` object which led to its creation
-#    is passed as hint, it constructs an explanation automatically.
-#    Second, it always expects a metric to be present.
+    DEPRECATED: use Result instead.
     """
 
     def __new__(cls, state, hint, metric):

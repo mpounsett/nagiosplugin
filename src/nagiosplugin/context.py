@@ -78,12 +78,15 @@ class Context(object):
         Formats the metric according to the :attr:`fmt_metric`
         attribute. If :attr:`fmt_metric` is a string, it is evaluated as
         format string with all metric attributes in the root namespace.
-        The default is the interpolated string "`{name} is
-        {valueunit}`". If :attr:`fmt_metric` is callable, it is called
-        with the metric and this context as arguments.
+        If :attr:`fmt_metric` is callable, it is called with the metric
+        and this context as arguments. If :attr:`fmt_metric` is not set,
+        this default implementation does not return a description.
 
-        :param metric: associated metric that must be formatted
-        :returns: description string
+        Plugin authors may override this method in subclasses to control
+        text output more tightly.
+
+        :param metric: associated metric
+        :returns: description string or None
         """
         if not self.fmt_metric:
             return
