@@ -14,7 +14,7 @@ class MetricTest(unittest.TestCase):
 
     def test_description(self):
         self.assertEqual('time is 1s', Metric(
-            'time', 1, 's', contextobj=nagiosplugin.Context('ctx')
+            'time', 1, 's', contextobj=nagiosplugin.ScalarContext('ctx')
         ).description)
 
     def test_valueunit_float(self):

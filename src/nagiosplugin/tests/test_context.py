@@ -15,11 +15,10 @@ class ScalarContextTest(unittest.TestCase):
     def test_state_ranges_values(self):
         test_cases = [
             (1, nagiosplugin.Ok, None),
-            (3, nagiosplugin.Warn, nagiosplugin.Range('2')),
-            (5, nagiosplugin.Critical, nagiosplugin.Range('4'))
+            (3, nagiosplugin.Warn, 'outside range 0:2'),
+            (5, nagiosplugin.Critical, 'outside range 0:4'),
         ]
-        c = ScalarContext('ctx', nagiosplugin.Range('2'),
-                          nagiosplugin.Range('4'))
+        c = ScalarContext('ctx', '0:2', '0:4')
         for value, exp_state, exp_reason in test_cases:
             m = nagiosplugin.Metric('time', value)
             self.assertEqual(nagiosplugin.Result(exp_state, exp_reason, m),

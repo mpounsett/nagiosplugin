@@ -17,13 +17,11 @@ evaluation or performance data logic.
 
 from .performance import Performance
 from .range import Range
-from .result import Result, ScalarResult
+from .result import Result
 from .state import Ok, Warn, Critical
 
 
 class Context(object):
-
-    fmt_metric = '{name} is {valueunit}'
 
     def __init__(self, name, fmt_metric=None, result_cls=Result):
         """Creates generic context identified by `name`.
@@ -43,8 +41,7 @@ class Context(object):
             evaluation outcome
         """
         self.name = name
-        if fmt_metric is not None:
-            self.fmt_metric = fmt_metric
+        self.fmt_metric = fmt_metric
         self.result_cls = result_cls
 
     def evaluate(self, metric, resource):
@@ -88,6 +85,8 @@ class Context(object):
         :param metric: associated metric that must be formatted
         :returns: description string
         """
+        if not self.fmt_metric:
+            return
         try:
             return self.fmt_metric(metric, self)
         except TypeError:
@@ -98,8 +97,8 @@ class Context(object):
 
 class ScalarContext(Context):
 
-    def __init__(self, name, warning=None, critical=None, fmt_metric=None,
-                 result_cls=ScalarResult):
+    def __init__(self, name, warning=None, critical=None,
+                 fmt_metric='{name} is {valueunit}', result_cls=Result):
         """Ready-to-use :class:`Context` subclass for scalar values.
 
         ScalarContext models the common case where a single scalar is to
@@ -129,9 +128,9 @@ class ScalarContext(Context):
         :returns: :class:`~nagiosplugin.result.Result` object
         """
         if not self.critical.match(metric.value):
-            return self.result_cls(Critical, self.critical, metric)
+            return self.result_cls(Critical, self.critical.violation, metric)
         elif not self.warning.match(metric.value):
-            return self.result_cls(Warn, self.warning, metric)
+            return self.result_cls(Warn, self.warning.violation, metric)
         else:
             return self.result_cls(Ok, None, metric)
 

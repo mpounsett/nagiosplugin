@@ -1,7 +1,7 @@
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from nagiosplugin.result import Result, ScalarResult, Results
+from nagiosplugin.result import Result, Results
 from nagiosplugin.state import Ok, Warn, Critical, Unknown
 import nagiosplugin
 
@@ -29,28 +29,20 @@ class ResultTest(unittest.TestCase):
         m = nagiosplugin.Metric('foo', 1, contextobj=ctx)
         self.assertEqual(Result(Ok, metric=m).context, ctx)
 
+    def test_str_metric_with_hint(self):
+        self.assertEqual('2 (unexpected)',
+                         str(Result(Warn, 'unexpected',
+                                    nagiosplugin.Metric('foo', 2))))
 
-class ScalarResultTest(unittest.TestCase):
-
-    def test_new_should_fail_without_metric(self):
-        with self.assertRaises(RuntimeError):
-            ScalarResult(nagiosplugin.Unknown, None, None)
-
-    def test_str_gives_range_violation_hint(self):
-        r = nagiosplugin.Range('2:3')
+    def test_str_metric_only(self):
         self.assertEqual(
-            '2 ({0})'.format(r.violation),
-            str(ScalarResult(Warn, r, nagiosplugin.Metric('foo', 2))))
+            '3', str(Result(Warn, metric=nagiosplugin.Metric('foo', 3))))
 
-    def test_str_gives_plain_reason(self):
-        self.assertEqual(
-            '2 (bad day)',
-            str(ScalarResult(Warn, 'bad day',
-                             nagiosplugin.Metric('foo', 2))))
+    def test_str_hint_only(self):
+        self.assertEqual('how come?', str(Result(Warn, 'how come?')))
 
-    def test_str_fall_back_to_description_if_no_reason_given(self):
-        self.assertEqual('2s', str(ScalarResult(
-            Critical, None, nagiosplugin.Metric('time', 2, 's'))))
+    def test_str_empty(self):
+        self.assertEqual('', str(Result(Warn)))
 
 
 class ResultsTest(unittest.TestCase):

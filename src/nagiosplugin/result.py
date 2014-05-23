@@ -4,8 +4,6 @@
 """Outcomes from evaluating metrics in contexts.
 
 The :class:`Result` class is the base class for all evaluation results.
-The :class:`ScalarResult` class provides convenient access for the
-common special case when evaluating
 :class:`~nagiosplugin.context.ScalarContext`. The :class:`Results` class
 (plural form) provides a result container with access functions and
 iterators.
@@ -17,6 +15,7 @@ accept custom Result subclasses in the `result_cls` parameter.
 
 import collections
 import numbers
+import warnings
 
 
 class Result(collections.namedtuple('Result', 'state hint metric')):
@@ -43,13 +42,26 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
     def __str__(self):
         """Textual result explanation.
 
-        This method's output should consist only of a text for the
-        reason but not for the result's state. The latter is rendered
-        independently.
+        The result explanation is taken from :attr:`metric.description`
+        (if a metric has been passed to the constructur), followed
+        optionally by the value of :attr:`hint`. This method's output
+        should consist only of a text for the reason but not for the
+        result's state. The latter is rendered independently.
 
-        :returns: hint value if set
+        :returns: result explanation or empty string
         """
-        return self.hint or ''
+        if self.metric and self.metric.description:
+            desc = self.metric.description
+        else:
+            desc = None
+        if self.hint and desc:
+            return '{} ({})'.format(desc, self.hint)
+        elif self.hint:
+            return self.hint
+        elif desc:
+            return desc
+        else:
+            return ''
 
     @property
     def resource(self):
@@ -67,23 +79,18 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
 class ScalarResult(Result):
     """Special-case result for evaluation in a ScalarContext.
 
-    A ScalarResult differs from Result in two ways: First, when the
-    :class:`~nagiosplugin.range.Range` object which led to its creation
-    is passed as hint, it constructs an explanation automatically.
-    Second, it always expects a metric to be present.
+    XXX deprecated
+
+#    A ScalarResult differs from Result in two ways: First, when the
+#    :class:`~nagiosplugin.range.Range` object which led to its creation
+#    is passed as hint, it constructs an explanation automatically.
+#    Second, it always expects a metric to be present.
     """
 
     def __new__(cls, state, hint, metric):
-        if not metric:
-            raise RuntimeError('ScalarResult always needs metric')
+        warnings.warn('ScalarResult is deprecated, use Result instead!',
+                      DeprecationWarning)
         return tuple.__new__(cls, (state, hint, metric))
-
-    def __str__(self):
-        if self.hint:
-            hint = (self.hint.violation if hasattr(self.hint, 'violation')
-                    else self.hint)
-            return '{0} ({1})'.format(self.metric.description, hint)
-        return str(self.metric.description)
 
 
 class Results:
