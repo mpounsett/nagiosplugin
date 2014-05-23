@@ -10,6 +10,8 @@ Release History
 - Make name prefix in status output optional by allowing to assign None to
   Check.name.
 - Accept bare metric as return value from Resource.probe().
+- Fix bug where Context.describe() was not used to obtain metric description
+  (#13162).
 
 
 1.2.1 (2014-03-19)
