@@ -54,7 +54,7 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
         else:
             desc = None
         if self.hint and desc:
-            return '{} ({})'.format(desc, self.hint)
+            return '{0} ({1})'.format(desc, self.hint)
         elif self.hint:
             return self.hint
         elif desc:
