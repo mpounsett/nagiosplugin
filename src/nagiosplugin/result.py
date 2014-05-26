@@ -111,15 +111,13 @@ class Results:
 
         Besides passing :class:`Result` objects in the constructor,
         additional results may be added after creating the container.
-        add() also accepts a bare :class:`state.ServiceState()` object,
-        which is converted implicitly into a :class:`Result` object.
-        Note that passing bare ServiceState objects is only recommended
-        for special cases since there is no way to pass metric
-        descriptions or hints.
+
+        :raises ValueError: if `result` is not a :class:`Result` object
         """
         for result in results:
             if not isinstance(result, Result):
-                result = Result(result)
+                raise ValueError(
+                    'trying to add non-Result to Results container', result)
             self.results.append(result)
             self.by_state[result.state].append(result)
             try:
