@@ -124,7 +124,9 @@ class ScalarContext(Context):
 
         The metric's value is compared to the instance's :attr:`warning`
         and :attr:`critical` ranges, yielding an appropropiate state
-        depending on how the metric fits in the ranges.
+        depending on how the metric fits in the ranges. Plugin authors
+        may override this method in subclasses to provide custom
+        evaluation logic.
 
         :param metric: metric that is to be evaluated
         :param resource: not used

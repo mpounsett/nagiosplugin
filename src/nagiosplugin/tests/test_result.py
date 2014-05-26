@@ -108,3 +108,7 @@ class ResultsTest(unittest.TestCase):
     def test_add_in_init(self):
         results = Results(Result(Unknown, 'r1'), Result(Unknown, 'r2'))
         self.assertEqual(2, len(results))
+
+    def test_add_should_fail_unless_result_passed(self):
+        with self.assertRaises(ValueError):
+            Results(True)
