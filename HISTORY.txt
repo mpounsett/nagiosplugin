@@ -2,7 +2,7 @@ Release History
 ===============
 
 
-1.2.2 (unreleased)
+1.2.2 (2014-05-27)
 ------------------
 
 - Mention that nagiosplugin also runs with Python 3.4 (no code changes
