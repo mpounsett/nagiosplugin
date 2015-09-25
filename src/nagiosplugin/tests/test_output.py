@@ -1,5 +1,4 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
+# vim: set fileencoding: utf-8:
 
 from __future__ import unicode_literals, print_function
 from nagiosplugin.output import Output
@@ -59,6 +58,13 @@ class OutputTest(unittest.TestCase):
         check.perfdata = []
         o.add(check)
         self.assertEqual('OK - check summary\n', str(o))
+
+    def test_summary_utf8(self):
+        o = Output(self.logchan)
+        check = FakeCheck()
+        check.summary_str = 'utf-8 ümläúts'
+        o.add(check)
+        self.assertEqual('FAKE OK - utf-8 ümläúts', str(o))
 
     def test_add_check_singleline(self):
         o = Output(self.logchan)
