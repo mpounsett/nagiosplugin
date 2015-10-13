@@ -16,6 +16,7 @@ usable, plugin authors should consider subclassing to provide a specific
 implementation that gets the output to the point.
 """
 
+from __future__ import unicode_literals
 from .state import Ok
 
 
@@ -36,7 +37,7 @@ class Summary(object):
         :param results: :class:`~nagiosplugin.result.Results` container
         :returns: status line
         """
-        return str(results[0])
+        return '{0}'.format(results[0])
 
     def problem(self, results):
         """Formats status line when overall state is not ok.
@@ -48,7 +49,7 @@ class Summary(object):
         :param results: :class:`~.result.Results` container
         :returns: status line
         """
-        return str(results.first_significant)
+        return '{0}'.format(results.first_significant)
 
     def verbose(self, results):
         """Provides extra lines if verbose plugin execution is requested.

@@ -65,7 +65,7 @@ class OutputTest(unittest.TestCase):
         check.summary_str = 'utf-8 ümłäúts'
         check.perfdata = []
         o.add(check)
-        self.assertEqual('FAKE OK - utf-8 ümläúts', '{0}'.format(o))
+        self.assertEqual('FAKE OK - utf-8 ümłäúts\n', '{0}'.format(o))
 
     def test_add_check_singleline(self):
         o = Output(self.logchan)

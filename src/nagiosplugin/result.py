@@ -12,6 +12,7 @@ accomodate for special needs. :class:`~.context.Context` constructors
 accept custom Result subclasses in the `result_cls` parameter.
 """
 
+from __future__ import unicode_literals
 import collections
 import numbers
 import warnings

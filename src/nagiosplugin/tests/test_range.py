@@ -43,7 +43,7 @@ class RangeParseTest(unittest.TestCase):
         self.assertEqual(r.end, 0.12)
 
     def test_spec_with_unknown_type_should_raise(self):
-        with self.assertRaises(TypeError):
+        with self.assertRaises(ValueError):
             Range([1, 2])
 
     def test_omit_start(self):

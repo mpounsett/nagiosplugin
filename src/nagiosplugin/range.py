@@ -27,12 +27,9 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         if isinstance(spec, Range):
             return super(cls, Range).__new__(
                 cls, spec.invert, spec.start, spec.end)
-        elif isinstance(spec, str):
-            start, end, invert = cls._parse(spec)
         elif (isinstance(spec, int) or isinstance(spec, float)):
             start, end, invert = 0, spec, False
-        else:
-            raise TypeError('cannot recognize type of Range', spec)
+        start, end, invert = cls._parse(str(spec))
         cls._verify(start, end)
         return super(cls, Range).__new__(cls, invert, start, end)
 

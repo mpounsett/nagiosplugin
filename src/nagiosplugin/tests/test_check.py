@@ -1,6 +1,8 @@
+# vim: set fileencoding=utf-8:
 # Copyright (c) gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import unicode_literals
 from nagiosplugin.check import Check
 import nagiosplugin
 
@@ -108,6 +110,18 @@ class CheckTest(unittest.TestCase):
         self.assertEqual('', c.name)
         c.add(MyResource())
         self.assertEqual('MyResource', c.name)
+
+    def test_utf8(self):
+        class UTF8(nagiosplugin.Resource):
+            def probe(self):
+                return nagiosplugin.Metric('utf8', 8, context='utf8')
+        c = Check(
+            UTF8(), nagiosplugin.ScalarContext(
+                'utf8', '1:1', fmt_metric='über {value}'))
+        c()
+        self.assertEqual('über 8 (outside range 1:1)', c.summary_str)
+        self.assertEqual(['warning: über 8 (outside range 1:1)'],
+                         c.verbose_str)
 
     def test_set_explicit_name(self):
         c = Check()
