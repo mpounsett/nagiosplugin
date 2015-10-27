@@ -9,7 +9,9 @@ https://bitbucket.org/gocept/nagiosplugin::
 
    hg clone https://bitbucket.org/gocept/nagiosplugin
 
-This package supports installation in a virtualenv using zc.buildout.
+This package supports installation in a virtualenv using `zc.buildout`_.
+
+.. _zc.buildout: https://pypi.python.org/pypi/zc.buildout
 
 
 Creating a build with zc.buildout
@@ -17,24 +19,18 @@ Creating a build with zc.buildout
 
 First, create a virtualenv if not already present::
 
-   virtualenv -p python3.2 .
-
-If you want to use Python 2.7, specify this Python version while creating the
-virtualenv::
-
-   virtualenv -p python2.7 .
-
-Sometimes, you will run into strange setuptools/distribute version conflicts.
-The best way around is to keep setuptools and distribute entirely out of the
-virtualenv::
-
    virtualenv -p python3.2 --no-setuptools .
 
-`bootstrap.py` and zc.buildout will take care of all required dependencies.
+zc.buildout will take care of all required dependencies::
 
-Then launch the usual buildout steps::
+   bin/pip3.2 install -U zc.buildout
+   bin/buildout
 
-   bin/python3.2 bootstrap.py
+If you want to use another Python version like 2.7, just the same steps with the
+Python version substituted::
+
+   virtualenv -p python2.7 --no-setuptools .
+   bin/pip2.7 install -U zc.buildout
    bin/buildout
 
 
@@ -47,9 +43,9 @@ When the buildout succeeds, run the unit test by invoking::
 
 Our `build server`_ runs test against the trunk on a regular basis.
 
-.. image:: https://builds.gocept.com/job/nagiosplugin/badge/icon
-   :target: https://builds.gocept.com/job/nagiosplugin/
-.. _build server: https://builds.gocept.com/job/nagiosplugin/
+.. image:: https://builds.flyingcircus.io/job/nagiosplugin/PYTHON=System-CPython-2.7/badge/icon
+   :target: https://builds.flyingcircus.io/job/nagiosplugin/
+.. _build server: https://builds.flyingcircus.io/job/nagiosplugin/
 
 nagiosplugin also includes support for coverage reports. It aims at 100% test
 coverage where possible. The preferred way to get a coverate report is to use ::
