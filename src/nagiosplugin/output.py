@@ -44,14 +44,8 @@ class Output(object):
     def format_perfdata(self, check, linebreak=None):
         if not check.perfdata:
             return ''
-        lines = ['|']
-        for item, i in zip(check.perfdata, itertools.count()):
-            if linebreak and len(lines[-1]) + len(item) >= linebreak:
-                lines.append(item)
-            else:
-                lines[-1] += ' ' + self._screen_chars(
-                    item, 'perfdata {0}'.format(i))
-        return '\n'.join(lines)
+        out = ' '.join(check.perfdata)
+        return '| ' + self._screen_chars(out, 'perfdata')
 
     def add_longoutput(self, text):
         if isinstance(text, list) or isinstance(text, tuple):

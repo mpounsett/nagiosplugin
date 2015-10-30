@@ -1,4 +1,4 @@
-# vim: set fileencoding: utf-8:
+# vim: set fileencoding=utf-8:
 
 from __future__ import unicode_literals, print_function
 from nagiosplugin.output import Output
@@ -100,7 +100,7 @@ warning: removed illegal characters (0x7c) from long output
 warning: removed illegal characters (0x7c) from logging output
 """, str(o))
 
-    def test_perfdata_linebreak(self):
+    def test_long_perfdata(self):
         check = FakeCheck()
         check.verbose_str = ''
         check.perfdata = ['duration=340.4ms;500;1000;0'] * 5
@@ -108,8 +108,8 @@ warning: removed illegal characters (0x7c) from logging output
         o.add(check)
         self.assertEqual("""\
 FAKE OK - check summary
-| duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0
-duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0
+| duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0 \
+duration=340.4ms;500;1000;0 duration=340.4ms;500;1000;0 \
 duration=340.4ms;500;1000;0
 """, str(o))
 
