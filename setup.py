@@ -44,7 +44,7 @@ setup(
     author='Christian Kauhaus',
     author_email='kc@flyingcircus.io',
     url='https://bitbucket.org/flyingcircus/nagiosplugin',
-    download_url='http://pypi.python.org/pypi/nagiosplugin',
+    download_url='https://pypi.python.org/pypi/nagiosplugin',
     license='ZPL-2.1',
     packages=find_packages('src'),
     package_dir={'': 'src'},
