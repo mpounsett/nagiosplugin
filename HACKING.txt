@@ -19,7 +19,7 @@ Creating a build with zc.buildout
 
 First, create a virtualenv if not already present::
 
-   virtualenv -p python3.2 --no-setuptools .
+   virtualenv -p python3.4 --no-setuptools .
 
 zc.buildout will take care of all required dependencies::
 
