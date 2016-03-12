@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Structured representation for data points.
 
 This module contains the :class:`Metric` class whose instances are
@@ -79,7 +76,7 @@ class Metric(collections.namedtuple(
     def _human_readable_value(self):
         """Limit number of digits for floats."""
         if (isinstance(self.value, numbers.Real) and
-            not isinstance(self.value, numbers.Integral)):
+                not isinstance(self.value, numbers.Integral)):
             return '%.4g' % self.value
         return str(self.value)
 

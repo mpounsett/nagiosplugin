@@ -77,8 +77,7 @@ class Runtime(object):
         rootlogger.setLevel(logging.DEBUG)
         if not self.logchan:
             self.logchan = logging.StreamHandler(io.StringIO())
-            self.logchan.setFormatter(logging.Formatter(
-                '%(message)s (%(filename)s:%(lineno)d)'))
+            self.logchan.setFormatter(logging.Formatter('%(message)s'))
             rootlogger.addHandler(self.logchan)
         if not self.output:
             self.output = Output(self.logchan)
