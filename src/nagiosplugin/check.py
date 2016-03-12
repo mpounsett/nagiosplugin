@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Controller logic for check execution.
 
 This module contains the :class:`Check` class which orchestrates the
@@ -100,7 +97,7 @@ class Check(object):
             self._evaluate_resource(resource)
         self.perfdata = sorted([p for p in self.perfdata if p])
 
-    def main(self, verbose=1, timeout=10):
+    def main(self, verbose=None, timeout=None):
         """All-in-one control delegation to the runtime environment.
 
         Get a :class:`~nagiosplugin.runtime.Runtime` instance and

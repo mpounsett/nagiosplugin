@@ -102,6 +102,6 @@ nagiosplugin.runtime
 .. automodule:: nagiosplugin.runtime
    :no-members:
 
-.. autofunction:: guarded
+.. autofunction:: guarded(*args, verbose=None)
 
 .. vim: set spell spelllang=en:

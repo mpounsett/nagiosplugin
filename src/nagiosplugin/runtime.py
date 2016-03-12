@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Functions and classes to interface with the system.
 
 This module contains the :class:`Runtime` class that handles exceptions,
@@ -20,29 +17,43 @@ import functools
 import traceback
 
 
-def guarded(func):
-    """Runs a function in a newly created runtime environment.
+def guarded(original_function=None, verbose=None):
+    """Runs a function nagiosplugin's Runtime environment.
 
-    A guarded function behaves correctly with respect to the Nagios
-    plugin API if it aborts with an uncaught exception or a
-    timeout. It exits with an *unknown* exit code and prints a traceback
-    in a format acceptable by Nagios.
+    `guarded` makes the decorated function behave correctly with respect
+    to the Nagios plugin API if it aborts with an uncaught exception or
+    a timeout. It exits with an *unknown* exit code and prints a
+    traceback in a format acceptable by Nagios.
 
-    This function should be used as a decorator for the plugin's `main`
+    This function should be used as a decorator for the script's `main`
     function.
+
+    :param verbose: Optional keyword parameter to control verbosity
+        level during early execution (before
+        :meth:`~nagiosplugin.Check.main` has been called). For example,
+        use `@guarded(verbose=0)` to turn tracebacks in that phase off.
     """
-    @functools.wraps(func)
-    def wrapper(*args, **kwds):
-        runtime = Runtime()
-        try:
-            return func(*args, **kwds)
-        except Timeout as exc:
-            runtime._handle_exception(
-                'Timeout: check execution aborted after {0}'.format(
-                    exc))
-        except Exception:
-            runtime._handle_exception()
-    return wrapper
+    def _decorate(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwds):
+            runtime = Runtime()
+            if verbose is not None:
+                runtime.verbose = verbose
+            try:
+                return func(*args, **kwds)
+            except Timeout as exc:
+                runtime._handle_exception(
+                    'Timeout: check execution aborted after {0}'.format(
+                        exc))
+            except Exception:
+                runtime._handle_exception()
+        return wrapper
+    if original_function is not None:
+        assert callable(original_function), (
+            'Function {!r} not callable. Forgot to add "verbose=" keyword?'.
+            format(original_function))
+        return _decorate(original_function)
+    return _decorate
 
 
 class Runtime(object):

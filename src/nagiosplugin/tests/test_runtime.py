@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from nagiosplugin.runtime import Runtime, guarded
 from nagiosplugin.compat import StringIO
 import nagiosplugin
@@ -89,8 +86,7 @@ class RuntimeExceptionTest(RuntimeTestBase):
         self.run_main_with_exception(RuntimeError('problem'))
         self.assertNotIn('Traceback', self.r.stdout.getvalue())
 
-    def test_handle_exception_verbose(self):
-        self.r.verbose = 1
+    def test_handle_exception_verbose_default(self):
         self.run_main_with_exception(RuntimeError('problem'))
         self.assertIn('Traceback', self.r.stdout.getvalue())
 
@@ -98,3 +94,16 @@ class RuntimeExceptionTest(RuntimeTestBase):
         self.run_main_with_exception(nagiosplugin.Timeout('1s'))
         self.assertIn('UNKNOWN: Timeout: check execution aborted after 1s',
                       self.r.stdout.getvalue())
+
+    def test_guarded_set_verbosity(self):
+        @guarded(verbose=0)
+        def main():
+            pass
+        main()
+        self.assertEqual(0, self.r.verbose)
+
+    def test_guarded_no_keyword(self):
+        with self.assertRaises(AssertionError):
+            @guarded(0)
+            def main():
+                pass

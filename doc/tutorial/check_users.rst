@@ -187,6 +187,24 @@ Verbosity levels of 2 and 3 enable logging with *info* or *debug* levels.
 This behaviour conforms to the "Verbose output" suggestions found in the
 `Nagios plug-in development guidelines`_.
 
+The initial verbosity level is 1 (multi-line output). This means that tracebacks
+are printed for uncaught exceptions raised in the initialization phase (before
+:meth:`Check.main` is called). This is generally a good thing. To suppress
+tracebacks during initialization, call :func:`~nagiosplugin.runtime.guarded`
+with an optional `verbose` parameter. Example:
+
+.. code-block:: python
+
+   @nagiosplugin.guarded(verbose=0)
+   def main():
+      [...]
+
+.. note::
+
+   The initial verbosity level takes effect only until :meth:`Check.main`
+   is called with a different verbosity level.
+
+
 It is advisable to sprinkle logging statements in the plugin code, especially
 into the resource model classes. A logging example for a users check could look
 like this:
