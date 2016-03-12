@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Outcomes from evaluating metrics in contexts.
 
 The :class:`Result` class is the base class for all evaluation results.

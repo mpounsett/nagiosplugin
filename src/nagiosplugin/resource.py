@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Domain model for data :term:`acquisition`.
 
 :class:`Resource` is the base class for the plugin's :term:`domain

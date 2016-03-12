@@ -1,6 +1,4 @@
 # vim: set fileencoding=utf-8:
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
 
 from __future__ import unicode_literals
 from nagiosplugin.check import Check
@@ -101,6 +99,22 @@ class CheckTest(unittest.TestCase):
         c()
         self.assertEqual(['foo', 'm4'], [res.metric.name for res in c.results])
         self.assertEqual(['foo=1'], c.perfdata)
+
+    def test_evaluate_bare_state_is_autowrapped_in_result(self):
+        metric = nagiosplugin.Metric('m5', 0)
+
+        class R5_DefaultMetric(nagiosplugin.Resource):
+            def probe(self):
+                return [metric]
+
+        class BareStateContext(nagiosplugin.Context):
+            def evaluate(self, metric, resource):
+                return nagiosplugin.Ok
+
+        c = Check(R5_DefaultMetric(), BareStateContext('m5'))
+        c()
+        self.assertEqual(c.results[0].state, nagiosplugin.Ok)
+        self.assertEqual(c.results[0].metric.name, 'm5')
 
     def test_first_resource_sets_name(self):
         class MyResource(nagiosplugin.Resource):

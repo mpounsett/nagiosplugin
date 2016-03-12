@@ -7,6 +7,9 @@ Release History
 
 - Add optional keyword parameter `verbose` to Runtime.guarded(). This parameter
   allows to set verbose level in the early execution phase (#13).
+- Allow Context.evaluate() return either a Result or ServiceState object. In
+  case the latter is returned, it gets automatically wrapped in a Result object
+  (#6).
 
 
 1.2.3 (2015-10-30)

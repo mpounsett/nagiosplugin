@@ -17,7 +17,7 @@ from .metric import Metric
 from .resource import Resource
 from .result import Result, Results
 from .runtime import Runtime
-from .state import Ok, Unknown
+from .state import Ok, Unknown, ServiceState
 from .summary import Summary
 import logging
 
@@ -79,7 +79,15 @@ class Check(object):
             for metric in metrics:
                 context = self.contexts[metric.context]
                 metric = metric.replace(contextobj=context, resource=resource)
-                self.results.add(metric.evaluate())
+                result = metric.evaluate()
+                if isinstance(result, Result):
+                    self.results.add(result)
+                elif isinstance(result, ServiceState):
+                    self.results.add(Result(result, metric=metric))
+                else:
+                    raise ValueError(
+                        'evaluate() returned neither Result nor ServiceState '
+                        'object', metric.name, result)
                 self.perfdata.append(str(metric.performance() or ''))
         except CheckError as e:
             self.results.add(Result(Unknown, str(e), metric))

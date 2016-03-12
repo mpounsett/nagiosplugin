@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Metadata about metrics to perform data :term:`evaluation`.
 
 This module contains the :class:`Context` class, which is the base for
@@ -54,7 +51,8 @@ class Context(object):
         :param metric: associated metric that is to be evaluated
         :param resource: resource that produced the associated metric
             (may optionally be consulted)
-        :returns: :class:`~.result.Result` object
+        :returns: :class:`~.result.Result` or
+            :class:`~.state.ServiceState` object
         """
         return self.result_cls(Ok, metric=metric)
 

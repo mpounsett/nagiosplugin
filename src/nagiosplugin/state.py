@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Classes  to represent check outcomes.
 
 This module defines :class:`ServiceState` which is the abstract base

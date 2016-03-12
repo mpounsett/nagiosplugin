@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from nagiosplugin.result import Result, Results
 from nagiosplugin.state import Ok, Warn, Critical, Unknown
 import nagiosplugin
