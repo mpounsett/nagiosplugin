@@ -1,6 +1,7 @@
 syntax: glob
 bin
 build
+.cache
 .coverage
 coverage/
 develop-eggs/
@@ -19,8 +20,12 @@ lib64
 lib/python*
 local/
 parts/
+pip-selfcheck.json
 *.py[co]
+pyvenv.cfg
+.ropeproject
 setuptools_hg*
+share/
 *.sw[po]
 tags
 tests.xml
