@@ -5,9 +5,9 @@ Contributors
 the community. We want to thank everyone who has invested time and energy to
 make `nagiosplugin` better:
 
-* Wolfgang Schnerring <ws@gocept.com> for thoughts on the design.
+* Wolfgang Schnerring <wosc@wosc.de> for thoughts on the design.
 * Thomas Lotze <thomas@thomas-lotze.de> for improving the test infrastructure.
-* Christian Theune <ct@gocept.com> for comments and general feedback.
+* Christian Theune <ct@flyingcircus.io> for comments and general feedback.
 * Michael Howitz <mh@gocept.com> and Andrei Chirila <andreich@gmail.com> for the
   Python 3 port.
 * Birger Schmidt <birger.schmidt@netways.de> for bug reports.

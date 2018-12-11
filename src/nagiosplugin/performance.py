@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Performance data (perfdata) representation.
 
 :term:`Performance data` are created during metric evaluation in a

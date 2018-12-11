@@ -1,7 +1,4 @@
 #!python
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Nagios/Icinga plugin to check system load."""
 
 import argparse
@@ -82,6 +79,7 @@ def main():
         nagiosplugin.ScalarContext('load', args.warning, args.critical),
         LoadSummary(args.percpu))
     check.main(verbose=args.verbose)
+
 
 if __name__ == '__main__':
     main()

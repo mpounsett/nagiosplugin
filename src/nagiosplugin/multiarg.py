@@ -1,7 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
-
 class MultiArg(object):
 
     def __init__(self, args, fill=None, splitchar=','):

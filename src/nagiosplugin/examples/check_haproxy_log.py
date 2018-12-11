@@ -1,7 +1,4 @@
 #!python
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """haproxy log check for request time and error rate.
 
 This check shows an advanced programming technique: we allow the user to
@@ -106,6 +103,7 @@ def main():
             'ttot%s' % pct, args.tw[i], args.tc[i],
             'total time (%s.pct) is {valueunit}' % pct))
     check.main(args.verbose, args.timeout)
+
 
 if __name__ == '__main__':
     main()

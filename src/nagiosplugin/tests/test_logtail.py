@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from nagiosplugin.logtail import LogTail
 import nagiosplugin
 import tempfile

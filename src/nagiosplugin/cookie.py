@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Persistent dict to remember state between invocations.
 
 Cookies are used to remember file positions, counters and the like
@@ -22,7 +19,6 @@ from .platform import flock_exclusive
 import codecs
 import json
 import os
-import tempfile
 
 
 class Cookie(UserDict, object):
@@ -50,7 +46,7 @@ class Cookie(UserDict, object):
         Opens the file and passes a dict-like object into the
         subordinate context. See :meth:`open` for details about opening
         semantics. When the context is left in the regular way (no
-        exception raised), the cookie is :meth:`commit`\ ted to disk.
+        exception raised), the cookie is committed to disk.
 
         :yields: open cookie
         """

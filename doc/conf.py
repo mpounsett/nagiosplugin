@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'nagiosplugin'
-copyright = 'gocept gmbh & co. kg'
+copyright = 'Flying Circus Internet Operations GmbH'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -191,7 +191,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'nagiosplugin.tex', u'nagiosplugin Documentation',
-   u'gocept gmbh & co. kg', 'manual'),
+   u'Flying Circus Internet Operations GmbH', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -221,7 +221,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'nagiosplugin', 'nagiosplugin Documentation',
-     ['gocept gmbh & co. kg'], 1)
+     ['Flying Circus Internet Operations GmbH'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -235,7 +235,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'nagiosplugin', u'nagiosplugin Documentation',
-   'gocept gmbh & co. kg', 'nagiosplugin',
+   'Flying Circus Internet Operations GmbH', 'nagiosplugin',
    'Class library for writing Nagios (Icinga) plugins',
    'Miscellaneous'),
 ]
@@ -254,9 +254,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = u'nagiosplugin'
-epub_author = 'gocept gmbh & co. kg'
-epub_publisher = 'gocept gmbh & co. kg'
-epub_copyright = u'gocept gmbh & co. kg'
+epub_author = 'Flying Circus Internet Operations GmbH'
+epub_publisher = 'Flying Circus Internet Operations GmbH'
+epub_copyright = u'Flying Circus Internet Operations GmbH'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

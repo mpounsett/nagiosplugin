@@ -143,7 +143,7 @@ class Results:
     def __getitem__(self, item):
         """Access result by index or name.
 
-        If *item* is an integer, the *item*\ th element in the
+        If *item* is an integer, the itemth element in the
         container is returned. If *item* is a string, it is used to
         look up a result with the given name.
 

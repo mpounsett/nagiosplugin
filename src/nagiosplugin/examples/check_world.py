@@ -15,5 +15,6 @@ def main():
     check = nagiosplugin.Check(World())
     check.main()
 
+
 if __name__ == '__main__':
     main()

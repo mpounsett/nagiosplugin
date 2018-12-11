@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from setuptools import setup, find_packages
 import codecs
 import os
@@ -13,11 +10,6 @@ for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
         longdesc.append(f.read())
 with codecs.open('version.txt', encoding='ascii') as f:
     version = f.read().strip()
-
-if sys.version_info < (2, 7):
-    extras_require = {'test': ['setuptools', 'unittest2', 'argparse']}
-else:
-    extras_require = {'test': ['setuptools']}
 
 
 setup(
@@ -34,9 +26,9 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: System :: Monitoring',
     ],
@@ -51,5 +43,5 @@ setup(
     include_package_data=True,
     zip_safe=False,
     test_suite='nagiosplugin.tests',
-    extras_require=extras_require,
+    extras_require = {'test': ['setuptools', 'pytest', 'pytest-cov']}
 )

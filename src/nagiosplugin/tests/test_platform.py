@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from nagiosplugin.platform import with_timeout
 import nagiosplugin
 import time

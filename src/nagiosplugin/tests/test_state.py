@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import unittest
 from nagiosplugin.state import Ok, Warn, Unknown, Critical, worst
 

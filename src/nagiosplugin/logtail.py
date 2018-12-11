@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Access previously unseen parts of a growing file.
 
 LogTail builds on :class:`~.cookie.Cookie` to access new lines of a

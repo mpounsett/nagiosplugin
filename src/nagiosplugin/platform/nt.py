@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """NT implementation of platform-specific services."""
 
 import nagiosplugin

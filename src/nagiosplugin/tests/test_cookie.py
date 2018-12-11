@@ -1,7 +1,3 @@
-# vim: set fileencoding=utf-8 :
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from __future__ import unicode_literals, print_function
 from nagiosplugin.cookie import Cookie
 import codecs

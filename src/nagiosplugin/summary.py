@@ -1,6 +1,3 @@
-# Copyright (c) gocept gmbh & co. kg
-# See also LICENSE.txt
-
 """Create status line from results.
 
 This module contains the :class:`Summary` class which serves as base

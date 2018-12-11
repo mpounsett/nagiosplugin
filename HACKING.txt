@@ -5,41 +5,26 @@ Getting the source
 ------------------
 
 The source can be obtained via mercurial from
-https://bitbucket.org/gocept/nagiosplugin::
+https://bitbucket.org/flyingcircus/nagiosplugin::
 
-   hg clone https://bitbucket.org/gocept/nagiosplugin
+   hg clone https://bitbucket.org/flyingcircus/nagiosplugin
 
-This package supports installation in a virtualenv using `zc.buildout`_.
+This package supports installation in a virtualenv::
 
-.. _zc.buildout: https://pypi.python.org/pypi/zc.buildout
-
-
-Creating a build with zc.buildout
----------------------------------
-
-First, create a virtualenv if not already present::
-
-   virtualenv -p python3.4 --no-setuptools .
-
-zc.buildout will take care of all required dependencies::
-
-   bin/pip3.2 install -U zc.buildout
-   bin/buildout
-
-If you want to use another Python version like 2.7, just the same steps with the
-Python version substituted::
-
-   virtualenv -p python2.7 --no-setuptools .
-   bin/pip2.7 install -U zc.buildout
-   bin/buildout
+   python3 -m venv .
+   bin/pip install -e .
 
 
 Tests
 -----
 
-When the buildout succeeds, run the unit test by invoking::
+To run tests, you have to install test dependencies first::
 
-   bin/test
+   bin/pip install -e '.[test]'
+
+After doing so, run the unit tests::
+
+   bin/py.test
 
 Our `build server`_ runs test against the trunk on a regular basis.
 
@@ -47,21 +32,13 @@ Our `build server`_ runs test against the trunk on a regular basis.
    :target: https://builds.flyingcircus.io/job/nagiosplugin/
 .. _build server: https://builds.flyingcircus.io/job/nagiosplugin/
 
-nagiosplugin also includes support for coverage reports. It aims at 100% test
-coverage where possible. The preferred way to get a coverate report is to use ::
-
-   bin/createcoverage
-
-to determine test coverage and open the report in a web browser. Alternatively,
-run ::
-
-   bin/coverage run bin/test
-
-to get a purely text-based coverage report.
+nagiosplugin also includes support for test coverage reports. Coverage reports
+are updated automatically by py.test. Open :file:`htmlcov/index.html` to see
+coverage reports.
 
 You may run the supplied examples with the local interpreter::
 
-   bin/py src/nagiosplugin/examples/check_load.py
+   bin/python3 src/nagiosplugin/examples/check_load.py
 
 
 Documentation
