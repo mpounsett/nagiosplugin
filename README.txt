@@ -1,3 +1,9 @@
+**This project is available for adoption**
+
+I've got no more time to maintain it. If you would like to step in, you are very
+welcome. Please write me an e-mail at kc@flyingcircus.io.
+
+
 The nagiosplugin library
 ========================
 
