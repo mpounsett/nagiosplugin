@@ -43,6 +43,14 @@ After doing so, run the unit tests::
 
    tox
 
+To limit tests to a particular python environment::
+
+   tox -e py37
+
+Run only linting tests::
+
+   tox -e lint
+
 nagiosplugin also includes support for test coverage reports. Coverage reports
 are updated automatically by `tox`. Open :file:`htmlcov/index.html` to see
 coverage reports.
