@@ -13,6 +13,7 @@
 # serve to show the default.
 
 import re
+from distutils.util import convert_path
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -55,8 +56,11 @@ copyright = 'Flying Circus Internet Operations GmbH'
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-with open('../version.txt') as f:
-    release = f.read().strip()
+ver_ns = {}
+ver_path = convert_path('../nagiosplugin/version.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), ver_ns)
+release = ver_ns['__VERSION__']
 # The short X.Y version.
 version = re.sub(r'-.*|[abc]\d+|rc\d+|.dev\d+', '', release)
 

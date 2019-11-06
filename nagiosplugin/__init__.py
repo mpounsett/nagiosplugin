@@ -13,3 +13,6 @@ from .result import Result, Results             # noqa: F401
 from .runtime import Runtime, guarded           # noqa: F401
 from .state import Ok, Warn, Critical, Unknown  # noqa: F401
 from .summary import Summary                    # noqa: F401
+from .version import __VERSION__
+
+__version__ = __VERSION__

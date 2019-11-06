@@ -2,6 +2,7 @@
 import codecs
 import os
 
+from distutils.util import convert_path
 from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -9,12 +10,15 @@ longdesc = []
 for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
     with codecs.open(readme, encoding='utf-8') as f:
         longdesc.append(f.read())
-with codecs.open('version.txt', encoding='ascii') as f:
-    version = f.read().strip()
+
+main_ns = {}
+ver_path = convert_path('nagiosplugin/version.py')
+with open(ver_path) as ver_file:
+    exec(ver_file.read(), main_ns)
 
 setup(
     name='nagiosplugin',
-    version=version,
+    version=main_ns['__VERSION__'],
     description='Class library for writing Nagios (Icinga) plugins',
     long_description='\n\n'.join(longdesc),
     classifiers=[
