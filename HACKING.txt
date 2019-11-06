@@ -4,10 +4,10 @@ Development
 Getting the source
 ------------------
 
-The source can be obtained via mercurial from
-https://bitbucket.org/flyingcircus/nagiosplugin::
+The source can be obtained via git from
+https://github.com/mpounsett/nagiosplugin.git::
 
-   hg clone https://bitbucket.org/flyingcircus/nagiosplugin
+   git clone https://github.com/mpounsett/nagiosplugin.git
 
 This package supports installation in a virtualenv::
 
@@ -25,12 +25,6 @@ To run tests, you have to install test dependencies first::
 After doing so, run the unit tests::
 
    bin/py.test
-
-Our `build server`_ runs test against the trunk on a regular basis.
-
-.. image:: https://builds.flyingcircus.io/job/nagiosplugin/PYTHON=System-CPython-2.7/badge/icon
-   :target: https://builds.flyingcircus.io/job/nagiosplugin/
-.. _build server: https://builds.flyingcircus.io/job/nagiosplugin/
 
 nagiosplugin also includes support for test coverage reports. Coverage reports
 are updated automatically by py.test. Open :file:`htmlcov/index.html` to see
