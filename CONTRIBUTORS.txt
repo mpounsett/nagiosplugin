@@ -5,6 +5,7 @@ Contributors
 the community. We want to thank everyone who has invested time and energy to
 make `nagiosplugin` better:
 
+* Christian Kauhaus <kc@flyingcircus.io>, the original author and maintainer.
 * Wolfgang Schnerring <wosc@wosc.de> for thoughts on the design.
 * Thomas Lotze <thomas@thomas-lotze.de> for improving the test infrastructure.
 * Christian Theune <ct@flyingcircus.io> for comments and general feedback.
