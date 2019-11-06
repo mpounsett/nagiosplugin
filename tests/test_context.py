@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.context import Context, ScalarContext, Contexts
 import nagiosplugin
 

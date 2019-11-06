@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Metadata about metrics to perform data :term:`evaluation`.
 
 This module contains the :class:`Context` class, which is the base for

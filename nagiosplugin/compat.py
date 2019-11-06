@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Python 2/3 compatibility wrappers.
 
 This module contains imports and functions that help mask Python 2/3

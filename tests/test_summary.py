@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.summary import Summary
 import nagiosplugin
 import unittest

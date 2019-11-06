@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Exceptions with special meanings for nagiosplugin."""
 
 

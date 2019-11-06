@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Persistent dict to remember state between invocations.
 
 Cookies are used to remember file positions, counters and the like

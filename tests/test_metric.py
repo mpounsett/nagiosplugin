@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.metric import Metric
 import nagiosplugin
 

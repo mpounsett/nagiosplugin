@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.range import Range
 
 try:

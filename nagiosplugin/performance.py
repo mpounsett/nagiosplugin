@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Performance data (perfdata) representation.
 
 :term:`Performance data` are created during metric evaluation in a

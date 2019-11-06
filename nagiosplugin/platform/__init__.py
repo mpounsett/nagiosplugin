@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Platform-specific services."""
 
 import os

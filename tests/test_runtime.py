@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.runtime import Runtime, guarded
 from nagiosplugin.compat import StringIO
 import nagiosplugin

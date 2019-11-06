@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .check import Check
 from .context import Context, ScalarContext
 from .cookie import Cookie

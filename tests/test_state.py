@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 from nagiosplugin.state import Ok, Warn, Unknown, Critical, worst
 

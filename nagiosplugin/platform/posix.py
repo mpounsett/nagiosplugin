@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """POSIX implementation of platform-specific services"""
 
 import nagiosplugin

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Domain model for data :term:`acquisition`.
 
 :class:`Resource` is the base class for the plugin's :term:`domain

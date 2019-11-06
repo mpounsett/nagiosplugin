@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.platform import with_timeout
 import nagiosplugin
 import time

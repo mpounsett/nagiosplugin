@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.performance import Performance
 
 try:

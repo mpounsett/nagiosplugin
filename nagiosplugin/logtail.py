@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Access previously unseen parts of a growing file.
 
 LogTail builds on :class:`~.cookie.Cookie` to access new lines of a

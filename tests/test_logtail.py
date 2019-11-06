@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.logtail import LogTail
 import nagiosplugin
 import tempfile

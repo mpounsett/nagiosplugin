@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nagiosplugin.result import Result, Results
 from nagiosplugin.state import Ok, Warn, Critical, Unknown
 import nagiosplugin

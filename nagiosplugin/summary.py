@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Create status line from results.
 
 This module contains the :class:`Summary` class which serves as base
