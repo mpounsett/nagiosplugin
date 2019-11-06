@@ -12,13 +12,13 @@ import tempfile
 try:
     from collections import UserDict
 except ImportError:
-    from UserDict import UserDict
+    from UserDict import UserDict   # noqa: F401
 
 # StringIO
 try:
     from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from StringIO import StringIO   # noqa: F401
 
 
 # Python 2: TemporaryFile does not support the `encoding` parameter

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import codecs
 import os
-import sys
 
 from setuptools import setup
 
@@ -43,5 +42,5 @@ setup(
     py_modules=['nagiosplugin'],
     include_package_data=True,
     zip_safe=False,
-    extras_require = {'test': ['tox']}
+    extras_require={'test': ['tox']}
 )

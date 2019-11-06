@@ -50,7 +50,7 @@ class Range(collections.namedtuple('Range', 'invert start end')):
 
     @staticmethod
     def _parse_atom(atom, default):
-        if atom is '':
+        if atom == '':
             return default
         if '.' in atom:
             return float(atom)
