@@ -1,9 +1,3 @@
-**This project is available for adoption**
-
-I've got no more time to maintain it. If you would like to step in, you are very
-welcome. Please write me an e-mail at kc@flyingcircus.io.
-
-
 The nagiosplugin library
 ========================
 
@@ -28,17 +22,13 @@ and default logic commonly found in Nagios checks, including:
 nagiosplugin runs on POSIX and Windows systems. It is compatible with Python
 3.4, Python 3.3, Python 3.2, and Python 2.7.
 
-
 Feedback and Suggestions
 ------------------------
 
-nagiosplugin is primarily written and maintained by Christian Kauhaus
-<kc@flyingcircus.io>. Feel free to contact the author for bugs, suggestions and
+nagiosplugin is currently maintained by Matt Pounsett <matt@conundrum.com>.  A
+public issue tracker can be found at
+<https://github.com/mpounsett/nagiosplugin/issues> for bugs, suggestions, and
 patches.
-
-A public issue tracker can be found at
-https://bitbucket.org/flyingcircus/nagiosplugin/issues/.
-
 
 License
 -------
@@ -56,5 +46,12 @@ the source distribution.
 
 .. _available online: http://pythonhosted.org/nagiosplugin/
 .. _tutorials: http://pythonhosted.org/nagiosplugin/tutorial/
+
+Acknowledgements
+----------------
+
+nagiosplugin was originally written and maintained by Christian Kauhaus
+<kc@flyingcircus.io>.  Additional contributions from the community are
+acknowledged in the file CONTRIBUTORS.txt
 
 .. vim: set ft=rst:
