@@ -27,25 +27,25 @@ to some value greater than zero and you will get the full traceback::
    $ check_users.py -v
    USERS UNKNOWN: RuntimeError: error
    Traceback (most recent call last):
-     File "src/nagiosplugin/runtime.py", line 38, in wrapper
+     File "nagiosplugin/runtime.py", line 38, in wrapper
        return func(*args, **kwds)
-     File "src/nagiosplugin/examples/check_users.py", line 104, in main
+     File "nagiosplugin/examples/check_users.py", line 104, in main
        check.main(args.verbose, args.timeout)
-     File "src/nagiosplugin/check.py", line 110, in main
+     File "nagiosplugin/check.py", line 110, in main
        runtime.execute(self, verbose, timeout)
-     File "src/nagiosplugin/runtime.py", line 118, in execute
+     File "nagiosplugin/runtime.py", line 118, in execute
        with_timeout(self.timeout, self.run, check)
-     File "src/nagiosplugin/platform/posix.py", line 19, in with_timeout
+     File "nagiosplugin/platform/posix.py", line 19, in with_timeout
        func(*args, **kwargs)
-     File "src/nagiosplugin/runtime.py", line 107, in run
+     File "nagiosplugin/runtime.py", line 107, in run
        check()
-     File "src/nagiosplugin/check.py", line 95, in __call__
+     File "nagiosplugin/check.py", line 95, in __call__
        self._evaluate_resource(resource)
-     File "src/nagiosplugin/check.py", line 73, in _evaluate_resource
+     File "nagiosplugin/check.py", line 73, in _evaluate_resource
        metrics = resource.probe()
-     File "src/nagiosplugin/examples/check_users.py", line 57, in probe
+     File "nagiosplugin/examples/check_users.py", line 57, in probe
        self.users = self.list_users()
-     File "src/nagiosplugin/examples/check_users.py", line 34, in list_users
+     File "nagiosplugin/examples/check_users.py", line 34, in list_users
        raise RuntimeError('error')
    RuntimeError: error
 

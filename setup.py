@@ -1,7 +1,8 @@
-from setuptools import setup, find_packages
 import codecs
 import os
 import sys
+
+from setuptools import setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 longdesc = []
@@ -10,7 +11,6 @@ for readme in ['README.txt', 'HACKING.txt', 'CONTRIBUTORS.txt', 'HISTORY.txt']:
         longdesc.append(f.read())
 with codecs.open('version.txt', encoding='ascii') as f:
     version = f.read().strip()
-
 
 setup(
     name='nagiosplugin',
@@ -39,10 +39,8 @@ setup(
     url='https://github.com/mpounsett/nagiosplugin',
     download_url='https://pypi.python.org/pypi/nagiosplugin',
     license='ZPL-2.1',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
+    py_modules=['nagiosplugin'],
     include_package_data=True,
     zip_safe=False,
-    test_suite='nagiosplugin.tests',
-    extras_require = {'test': ['setuptools', 'pytest', 'pytest-cov']}
+    extras_require = {'test': ['tox']}
 )

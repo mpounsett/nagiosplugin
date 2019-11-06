@@ -87,7 +87,7 @@ features of :mod:`nagiosplugin`.
 
 .. hint::
 
-   Study the source code in the :file:`src/nagiosplugin/examples` directory for
+   Study the source code in the :file:`nagiosplugin/examples` directory for
    complete examples.
 
 

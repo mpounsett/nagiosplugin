@@ -1,11 +1,11 @@
 [run]
 branch = True
 source =
-	src/nagiosplugin
+	nagiosplugin
 omit =
-	src/nagiosplugin/compat.py
-	src/nagiosplugin/examples/*
-	src/nagiosplugin/platform/*
+	nagiosplugin/compat.py
+	nagiosplugin/examples/*
+	nagiosplugin/platform/*
 
 [report]
 precision = 2
