@@ -5,7 +5,9 @@ Release History
 1.2.5 (unreleased)
 ------------------
 
-- New maintainer information and project home
+- New maintainer/contributor information and project home
+- Updated tests and package metadata for recent Python 3 versions
+- Newer tooling for tests/documentation
 
 
 1.2.4 (2016-03-12)
