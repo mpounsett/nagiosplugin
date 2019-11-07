@@ -63,10 +63,14 @@ You may run the supplied examples with the local interpreter::
 Documentation
 -------------
 
-The documentation uses Sphinx. Build the documentation (buildout should have
-been running before to install Sphinx etc.)::
+The documentation depends on Sphinx.  Install the necessary dependencies, and
+then build the documentation::
 
-   make -C doc html
+   pip install -e '.[doc]'
+   make docs
+
+HTML documentation will be built and installed in `doc/_build/html/`.  You can
+read the documentation by opening `doc/_build/html/index.html`.
 
 
 How to release

@@ -46,5 +46,11 @@ setup(
     py_modules=['nagiosplugin'],
     include_package_data=True,
     zip_safe=False,
-    extras_require={'test': ['tox']}
+    extras_require={
+        'test': ['tox'],
+        'doc': [
+            'sphinx==1.8.5',
+            'sphinx-rtd-theme',
+        ]
+    },
 )
