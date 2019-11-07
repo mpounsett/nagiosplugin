@@ -21,6 +21,8 @@ setup(
     version=main_ns['__VERSION__'],
     description='Class library for writing Nagios (Icinga) plugins',
     long_description='\n\n'.join(longdesc),
+    url='https://github.com/mpounsett/nagiosplugin',
+    download_url='https://pypi.python.org/pypi/nagiosplugin',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
@@ -40,8 +42,6 @@ setup(
     keywords='Nagios Icinga plugin check monitoring',
     author='Matthew Pounsett',
     author_email='matt@conundrum.com',
-    url='https://github.com/mpounsett/nagiosplugin',
-    download_url='https://pypi.python.org/pypi/nagiosplugin',
     license='ZPL-2.1',
     py_modules=['nagiosplugin'],
     include_package_data=True,
