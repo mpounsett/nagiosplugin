@@ -18,15 +18,16 @@ This package supports installation in a virtualenv::
 Tests
 -----
 
-**nagiosplugin** tests are run by `tox`, which is configured to expect all of
+**nagiosplugin** tests are run by `tox`_, which is configured to expect all of
 the supported `python` versions to be present.  The easiest way to accomplish
 this is by installing and using `pyenv`_.  
 
+.. _tox: https://tox.readthedocs.io/en/latest/
 .. _pyenv: https://github.com/pyenv/pyenv
 
 Once you have `pyenv` set up, make sure you have each of the supported
-versions of python specified by the `envlist` in `tox.ini`.  This will likely
-look something like::
+versions of python specified by the `envlist` in :file:`tox.ini`.  This will
+likely look something like::
 
    pyenv install 2.7.16
    pyenv install 3.4.10
@@ -51,9 +52,9 @@ Run only linting tests::
 
    tox -e lint
 
-nagiosplugin also includes support for test coverage reports. Coverage reports
-are updated automatically by `tox`. Open :file:`htmlcov/index.html` to see
-coverage reports.
+**nagiosplugin** also includes support for test coverage reports. Coverage
+reports are updated automatically by `tox`. Open :file:`htmlcov/index.html` to
+see coverage reports.
 
 You may run the supplied examples with the local interpreter::
 
@@ -69,9 +70,8 @@ then build the documentation::
    pip install -e '.[doc]'
    make docs
 
-HTML documentation will be built and installed in `doc/_build/html/`.  You can
-read the documentation by opening `doc/_build/html/index.html`.
-
+HTML documentation will be built and installed in :file:`doc/_build/html/`.
+You can read the documentation by opening :file:`doc/_build/html/index.html`.
 
 How to release
 --------------
