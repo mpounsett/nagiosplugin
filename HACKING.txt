@@ -73,19 +73,51 @@ then build the documentation::
 HTML documentation will be built and installed in `doc/_build/html/`.  You can
 read the documentation by opening `doc/_build/html/index.html`.
 
+Versioning
+----------
+
+**nagiosplugin** obeys the semantic version numbering specification
+published on SemVer_, adapted slightly to be `PEP 440`_ compliant.
+
+.. _SemVer: http://semver.org/
+.. _PEP 440: https://www.python.org/dev/peps/pep-0440/
+
+
 How to release
 --------------
 
-To make a release, we prefer `zest.releaser`_. To make a release, follow
-the standard procedure, which usually boils down to::
+Begin by making sure you have the build prerequisites installed::
 
-   fullrelease
+   pip install -r requirements_build.txt
 
-`nagiosplugin` tried to obey the semantic version numbering specification
-published on SemVer_ but adapts it a little bit to be `PEP 386`_ compliant.
+Update the version number in `nagiosplugin/version.py`, update the version
+release date in the `HISTORY.txt` file,  and tag the release.  Make sure both
+of the file changes are in the same commit.  For a new version `0.1.2`::
 
-.. _zest.releaser: https://pypi.python.org/pypi/zest.releaser/
-.. _SemVer: http://semver.org/
-.. _PEP 386: https://www.python.org/dev/peps/pep-0386/
+   sed -i '' -e 's/\(__VERSION__ =\).*/\1 "0.1.2"/' nagiosplugin/version.py
+   sed -i '' -e 's/0.1.2 (unreleased)/0.1.2 (2019-11-07)/' HISTORY.txt
+   git stage HISTORY.txt nagiosplugin/version.py
+   git commit -m "Preparing release 0.1.2"
+   git tag 0.1.2
+   git push
+
+Build the **nagiosplugin** distribution for PyPi::
+
+   python3 setup.py sdist bdist_wheel
+
+Test your package upload with TestPyPi::
+
+   twine upload --repository-url https://test.pypi.org/legacy dist/*
+
+Check on https://test.pypi.org/nagiosplugin that the package metadata looks
+correct.  If everything is fine, upload the release::
+
+   twine upload dist/*
+
+After updating PyPi, advance the version number again to the next patch
+version plus a `.dev0` suffix.
+
+Go to https://readthedocs.io/ to enable the new release.
+
 
 .. vim: set ft=rst sw=3 sts=3 et:
