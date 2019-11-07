@@ -1,11 +1,10 @@
 all:
 
-<<<<<<< HEAD
+.PHONY: clean
+
 docs:
 	$(MAKE) -C doc html
 
-=======
->>>>>>> aa554d8... adding a Makefile for cleaning up a working repository
 clean:
 	rm -f 
 	rm -Rf bin develop-eggs doc/_build eggs htmlcov nagiosplugin.egg-info \
