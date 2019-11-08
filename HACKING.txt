@@ -106,6 +106,9 @@ Build the **nagiosplugin** distribution for PyPi::
 
    python3 setup.py sdist bdist_wheel
 
+Check the contents of the packages in `dist/` to ensure they contain all of
+the expected files.
+
 Test your package upload with TestPyPi::
 
    twine upload --repository-url https://test.pypi.org/legacy dist/*
