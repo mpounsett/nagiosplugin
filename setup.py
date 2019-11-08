@@ -25,6 +25,8 @@ setup(
     download_url='https://pypi.org/project/nagiosplugin/',
     project_urls={
         'nagiosplugin source': 'https://github.com/mpounsett/nagiosplugin',
+        'nagiosplugin issues':
+        'https://github.com/mpounsett/nagiosplugin/issues',
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
