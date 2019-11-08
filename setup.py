@@ -21,8 +21,11 @@ setup(
     version=main_ns['__VERSION__'],
     description='Class library for writing Nagios (Icinga) plugins',
     long_description='\n\n'.join(longdesc),
-    url='https://github.com/mpounsett/nagiosplugin',
-    download_url='https://pypi.python.org/pypi/nagiosplugin',
+    url='https://nagiosplugin.readthedocs.io/',
+    download_url='https://pypi.org/project/nagiosplugin/',
+    project_urls={
+        'nagiosplugin source': 'https://github.com/mpounsett/nagiosplugin',
+    },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Plugins',
