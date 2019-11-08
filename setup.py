@@ -3,7 +3,7 @@ import codecs
 import os
 
 from distutils.util import convert_path
-from setuptools import setup
+from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
 longdesc = []
@@ -48,7 +48,7 @@ setup(
     author='Matthew Pounsett',
     author_email='matt@conundrum.com',
     license='ZPL-2.1',
-    py_modules=['nagiosplugin'],
+    packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
 )
