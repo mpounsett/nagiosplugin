@@ -100,6 +100,7 @@ of the file changes are in the same commit.  For a new version `0.1.2`::
    git commit -m "Preparing release 0.1.2"
    git tag 0.1.2
    git push
+   git push --tags
 
 Build the **nagiosplugin** distribution for PyPi::
 
