@@ -6,6 +6,7 @@ Release History
 ------------------
 
 - New maintainer/contributor information and project home
+
 - Updated tests and package metadata for recent Python 3 versions
 - Newer tooling for tests/documentation
 
