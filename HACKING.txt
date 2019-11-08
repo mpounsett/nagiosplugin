@@ -118,7 +118,8 @@ correct.  If everything is fine, upload the release::
 After updating PyPi, advance the version number again to the next patch
 version plus a `.dev0` suffix.
 
-Go to https://readthedocs.io/ to enable the new release.
+Go to https://readthedocs.io/ and ensure the new stable and dev releases are
+available.
 
 
 .. vim: set ft=rst sw=3 sts=3 et:
