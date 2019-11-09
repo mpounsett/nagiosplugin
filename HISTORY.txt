@@ -5,7 +5,9 @@ Release History
 1.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet
+- Include `doc` and `tests` directories in source distribution to support
+  Gentoo package building tests (#22)
+- Update official python support to 2.7, 3.4+
 
 
 1.3.1 (2019-11-08)
