@@ -44,8 +44,8 @@ Comprehensive documentation is `available online`_. The examples mentioned in
 the `tutorials`_ can also be found in the `nagiosplugin/examples` directory of
 the source distribution.
 
-.. _available online: http://pythonhosted.org/nagiosplugin/
-.. _tutorials: http://pythonhosted.org/nagiosplugin/tutorial/
+.. _available online: https://nagiosplugin.readthedocs.io/
+.. _tutorials: https://nagiosplugin.readthedocs.io/en/stable/tutorial/
 
 Acknowledgements
 ----------------
