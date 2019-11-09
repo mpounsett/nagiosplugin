@@ -5,3 +5,7 @@ include HISTORY.txt
 include LICENSE.txt
 include README.txt
 include version.txt
+graft doc
+graft tests
+global-exclude __pycache__
+global-exclude *.py[co]
