@@ -99,7 +99,7 @@ def main():
             'unique', args.warning_unique, args.critical_unique,
             fmt_metric='{value} unique users logged in'),
         UsersSummary())
-    check.main(args.verbose, args.timeout)
+    check.main(args.verbose, args.timeout, command_file='/tmp/nagios.cmd', command_host='test', command_service='service')
 
 
 if __name__ == '__main__':

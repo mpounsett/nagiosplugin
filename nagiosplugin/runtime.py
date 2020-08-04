@@ -16,6 +16,7 @@ import numbers
 import sys
 import functools
 import traceback
+import time
 
 
 def guarded(original_function=None, verbose=None):
@@ -119,7 +120,9 @@ class Runtime(object):
         self.output.add(check)
         self.exitcode = check.exitcode
 
-    def execute(self, check, verbose=None, timeout=None):
+    def execute(self, check, verbose=None, timeout=None,
+                command_file=None, command_host=None, command_service=None,
+                command_newline_replace=None):
         self.check = check
         if verbose is not None:
             self.verbose = verbose
@@ -129,8 +132,28 @@ class Runtime(object):
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)
-        print('{0}'.format(self.output), end='', file=self.stdout)
-        self.sysexit()
+        if command_file is not None and command_host is not None and command_service is not None:
+            with open(command_file, 'w') as nagios_cmd:
+                # https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/passivechecks.html
+                if command_newline_replace == False:
+                    output = self.output
+                else:
+                    if command_newline_replace is None:
+                        command_newline_replace = '; '
+                    output_lines = str(self.output).strip().split('\n')
+                    output = command_newline_replace.join(output_lines)
+                nagios_cmd.write('[{timestamp}] PROCESS_SERVICE_CHECK_RESULT;'
+                        '{host_name};{svc_description};'
+                        '{return_code};{plugin_output}\n'.format(
+                    timestamp=int(time.time()),
+                    host_name=command_host,
+                    svc_description=command_service,
+                    return_code=self.exitcode,
+                    plugin_output=output))
+            sys.exit(0)
+        else:
+            print('{0}'.format(self.output), end='', file=self.stdout)
+            self.sysexit()
 
     def sysexit(self):
         sys.exit(self.exitcode)

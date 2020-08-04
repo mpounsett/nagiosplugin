@@ -106,7 +106,7 @@ class Check(object):
             self._evaluate_resource(resource)
         self.perfdata = sorted([p for p in self.perfdata if p])
 
-    def main(self, verbose=None, timeout=None):
+    def main(self, verbose=None, timeout=None, command_file=None, command_host=None, command_service=None):
         """All-in-one control delegation to the runtime environment.
 
         Get a :class:`~nagiosplugin.runtime.Runtime` instance and
@@ -118,7 +118,7 @@ class Check(object):
             exception after so many seconds (use 0 for no timeout)
         """
         runtime = Runtime()
-        runtime.execute(self, verbose, timeout)
+        runtime.execute(self, verbose, timeout, command_file, command_host, command_service)
 
     @property
     def state(self):
