@@ -13,7 +13,7 @@ Key concepts
 :py:mod:`nagiosplugin` has a fine-grained class model with clear separation of
 concerns. This allows plugin writers to focus on one
 particular tasks at a time while writing plugins. Nagios/Icinga plugins need to
-perform three step: data :term:`acquisition`, :term:`evaluation`, and
+perform three steps: data :term:`acquisition`, :term:`evaluation`, and
 :term:`presentation`. Each step has an associated class (Resource, Context,
 Summary) and information between tasks is passed with structured value objects
 (Metric, Result).
