@@ -13,6 +13,7 @@ doc/Makefile
 *.egg-info
 eggs/
 htmlcov/
+.idea
 include/python*
 .installed.cfg
 lib64
@@ -32,3 +33,4 @@ tests.xml
 tmp
 .todo
 .tox
+.venv
