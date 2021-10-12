@@ -65,7 +65,7 @@ class Runtime(object):
     timeout = None
     logchan = None
     output = None
-    stdout = sys.stdout
+    stdout = None
     exitcode = 70  # EX_SOFTWARE
 
     def __new__(cls):
