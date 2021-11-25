@@ -37,7 +37,7 @@ class Performance(collections.namedtuple('Performance', [
         :param label: short identifier, results in graph
             titles for example (20 chars or less recommended)
         :param value: measured value (usually an int, float, or bool)
-        :param uom: unit of measure -- use base units whereever possible
+        :param uom: unit of measure -- use base units wherever possible
         :param warn: warning range
         :param crit: critical range
         :param min: known value minimum (None for no minimum)
