@@ -2,8 +2,7 @@
 """Classes  to represent check outcomes.
 
 This module defines :class:`ServiceState` which is the abstract base
-class for check outcomes. class for check outcomes. class for check
-outcomes. The four states defined by the :term:`Nagios plugin API` are
+class for check outcomes. The four states defined by the :term:`Nagios plugin API` are
 represented as singleton subclasses.
 
 Note that the *warning* state is defined by the :class:`Warn` class. The
