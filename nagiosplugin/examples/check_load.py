@@ -25,7 +25,8 @@ class Load(nagiosplugin.Resource):
     def __init__(self, percpu=False):
         self.percpu = percpu
 
-    def cpus(self):
+    @staticmethod
+    def cpus():
         _log.info('counting cpus with "nproc"')
         cpus = int(subprocess.check_output(['nproc']))
         _log.debug('found %i cpus in total', cpus)
