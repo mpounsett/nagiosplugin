@@ -80,7 +80,7 @@ class UsersSummary(nagiosplugin.Summary):
 def main():
     argp = argparse.ArgumentParser()
     argp.add_argument('-w', '--warning', metavar='RANGE',
-                      help='warning if total user count is outside RANGE'),
+                      help='warning if total user count is outside RANGE')
     argp.add_argument('-c', '--critical', metavar='RANGE',
                       help='critical is total user count is outside RANGE')
     argp.add_argument('-W', '--warning-unique', metavar='RANGE',
