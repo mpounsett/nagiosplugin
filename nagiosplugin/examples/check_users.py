@@ -34,6 +34,8 @@ class Users(nagiosplugin.Resource):
         _log.info('querying users with "%s" command', self.who_cmd)
         users = []
         try:
+            # subprocess context manager not implemented yet in py27
+            # pylint: disable-next=consider-using-with
             process = subprocess.Popen([self.who_cmd],
                                        stdout=subprocess.PIPE,
                                        stdin=subprocess.PIPE)
