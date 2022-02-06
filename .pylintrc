@@ -85,10 +85,12 @@ confidence=
 #    useless-object-inheritance
 #    super-with-arguments
 #    unspecified-encoding
+#    raise-missing-from
 disable=consider-using-f-string,
         useless-object-inheritance,
         super-with-arguments,
         unspecified-encoding,
+        raise-missing-from,
         raw-checker-failed,
         bad-inline-option,
         locally-disabled,
