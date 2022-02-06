@@ -23,13 +23,13 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         """
         spec = spec or ''
         if isinstance(spec, Range):
-            return super(cls, Range).__new__(
+            return super(Range, cls).__new__(
                 cls, spec.invert, spec.start, spec.end)
         elif (isinstance(spec, int) or isinstance(spec, float)):
             start, end, invert = 0, spec, False
         start, end, invert = cls._parse(str(spec))
         cls._verify(start, end)
-        return super(cls, Range).__new__(cls, invert, start, end)
+        return super(Range, cls).__new__(cls, invert, start, end)
 
     @classmethod
     def _parse(cls, spec):

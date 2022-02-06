@@ -45,7 +45,7 @@ class Performance(collections.namedtuple('Performance', [
         """
         if "'" in label or "=" in label:
             raise RuntimeError('label contains illegal characters', label)
-        return super(cls, Performance).__new__(
+        return super(Performance, cls).__new__(
             cls, label, value, zap_none(uom), zap_none(warn), zap_none(crit),
             zap_none(min), zap_none(max))
 

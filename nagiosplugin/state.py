@@ -40,7 +40,7 @@ class ServiceState(collections.namedtuple('ServiceState', 'code text')):
 class Ok(ServiceState):
 
     def __new__(cls):
-        return super(cls, Ok).__new__(cls, 0, 'ok')
+        return super(Ok, cls).__new__(cls, 0, 'ok')
 
 
 Ok = Ok()
@@ -49,7 +49,7 @@ Ok = Ok()
 class Warn(ServiceState):
 
     def __new__(cls):
-        return super(cls, Warn).__new__(cls, 1, 'warning')
+        return super(Warn, cls).__new__(cls, 1, 'warning')
 
 
 Warn = Warn()
@@ -58,7 +58,7 @@ Warn = Warn()
 class Critical(ServiceState):
 
     def __new__(cls):
-        return super(cls, Critical).__new__(cls, 2, 'critical')
+        return super(Critical, cls).__new__(cls, 2, 'critical')
 
 
 Critical = Critical()
@@ -67,7 +67,7 @@ Critical = Critical()
 class Unknown(ServiceState):
 
     def __new__(cls):
-        return super(cls, Unknown).__new__(cls, 3, 'unknown')
+        return super(Unknown, cls).__new__(cls, 3, 'unknown')
 
 
 Unknown = Unknown()
