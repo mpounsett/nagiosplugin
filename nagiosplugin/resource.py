@@ -24,6 +24,9 @@ class Resource(object):
     def name(self):
         return self.__class__.__name__
 
+    # This could be corrected by re-implementing this class as a proper ABC.
+    # See issue #42
+    # pylint disable=no-self-use
     def probe(self):
         """Query system state and return metrics.
 
