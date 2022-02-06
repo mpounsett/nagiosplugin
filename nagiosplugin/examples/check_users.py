@@ -34,9 +34,10 @@ class Users(nagiosplugin.Resource):
         _log.info('querying users with "%s" command', self.who_cmd)
         users = []
         try:
-            p = subprocess.Popen([self.who_cmd], stdout=subprocess.PIPE,
-                                 stdin=subprocess.PIPE)
-            for line in p.communicate()[0].splitlines():
+            process = subprocess.Popen([self.who_cmd],
+                                       stdout=subprocess.PIPE,
+                                       stdin=subprocess.PIPE)
+            for line in process.communicate()[0].splitlines():
                 _log.debug('who output: %s', line.strip())
                 users.append(line.split()[0].decode())
         except OSError:
