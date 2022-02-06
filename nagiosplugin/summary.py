@@ -26,6 +26,12 @@ class Summary(object):
     output creation.
     """
 
+    # It might be possible to re-implement this as a @staticmethod,
+    # but this might be an API-breaking change, so it should probably stay in
+    # place until a 2.x rewrite.  If this can't be a @staticmethod, then it
+    # should probably be an @abstractmethod.
+    # See issue #44
+    # pylint: disable-next=no-self-use
     def ok(self, results):
         """Formats status line when overall state is ok.
 
@@ -37,6 +43,12 @@ class Summary(object):
         """
         return '{0}'.format(results[0])
 
+    # It might be possible to re-implement this as a @staticmethod,
+    # but this might be an API-breaking change, so it should probably stay in
+    # place until a 2.x rewrite.  If this can't be a @staticmethod, then it
+    # should probably be an @abstractmethod.
+    # See issue #44
+    # pylint: disable-next=no-self-use
     def problem(self, results):
         """Formats status line when overall state is not ok.
 
@@ -49,6 +61,12 @@ class Summary(object):
         """
         return '{0}'.format(results.first_significant)
 
+    # It might be possible to re-implement this as a @staticmethod,
+    # but this might be an API-breaking change, so it should probably stay in
+    # place until a 2.x rewrite.  If this can't be a @staticmethod, then it
+    # should probably be an @abstractmethod.
+    # See issue #44
+    # pylint: disable-next=no-self-use
     def verbose(self, results):
         """Provides extra lines if verbose plugin execution is requested.
 
@@ -65,6 +83,12 @@ class Summary(object):
             msgs.append('{0}: {1}'.format(result.state, result))
         return msgs
 
+    # It might be possible to re-implement this as a @staticmethod,
+    # but this might be an API-breaking change, so it should probably stay in
+    # place until a 2.x rewrite.  If this can't be a @staticmethod, then it
+    # should probably be an @abstractmethod.
+    # See issue #44
+    # pylint: disable-next=no-self-use
     def empty(self):
         """Formats status line when the result set is empty.
 
