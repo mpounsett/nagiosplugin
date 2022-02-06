@@ -4,18 +4,19 @@
 This module contains imports and functions that help mask Python 2/3
 compatibility issues.
 """
-
 import tempfile
 
 
 # UserDict
 try:
+    # pylint: disable-next=unused-import
     from collections import UserDict
 except ImportError:
     from UserDict import UserDict   # noqa: F401
 
 # StringIO
 try:
+    # pylint: disable-next=unused-import
     from io import StringIO
 except ImportError:
     from StringIO import StringIO   # noqa: F401
