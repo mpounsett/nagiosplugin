@@ -90,7 +90,6 @@ disable=consider-using-f-string,
         locally-disabled,
         file-ignored,
         suppressed-message,
-        useless-suppression,
         deprecated-pragma,
         use-symbolic-message-instead
 
