@@ -73,7 +73,8 @@ class Output(object):
                 where, set(text) - set(screened)))
         return screened
 
-    def _illegal_chars_warning(self, where, removed_chars):
+    @staticmethod
+    def _illegal_chars_warning(where, removed_chars):
         hex_chars = ', '.join('0x{0:x}'.format(ord(c)) for c in removed_chars)
         return 'warning: removed illegal characters ({0}) from {1}'.format(
             hex_chars, where)
