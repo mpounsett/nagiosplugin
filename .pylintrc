@@ -79,9 +79,12 @@ confidence=
 # no Warning level messages displayed, use "--disable=all --enable=classes
 # --disable=W".
 #
-# consider-using-f-string: Still have python 2.x support, so we can't use
-#                           f-strings
+# Several of these are disabled because whatever they object to is required by
+# ongoing Python 2.x support.  These include:
+#    consider-using-f-string,
+#    useless-object-inheritance
 disable=consider-using-f-string,
+        useless-object-inheritance,
         raw-checker-failed,
         bad-inline-option,
         locally-disabled,
