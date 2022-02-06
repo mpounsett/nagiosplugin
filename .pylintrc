@@ -84,9 +84,11 @@ confidence=
 #    consider-using-f-string,
 #    useless-object-inheritance
 #    super-with-arguments
+#    unspecified-encoding
 disable=consider-using-f-string,
         useless-object-inheritance,
         super-with-arguments,
+        unspecified-encoding,
         raw-checker-failed,
         bad-inline-option,
         locally-disabled,
