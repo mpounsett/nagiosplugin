@@ -32,3 +32,4 @@ tests.xml
 tmp
 .todo
 .tox
+.idea
