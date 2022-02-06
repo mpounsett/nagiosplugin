@@ -17,10 +17,11 @@ user is free in how many thresholds he specifies.
 
 import argparse
 import itertools
-import nagiosplugin
-import numpy
 import re
 
+import numpy
+
+import nagiosplugin
 
 class HAProxyLog(nagiosplugin.Resource):
     """haproxy.log parser.

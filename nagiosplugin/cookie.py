@@ -14,12 +14,12 @@ access to it. Changes to the dict are not reflected in the file until
 :meth:`Cookie.commit` is called. It is recommended to use Cookie as
 context manager to get it opened and committed automatically.
 """
-
-from .compat import UserDict, TemporaryFile
-from .platform import flock_exclusive
 import codecs
 import json
 import os
+
+from .compat import UserDict, TemporaryFile
+from .platform import flock_exclusive
 
 
 class Cookie(UserDict, object):

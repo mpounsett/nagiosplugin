@@ -11,6 +11,7 @@ returned metrics to results and performance data. A typical usage
 pattern would be to populate a check with domain objects and then
 delegate control to it.
 """
+import logging
 
 from .context import Context, Contexts
 from .error import CheckError
@@ -20,7 +21,7 @@ from .result import Result, Results
 from .runtime import Runtime
 from .state import Ok, Unknown, ServiceState
 from .summary import Summary
-import logging
+
 
 _log = logging.getLogger(__name__)
 

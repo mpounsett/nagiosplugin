@@ -5,17 +5,18 @@ This module contains the :class:`Runtime` class that handles exceptions,
 timeouts and logging. Plugin authors should not use Runtime directly,
 but decorate the plugin's main function with :func:`~.runtime.guarded`.
 """
-
 from __future__ import unicode_literals, print_function
-from .output import Output
-from .error import Timeout
-from .platform import with_timeout
+
 import io
 import logging
 import numbers
 import sys
 import functools
 import traceback
+
+from .output import Output
+from .error import Timeout
+from .platform import with_timeout
 
 
 def guarded(original_function=None, verbose=None):

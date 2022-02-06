@@ -3,8 +3,9 @@
 
 import argparse
 import logging
-import nagiosplugin
 import subprocess
+
+import nagiosplugin
 
 _log = logging.getLogger('nagiosplugin')
 

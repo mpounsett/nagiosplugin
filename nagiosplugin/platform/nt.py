@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """NT implementation of platform-specific services."""
 
-import nagiosplugin
 import threading
 import msvcrt
 
+import nagiosplugin
 
 def with_timeout(t, func, *args, **kwargs):
     """Call `func` but terminate after `t` seconds.

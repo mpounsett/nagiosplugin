@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """POSIX implementation of platform-specific services"""
 
-import nagiosplugin
 import fcntl
 import signal
+
+import nagiosplugin
 
 
 def with_timeout(t, func, *args, **kwargs):
