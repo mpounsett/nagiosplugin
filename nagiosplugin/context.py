@@ -57,6 +57,9 @@ class Context(object):
         """
         return self.result_cls(Ok, metric=metric)
 
+    # This could be corrected by re-implementing this class as a proper ABC.
+    # See issue #43
+    # pylint: disable-next=no-self-use
     def performance(self, metric, resource):
         """Derives performance data from a given metric.
 
