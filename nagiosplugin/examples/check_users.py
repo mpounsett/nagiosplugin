@@ -74,9 +74,9 @@ class UsersSummary(nagiosplugin.Summary):
     """
 
     def verbose(self, results):
-        super(UsersSummary, self).verbose(results)
         if 'total' in results:
             return 'users: ' + ', '.join(results['total'].resource.users)
+        return None
 
 
 @nagiosplugin.guarded
