@@ -8,8 +8,8 @@ import msvcrt
 
 import nagiosplugin
 
-def with_timeout(timeout, func, *args, **kwargs):
-    """Call `func` but terminate after `timeout` seconds.
+def with_timeout(t, func, *args, **kwargs):
+    """Call `func` but terminate after `t` seconds.
 
     We use a thread here since NT systems don't have POSIX signals.
     """
@@ -17,9 +17,9 @@ def with_timeout(timeout, func, *args, **kwargs):
     func_thread = threading.Thread(target=func, args=args, kwargs=kwargs)
     func_thread.daemon = True  # quit interpreter even if still running
     func_thread.start()
-    func_thread.join(timeout)
+    func_thread.join(t)
     if func_thread.is_alive():
-        raise nagiosplugin.Timeout('{0}s'.format(timeout))
+        raise nagiosplugin.Timeout('{0}s'.format(t))
 
 
 def flock_exclusive(fileobj):
