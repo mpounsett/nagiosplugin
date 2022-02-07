@@ -2,6 +2,8 @@
 """NT implementation of platform-specific services."""
 
 import threading
+# This only loads on Windows
+# pylint: disable-next=import-error
 import msvcrt
 
 import nagiosplugin
