@@ -19,6 +19,9 @@ class Metric(collections.namedtuple(
     Metric('swap', 10240, 'B') is better than Metric('swap', 10, 'kiB').
     """
 
+    # Changing these now would be API-breaking, so we'll ignore these
+    # shadowed built-ins
+    # pylint: disable-next=redefined-builtin
     def __new__(cls, name, value, uom=None, min=None, max=None, context=None,
                 contextobj=None, resource=None):
         """Creates new Metric instance.

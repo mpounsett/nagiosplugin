@@ -22,8 +22,10 @@ except ImportError:
     from StringIO import StringIO   # noqa: F401
 
 
+# This reproduces the py27 signature for this function, so we'll ignore the
+# shadowed built-in in this case.
 def TemporaryFile(mode='w+b', encoding=None, suffix='', prefix='tmp',
-                  dir=None):
+                  dir=None):    # pylint: disable=redefined-builtin
     """
     Provide py2/3 compatability for TemporaryFile.
 
