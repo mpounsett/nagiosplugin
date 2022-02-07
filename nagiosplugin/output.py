@@ -48,7 +48,7 @@ class Output(object):
         return '| ' + self._screen_chars(out, 'perfdata')
 
     def add_longoutput(self, text):
-        if isinstance(text, list) or isinstance(text, tuple):
+        if isinstance(text, (list, tuple)):
             for line in text:
                 self.add_longoutput(line)
         else:
