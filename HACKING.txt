@@ -1,5 +1,5 @@
-Development
-===========
+Contributing to Nagiosplugin
+============================
 
 Getting the source
 ------------------
@@ -15,6 +15,35 @@ This package supports installation in a virtualenv::
    pip install -e .
 
 
+Making Changes
+--------------
+
+This project uses the `Git-flow workflow`_, approximately as laid out by
+Vincent Driessen in 2010.  New development should be done in feature branches,
+which are branched off of the `develop` branch.  PRs should be sent to
+`upstream:develop`.
+
+.. _Git-flow workflow: https://nvie.com/posts/a-successful-git-branching-model/
+
+Consider whether your change updates or fixes any existing issues.  Include
+the appropriate "fixes" or "updates" entry in your PR description so that the
+issue is updated.   If your change does not reference an existing issue,
+consider creating an issue to link it to.
+
+The project uses PEP8 as its style guide. All changes should be checked
+against PEP8 before committing, and commits **MUST** conform to PEP8 before
+sending a PR.  PEP8 tests can be run with the `tox -e flake8` command (see
+**Tests** below for details on setting up the tox environment).  PRs that
+fail PEP8 compliance will be refused.
+
+Note that, at present, much of the old codebase gets warnings related to
+the `pylint` and `pydocstyle` tests.  Your changes must not introduce any
+**new** warnings from these tests.
+
+If your change is a new feature, or otherwise alters the behaviour of
+`nagiosplugin`, update the relevant section of the documentation and include
+that in your PR.
+
 Tests
 -----
 
@@ -29,12 +58,15 @@ Once you have `pyenv` set up, make sure you have each of the supported
 versions of python specified by the `envlist` in `tox.ini`.  This will likely
 look something like::
 
-   pyenv install 2.7.16
+   pyenv install 2.7.18
    pyenv install 3.4.10
-   pyenv install 3.5.7
-   pyenv install 3.6.9
-   pyenv install 3.7.4
-   pyenv global 3.7.4 3.6.9 3.5.7 3.4.10 2.7.16
+   pyenv install 3.5.10
+   pyenv install 3.6.15
+   pyenv install 3.7.12
+   pyenv install 3.8.12
+   pyenv install 3.9.9
+   pyenv install 3.10.1
+   pyenv global 3.10.1 3.9.9 3.8.12 3.7.12 3.6.15 3.5.10 3.4.10 2.7.18 system
 
 Install test dependencies::
 
@@ -48,9 +80,9 @@ To limit tests to a particular python environment::
 
    tox -e py37
 
-Run only linting tests::
+Run only PEP8 linting tests::
 
-   tox -e lint
+   tox -e flake8
 
 **nagiosplugin** also includes support for test coverage reports. Coverage
 reports are updated automatically by `tox`. Open `htmlcov/index.html` to see
@@ -73,8 +105,14 @@ then build the documentation::
 HTML documentation will be built and installed in `doc/_build/html/`.  You can
 read the documentation by opening `doc/_build/html/index.html`.
 
+Releasing
+---------
+
+This information will be unnecessary for most contributors.  It is only
+relevant to those actually making releases.
+
 Versioning
-----------
+~~~~~~~~~~
 
 **nagiosplugin** obeys the semantic version numbering specification
 published on SemVer_, adapted slightly to be `PEP 440`_ compliant.
@@ -84,20 +122,46 @@ published on SemVer_, adapted slightly to be `PEP 440`_ compliant.
 
 
 How to release
---------------
+~~~~~~~~~~~~~~
+
+Instructions below are for a hypothetical 0.1.2 release.  Make sure you use
+the correct version numbers for your release, and don't copy and paste the
+below examples.
 
 Begin by making sure you have the build prerequisites installed::
 
    pip install -r requirements_build.txt
 
-Update the version number in `nagiosplugin/version.py`, update the version
-release date in the `HISTORY.txt` file,  and tag the release.  Make sure both
-of the file changes are in the same commit.  For a new version `0.1.2`::
+Create a release branch from `develop`::
+
+   git checkout develop
+   git checkout -b release/0.1.2
+
+Check that all tests pass.  Apply hotfixes as necessary to pass all tests
+before continuing.
+
+Update the version number in `nagiosplugin/version.py`, and update the version
+release date in the `HISTORY.txt` file::
 
    sed -i '' -e 's/\(__VERSION__ =\).*/\1 "0.1.2"/' nagiosplugin/version.py
    sed -i '' -e 's/0.1.2 (unreleased)/0.1.2 (2019-11-07)/' HISTORY.txt
+
+You may need to update the `HISTORY.txt` file with additional changes.  You
+can get a list of commits since the last release by generating a reverse log,
+which you can edit down to just a list of relevant changes::
+
+   git log --reverse --no-merges 0.1.1... > new-changes.txt
+
+Commit the updated history and version files, making sure both of the file
+changes are in the same commit.  For a new version `0.1.2`::
+
    git stage HISTORY.txt nagiosplugin/version.py
    git commit -m "Preparing release 0.1.2"
+
+Merge the release into the `main` branch and tag the release::
+
+   git checkout main
+   git merge release/0.1.2
    git tag 0.1.2
    git push
    git push --tags
@@ -109,17 +173,25 @@ Build the **nagiosplugin** distribution for PyPi::
 Check the contents of the packages in `dist/` to ensure they contain all of
 the expected files.
 
-Test your package upload with TestPyPi::
+Test your package prior to uploading::
 
-   twine upload --repository-url https://test.pypi.org/legacy dist/*
+   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
+
+Do a test upload with TestPyPi::
+
+   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 Check on https://test.pypi.org/nagiosplugin that the package metadata looks
 correct.  If everything is fine, upload the release::
 
    twine upload dist/*
 
-After updating PyPi, advance the version number again to the next patch
-version plus a `.dev0` suffix.
+Merge the release back into `develop` and then delete the release branch::
+
+   git checkout develop
+   git merge release/0.1.2
+   git push
+   git branch -d release/0.1.2
 
 Go to https://readthedocs.io/ and ensure the new stable and dev releases are
 available.
