@@ -7,13 +7,13 @@ import signal
 import nagiosplugin
 
 
-def with_timeout(t, func, *args, **kwargs):
-    """Call `func` but terminate after `t` seconds."""
+def with_timeout(timeout, func, *args, **kwargs):
+    """Call `func` but terminate after `timeout` seconds."""
     def timeout_handler(signum, frame):
-        raise nagiosplugin.Timeout('{0}s'.format(t))
+        raise nagiosplugin.Timeout('{0}s'.format(timeout))
 
     signal.signal(signal.SIGALRM, timeout_handler)
-    signal.alarm(t)
+    signal.alarm(timeout)
     try:
         func(*args, **kwargs)
     finally:
