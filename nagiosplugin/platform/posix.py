@@ -7,6 +7,9 @@ import signal
 import nagiosplugin
 
 
+# Changing the badly-named `t` variable at this point is likely API-breaking,
+# so it will be left in place.
+# pylint: disable-next=invalid-name
 def with_timeout(t, func, *args, **kwargs):
     """Call `func` but terminate after `t` seconds."""
     def timeout_handler(signum, frame):
