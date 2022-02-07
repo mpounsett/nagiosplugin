@@ -42,8 +42,8 @@ class HAProxyLog(nagiosplugin.Resource):
     def parse_log(self):
         """Yields ttot and error status for each log line."""
         cookie = nagiosplugin.Cookie(self.statefile)
-        with nagiosplugin.LogTail(self.logfile, cookie) as lf:
-            for line in lf:
+        with nagiosplugin.LogTail(self.logfile, cookie) as logfile:
+            for line in logfile:
                 match = self.r_logline.search(line.decode())
                 if not match:
                     continue
@@ -53,16 +53,16 @@ class HAProxyLog(nagiosplugin.Resource):
 
     def probe(self):
         """Computes error rate and t_tot percentiles."""
-        d = numpy.fromiter(self.parse_log(), dtype=[
+        data = numpy.fromiter(self.parse_log(), dtype=[
             ('ttot', numpy.int32), ('err', numpy.uint16)])
-        requests = len(d['err'])
+        requests = len(data['err'])
         metrics = []
         if requests:
             for pct in self.percentiles:
                 metrics.append(nagiosplugin.Metric(
                     'ttot%s' % pct, numpy.percentile(
-                        d['ttot'], int(pct)) / 1000.0, 's', 0))
-        error_rate = (100 * numpy.sum(d['err'] / requests)
+                        data['ttot'], int(pct)) / 1000.0, 's', 0))
+        error_rate = (100 * numpy.sum(data['err'] / requests)
                       if requests else 0)
         metrics += [nagiosplugin.Metric('error_rate', error_rate, '%', 0, 100),
                     nagiosplugin.Metric('request_total', requests, min=0,
