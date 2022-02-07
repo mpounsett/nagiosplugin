@@ -14,6 +14,7 @@ Contents
    tutorial/index
    topic/index
    api/index
+   hacking
    glossary
    history
 
