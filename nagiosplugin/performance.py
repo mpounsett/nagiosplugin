@@ -32,8 +32,8 @@ class Performance(collections.namedtuple('Performance', [
         'label', 'value', 'uom', 'warn', 'crit', 'min', 'max'])):
 
     # Changing these now would be API-breaking, so we'll ignore these
-    # shadowed built-ins
-    # pylint: disable-next=redefined-builtin
+    # shadowed built-ins and the long list of arguments
+    # pylint: disable-next=redefined-builtin,too-many-arguments
     def __new__(cls, label, value, uom='', warn='', crit='', min='', max=''):
         """Create new performance data object.
 
