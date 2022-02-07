@@ -22,9 +22,14 @@ except ImportError:
     from StringIO import StringIO   # noqa: F401
 
 
-# Python 2: TemporaryFile does not support the `encoding` parameter
 def TemporaryFile(mode='w+b', encoding=None, suffix='', prefix='tmp',
                   dir=None):
+    """
+    Provide py2/3 compatability for TemporaryFile.
+
+    Redefining TemporaryFile from py27 because it doesn't support the
+    `encoding` parameter.
+    """
     try:
         return tempfile.TemporaryFile(
             mode=mode, encoding=encoding, suffix=suffix, prefix=prefix,
