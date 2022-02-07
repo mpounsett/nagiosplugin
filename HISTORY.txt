@@ -5,7 +5,12 @@ Release History
 1.3.3 (unreleased)
 ------------------
 
-- Fixed use of deprecated upload-dir in setup.cfg (#34)
+- new: adding support for newer python releases (3.8, 3.9, 3.10)
+- fix: various typos in docstrings (#39, )
+- fix: change use of deprecated upload-dir to upload_dir in setup.cfg (#34)
+- fix: Runtime class now sets None for stdout by default (#24)
+- fix: corrected argument order in several calls to super() (#18)
+- cleanup: many bits of code tidying to eliminate linter warnings
 
 
 1.3.2 (2019-11-09)
