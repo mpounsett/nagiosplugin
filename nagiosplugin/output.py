@@ -39,7 +39,7 @@ class Output(object):
         summary_str = check.summary_str.strip()
         return self._screen_chars('{0}{1}{2}'.format(
             name_prefix, str(check.state).upper(),
-            ' - ' + summary_str if summary_str else ''), 'status line').strip()
+            ' - ' + summary_str if summary_str else ''), 'status line')
 
     def format_perfdata(self, check, linebreak=None):
         if not check.perfdata:

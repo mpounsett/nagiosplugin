@@ -34,7 +34,7 @@ class Check(object):
         summary, or results are passed to the the :meth:`add` method.
         Alternatively, objects can be added later manually.
         If no *name* is given, the output prefix is set to the first
-        resource's name. If *name* is None, so prefix is set at all.
+        resource's name. If *name* is None, no prefix is set at all.
         """
         self.resources = []
         self.contexts = Contexts()
