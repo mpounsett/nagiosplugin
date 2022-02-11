@@ -41,6 +41,8 @@ class Output(object):
             name_prefix, str(check.state).upper(),
             ' - ' + summary_str if summary_str else ''), 'status line')
 
+    # Needs refactoring, but won't remove now because it's probably API-breaking
+    # pylint: disable-next=unused-argument
     def format_perfdata(self, check, linebreak=None):
         if not check.perfdata:
             return ''
