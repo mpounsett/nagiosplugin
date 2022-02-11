@@ -145,8 +145,10 @@ class Check(object):
         """
         if not self.results:
             return self.summary.empty() or ''
-        elif self.state == Ok:
+
+        if self.state == Ok:
             return self.summary.ok(self.results) or ''
+
         return self.summary.problem(self.results) or ''
 
     @property

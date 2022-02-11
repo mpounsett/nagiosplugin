@@ -136,10 +136,9 @@ class ScalarContext(Context):
         """
         if not self.critical.match(metric.value):
             return self.result_cls(Critical, self.critical.violation, metric)
-        elif not self.warning.match(metric.value):
+        if not self.warning.match(metric.value):
             return self.result_cls(Warn, self.warning.violation, metric)
-        else:
-            return self.result_cls(Ok, None, metric)
+        return self.result_cls(Ok, None, metric)
 
     def performance(self, metric, resource):
         """Derives performance data.

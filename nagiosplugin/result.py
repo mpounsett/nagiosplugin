@@ -52,14 +52,14 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
             desc = self.metric.description
         else:
             desc = None
+
         if self.hint and desc:
             return '{0} ({1})'.format(desc, self.hint)
-        elif self.hint:
+        if self.hint:
             return self.hint
-        elif desc:
+        if desc:
             return desc
-        else:
-            return ''
+        return ''
 
     @property
     def resource(self):
