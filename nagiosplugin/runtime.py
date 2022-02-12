@@ -37,6 +37,10 @@ def guarded(original_function=None, verbose=None):
     """
     def _decorate(func):
         @functools.wraps(func)
+        # This inconsistent-return-statements error can be fixed by adding a
+        # NoReturn type hint to Runtime._handle_exception(), but we can't do
+        # that as long as we're maintaining py27 compatability.
+        # pylint: disable-next=inconsistent-return-statements
         def wrapper(*args, **kwds):
             runtime = Runtime()
             if verbose is not None:

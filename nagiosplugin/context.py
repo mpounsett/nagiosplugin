@@ -91,7 +91,8 @@ class Context(object):
         :returns: description string or None
         """
         if not self.fmt_metric:
-            return
+            return None
+
         try:
             return self.fmt_metric(metric, self)
         except TypeError:

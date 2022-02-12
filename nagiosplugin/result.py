@@ -64,14 +64,16 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
     @property
     def resource(self):
         """Reference to the resource used to generate this result."""
-        if self.metric:
-            return self.metric.resource
+        if not self.metric:
+            return None
+        return self.metric.resource
 
     @property
     def context(self):
         """Reference to the metric used to generate this result."""
-        if self.metric:
-            return self.metric.contextobj
+        if not self.metric:
+            return None
+        return self.metric.contextobj
 
 
 class ScalarResult(Result):  # pragma: no cover
