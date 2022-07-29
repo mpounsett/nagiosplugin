@@ -70,7 +70,7 @@ class Context(object):
             derived
         :param resource: resource that produced the associated metric
             (may optionally be consulted)
-        :returns: :class:`Perfdata` object or `None`
+        :returns: :class:`~.performance.Performance` object or `None`
         """
         return None
 
