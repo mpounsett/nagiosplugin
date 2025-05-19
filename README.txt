@@ -20,7 +20,7 @@ and default logic commonly found in Nagios checks, including:
 - No dependencies beyond the Python standard library (except for Python 2.6).
 
 **nagiosplugin** runs on POSIX and Windows systems. It is compatible with
-Python 2.7, and Python 3.4 through 3.7.
+Python 2.7, and Python 3.7 through 3.13.
 
 Feedback and Suggestions
 ------------------------
