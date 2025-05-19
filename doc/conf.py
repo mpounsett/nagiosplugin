@@ -13,7 +13,7 @@
 # serve to show the default.
 
 import re
-from distutils.util import convert_path
+from os.path import abspath
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -57,7 +57,7 @@ copyright = 'Flying Circus Internet Operations GmbH'
 #
 # The full version, including alpha/beta/rc tags.
 ver_ns = {}
-ver_path = convert_path('../nagiosplugin/version.py')
+ver_path = abspath('../nagiosplugin/version.py')
 with open(ver_path) as ver_file:
     exec(ver_file.read(), ver_ns)
 release = ver_ns['__VERSION__']
