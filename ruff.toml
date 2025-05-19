@@ -1,0 +1,12 @@
+line-length = 79
+respect-gitignore = true
+
+[lint]
+# more flake8-like
+extend-select = ["E", "F", "W", "E302", "E302", "E501",]
+ignore = []
+# ignore = ["E24"]
+
+
+[lint.pydocstyle]
+convention = "pep257"
