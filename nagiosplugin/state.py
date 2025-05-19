@@ -51,6 +51,9 @@ class Warn(ServiceState):
         return super(cls, Warn).__new__(cls, 1, 'warning')
 
 
+# According to the Nagios development guidelines, this should be Warning,
+# not Warn, but renaming the class would occlude the built-in Warning
+# exception class.
 Warn = Warn()
 
 
