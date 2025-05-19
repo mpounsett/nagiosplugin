@@ -1,0 +1,5 @@
+[tool.bandit]
+exclude_dirs = [
+    "nagiosplugin/examples/"
+]
+
