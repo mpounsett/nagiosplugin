@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-import pkg_resources
 import re
 import subprocess
 import sys
 import os.path as p
+
+try:
+    from importlib.resources import files as resource_files
+    USING_IMPORTLIB = True
+except ImportError:
+    from pkg_resources import resource_filename as resource_files
+    USING_IMPORTLIB = False
 
 try:
     import unittest2 as unittest
@@ -15,11 +21,14 @@ class ExamplesTest(unittest.TestCase):
     base = p.normpath(p.join(p.dirname(p.abspath(__file__)), '..', '..'))
 
     def _run_example(self, program, regexp):
-        proc = subprocess.Popen([
-            sys.executable, pkg_resources.resource_filename(
-                'nagiosplugin.examples', program), '-v'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, env={'PYTHONPATH': ':'.join(sys.path)})
+        if USING_IMPORTLIB:
+            program_path = resource_files('nagiosplugin.examples') / program
+        else:
+            program_path = resource_files('nagiosplugin.examples', program)
+        proc = subprocess.Popen([sys.executable, program_path, '-v'],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                env={'PYTHONPATH': ':'.join(sys.path)})
         out, err = proc.communicate()
         self.assertEqual(err.decode(), '')
         self.assertTrue(re.match(regexp, out.decode()) is not None,
