@@ -96,8 +96,10 @@ You may run the supplied examples with the local interpreter::
 Documentation
 -------------
 
-The documentation depends on Sphinx.  Install the necessary dependencies, and
-then build the documentation::
+The documentation depends on Sphinx.  The Sphinx configuration is tested against
+the latest Python version supported by `nagiosplugin`.  If you are running a
+different Python version in your virtual environment, you may need to update.
+Install the necessary dependencies and then build the documentation::
 
    pip install -r requirements_docs.txt
    make docs
