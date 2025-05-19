@@ -66,6 +66,8 @@ name (without parentheses) to access the instance. For example::
 .. autoclass:: nagiosplugin.state.Critical
 .. autoclass:: nagiosplugin.state.Unknown
 
+Because these are implemented as classes, the `Warn` class cannot be named
+`Warning`, or it would occlude the Python built-in exception class.
 
 nagiosplugin.performance
 ------------------------
