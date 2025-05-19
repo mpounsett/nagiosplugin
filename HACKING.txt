@@ -32,7 +32,7 @@ consider creating an issue to link it to.
 
 The project uses PEP8 as its style guide. All changes should be checked
 against PEP8 before committing, and commits **MUST** conform to PEP8 before
-sending a PR.  PEP8 tests can be run with the `tox -e flake8` command (see
+sending a PR.  PEP8 tests can be run with the `tox -e ruff` command (see
 **Tests** below for details on setting up the tox environment).  PRs that
 fail PEP8 compliance will be refused.
 
@@ -80,9 +80,9 @@ To limit tests to a particular python environment::
 
    tox -e py37
 
-Run only PEP8 linting tests::
+Run only linting tests::
 
-   tox -e flake8
+   tox -e ruff
 
 **nagiosplugin** also includes support for test coverage reports. Coverage
 reports are updated automatically by `tox`. Open `htmlcov/index.html` to see
