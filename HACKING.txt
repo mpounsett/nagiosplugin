@@ -104,8 +104,8 @@ Install the necessary dependencies and then build the documentation::
    pip install -r requirements_docs.txt
    make docs
 
-HTML documentation will be built and installed in `doc/_build/html/`.  You can
-read the documentation by opening `doc/_build/html/index.html`.
+HTML documentation will be built and installed in `docs/_build/html/`.  You
+can read the documentation by opening `docs/_build/html/index.html`.
 
 Releasing
 ---------
@@ -154,6 +154,24 @@ which you can edit down to just a list of relevant changes::
 
    git log --reverse --no-merges 0.1.1... > new-changes.txt
 
+Do a test build of the distribution for the PyPi test site::
+
+   python -m build
+
+Check the contents of the packages in `dist/` to ensure they contain all of
+the expected files.
+
+Test your package prior to uploading::
+
+   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
+
+Do a test upload with TestPyPi::
+
+   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+Check on https://test.pypi.org/nagiosplugin that the package metadata looks
+correct.  If everything is fine, proceed with the next steps.
+
 Commit the updated history and version files, making sure both of the file
 changes are in the same commit.  For a new version `0.1.2`::
 
@@ -168,24 +186,9 @@ Merge the release into the `main` branch and tag the release::
    git push
    git push --tags
 
-Build the **nagiosplugin** distribution for PyPi::
+Build the final **nagiosplugin** distribution for PyPi, and upload it::
 
-   python3 setup.py sdist bdist_wheel
-
-Check the contents of the packages in `dist/` to ensure they contain all of
-the expected files.
-
-Test your package prior to uploading::
-
-   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
-
-Do a test upload with TestPyPi::
-
-   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
-Check on https://test.pypi.org/nagiosplugin that the package metadata looks
-correct.  If everything is fine, upload the release::
-
+   python -m build
    twine upload dist/*
 
 Merge the release back into `develop` and then delete the release branch::
