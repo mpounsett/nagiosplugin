@@ -28,19 +28,24 @@ _log = logging.getLogger(__name__)
 
 class Check(object):
 
-    def __init__(self, *objects):
+    def __init__(self, *objects, **kwargs):
         """Creates and configures a check.
 
         Specialized *objects* representing resources, contexts,
         summary, or results are passed to the the :meth:`add` method.
         Alternatively, objects can be added later manually.
+        If no *name* is given, the output prefix is set to the first
+        resource's name. If *name* is None, no prefix is set at all.
         """
         self.resources = []
         self.contexts = Contexts()
         self.summary = Summary()
         self.results = Results()
         self.perfdata = []
-        self.name = ''
+        if 'name' in kwargs and kwargs['name'] != '':
+            self.name = kwargs['name']
+        else:
+            self.name = ''
         self.add(*objects)
 
     def add(self, *objects):
@@ -55,7 +60,9 @@ class Check(object):
         for obj in objects:
             if isinstance(obj, Resource):
                 self.resources.append(obj)
-                if self.name == '':
+                if self.name is None:
+                    self.name = ''
+                elif self.name == '':
                     self.name = self.resources[0].name
             elif isinstance(obj, Context):
                 self.contexts.add(obj)

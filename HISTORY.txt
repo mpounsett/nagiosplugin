@@ -1,6 +1,30 @@
 Release History
 ===============
 
+1.4.0 (2025-05-19)
+------------------
+
+IMPORTANT NOTE:  Please see the announcement about the new `python release
+support policy`_.
+
+.. _python release support policy: https://github.com/mpounsett/nagiosplugin/discussions/76
+
+- new: add check name to Check constructor (Simon Meggle)
+- change: drop support for Python 3.4, 3.5, and 3.6 (#65)
+- change: add support for Python 3.11, 3.12, and 3.13 (#65)
+- fix: correct reference to class ~.performace.Performance in
+  Context.performance docstring (Josef Friedrich)
+- fix: tests use importlib where available in place of deprecated
+  pkg_resources (#50)
+- fix: build environment updates to support py2.7 (#64)
+- doc: additional text explaining the naming of the Warn state class (#26)
+- doc: updated document building for newer Sphinx (#72)
+- doc: updated document building for new readthedocs.io deployment process
+  (#79)
+- linting: replaced some elif statements occluded by return statements (no-else-return)
+- linting: cleaned up "inconsistent-return-statements" errors
+- linting: replace flake8 with ruff (#60)
+- linting: add security tests with pip-audit and bandit (#61)
 
 1.3.3 (2022-02-07)
 ------------------

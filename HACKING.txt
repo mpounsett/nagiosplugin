@@ -32,7 +32,7 @@ consider creating an issue to link it to.
 
 The project uses PEP8 as its style guide. All changes should be checked
 against PEP8 before committing, and commits **MUST** conform to PEP8 before
-sending a PR.  PEP8 tests can be run with the `tox -e flake8` command (see
+sending a PR.  PEP8 tests can be run with the `tox -e ruff` command (see
 **Tests** below for details on setting up the tox environment).  PRs that
 fail PEP8 compliance will be refused.
 
@@ -59,14 +59,14 @@ versions of python specified by the `envlist` in `tox.ini`.  This will likely
 look something like::
 
    pyenv install 2.7.18
-   pyenv install 3.4.10
-   pyenv install 3.5.10
-   pyenv install 3.6.15
-   pyenv install 3.7.12
-   pyenv install 3.8.12
-   pyenv install 3.9.9
-   pyenv install 3.10.1
-   pyenv global 3.10.1 3.9.9 3.8.12 3.7.12 3.6.15 3.5.10 3.4.10 2.7.18 system
+   pyenv install 3.7.17
+   pyenv install 3.8.20
+   pyenv install 3.9.22
+   pyenv install 3.10.17
+   pyenv install 3.11.12
+   pyenv install 3.12.10
+   pyenv install 3.13.3
+   pyenv global 3.13.3 3.12.10 3.11.12 3.10.17 3.9.22 3.8.20 3.7.17 2.7.18 system
 
 Install test dependencies::
 
@@ -80,9 +80,9 @@ To limit tests to a particular python environment::
 
    tox -e py37
 
-Run only PEP8 linting tests::
+Run only linting tests::
 
-   tox -e flake8
+   tox -e ruff
 
 **nagiosplugin** also includes support for test coverage reports. Coverage
 reports are updated automatically by `tox`. Open `htmlcov/index.html` to see
@@ -96,14 +96,16 @@ You may run the supplied examples with the local interpreter::
 Documentation
 -------------
 
-The documentation depends on Sphinx.  Install the necessary dependencies, and
-then build the documentation::
+The documentation depends on Sphinx.  The Sphinx configuration is tested against
+the latest Python version supported by `nagiosplugin`.  If you are running a
+different Python version in your virtual environment, you may need to update.
+Install the necessary dependencies and then build the documentation::
 
    pip install -r requirements_docs.txt
    make docs
 
-HTML documentation will be built and installed in `doc/_build/html/`.  You can
-read the documentation by opening `doc/_build/html/index.html`.
+HTML documentation will be built and installed in `docs/_build/html/`.  You
+can read the documentation by opening `docs/_build/html/index.html`.
 
 Releasing
 ---------
@@ -152,6 +154,24 @@ which you can edit down to just a list of relevant changes::
 
    git log --reverse --no-merges 0.1.1... > new-changes.txt
 
+Do a test build of the distribution for the PyPi test site::
+
+   python -m build
+
+Check the contents of the packages in `dist/` to ensure they contain all of
+the expected files.
+
+Test your package prior to uploading::
+
+   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
+
+Do a test upload with TestPyPi::
+
+   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+Check on https://test.pypi.org/nagiosplugin that the package metadata looks
+correct.  If everything is fine, proceed with the next steps.
+
 Commit the updated history and version files, making sure both of the file
 changes are in the same commit.  For a new version `0.1.2`::
 
@@ -166,24 +186,9 @@ Merge the release into the `main` branch and tag the release::
    git push
    git push --tags
 
-Build the **nagiosplugin** distribution for PyPi::
+Build the final **nagiosplugin** distribution for PyPi, and upload it::
 
-   python3 setup.py sdist bdist_wheel
-
-Check the contents of the packages in `dist/` to ensure they contain all of
-the expected files.
-
-Test your package prior to uploading::
-
-   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
-
-Do a test upload with TestPyPi::
-
-   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
-Check on https://test.pypi.org/nagiosplugin that the package metadata looks
-correct.  If everything is fine, upload the release::
-
+   python -m build
    twine upload dist/*
 
 Merge the release back into `develop` and then delete the release branch::
