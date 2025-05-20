@@ -5,11 +5,11 @@ build
 coverage/
 develop-eggs/
 dist/
-doc/_build
-doc/doctrees
-doc/html
-doc/make.bat
-doc/Makefile
+docs/_build
+docs/doctrees
+docs/html
+docs/make.bat
+docs/Makefile
 *.egg-info
 eggs/
 htmlcov/
