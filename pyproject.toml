@@ -70,14 +70,111 @@ nagiosplugin = [
 ]
 
 [dependency-groups]
-dev = [
-    "setuptools",
-    "tox",
-]
-docs = [
-    "sphinx==1.8.5",
-    "sphinx-rtd-theme",
-]
 build = [
     "twine",
 ]
+dev = [
+    "setuptools",
+    "sphinx-rtd-theme",
+    "sphinx==1.8.5",
+    "tox",
+]
+lint = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.pylint]
+py-version=3.9
+
+[tool.pylint."messages control"]
+disable=[
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "deprecated-pragma",
+    "use-symbolic-message-instead"
+]
+
+[tool.ruff]
+line-length = 79
+respect-gitignore = true
+
+[tool.ruff.lint]
+# more flake8-like
+extend-select = ["E", "F", "W", "E302", "E302", "E501",]
+ignore = []
+# ignore = ["E24"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.tox]
+envlist = [
+    "clean", "bandit", "pip-audit", "ruff", "pylint", "pydocstyle",
+    "py39", "py310", "py311", "py312", "py313",
+    "stats"
+]
+skip_missing_interpreters = false
+
+[tool.tox.env_run_base]
+description = "run unit tests"
+commands = [
+    [
+        "pytest",
+        "--cov=nagiosplugin",
+        "--cov-report=html",
+        "--cov-append",
+        {replace = "posargs", default = ["tests"], extend = true}
+    ]
+]
+dependency_groups = [
+    "lint",
+]
+
+[tool.tox.env.bandit]
+description = "run bandit security scan"
+commands = [["bandit", "-c", "bandit.toml", "-r", "nagiosplugin", "-q" ]]
+deps = ["bandit"]
+ignore_errors = true
+
+[tool.tox.env.ruff]
+description = "run ruff"
+commands = [["ruff", "check", "nagiosplugin", "tests"]]
+deps = ["ruff"]
+ignore_errors = true
+
+[tool.tox.env.pip-audit]
+description = "run pip-audit"
+commands = [["pip-audit", "--skip-editable"]]
+deps = ["pip-audit"]
+ignore_errors = true
+
+[tool.tox.env.pylint]
+descriptin = "run pylint"
+commands =[["pylint", "nagiosplugin", "tests"]]
+deps = ["pylint", "numpy"]
+ignore_errors = true
+
+[tool.tox.env.pydocstyle]
+description = "run pydocstyle"
+commands = [["pydocstyle", "nagiosplugin", "tests"]]
+deps = ["pydocstyle"]
+ignore_errors = true
+
+[tool.tox.env.clean]
+description = "clean coverage data"
+commands = [["coverage", "erase"]]
+deps = ["coverage"]
+skip_install = true
+
+[tool.tox.env.stats]
+description = "generate coverage report"
+commands = [
+    ["coverage", "report"],
+    ["coverage", "html"]
+]
+deps = ["coverage"]
+skip_install = true
