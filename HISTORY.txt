@@ -1,6 +1,14 @@
 Release History
 ===============
 
+1.5.0 (not yet released)
+------------------------
+
+IMPORTANT NOTE:  Please see the announcement about the new `python release
+support policy`_.
+
+- change: drop support for Python 2.7, 3.7, and 3.8
+
 1.4.0 (2025-05-19)
 ------------------
 

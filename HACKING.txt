@@ -58,15 +58,12 @@ Once you have `pyenv` set up, make sure you have each of the supported
 versions of python specified by the `envlist` in `tox.ini`.  This will likely
 look something like::
 
-   pyenv install 2.7.18
-   pyenv install 3.7.17
-   pyenv install 3.8.20
    pyenv install 3.9.22
    pyenv install 3.10.17
    pyenv install 3.11.12
    pyenv install 3.12.10
    pyenv install 3.13.3
-   pyenv global 3.13.3 3.12.10 3.11.12 3.10.17 3.9.22 3.8.20 3.7.17 2.7.18 system
+   pyenv global 3.13.3 3.12.10 3.11.12 3.10.17 3.9.22 system
 
 Install test dependencies::
 

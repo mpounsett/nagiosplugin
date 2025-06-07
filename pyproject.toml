@@ -1,0 +1,180 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nagiosplugin"
+description = "Class library for writing Nagios (Icinga) plugins"
+authors = [
+    { name = "Christian Kauhaus", email = "kc@flyingcircus.io" }
+]
+maintainers = [
+    { name = "Matthew Pounsett", email = "matt@conundrum.com" }
+]
+readme = "README.txt"
+license = { text = "ZPL-2.1" }
+keywords = ["Nagios", "Icinga", "plugin", "check", "monitoring"]
+requires-python = ">= 3.9"
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Environment :: Plugins',
+    'Intended Audience :: Developers',
+    'Intended Audience :: System Administrators',
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: POSIX',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'Topic :: System :: Monitoring',
+]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://nagiosplugin.readthedocs.io/"
+Download = "https://pypi.org/project/nagiosplugin/"
+Source = "https://github.com/mpounsett/nagiosplugin"
+Issues = "https://github.com/mpounsett/nagiosplugin/issues"
+Changelog = "https://github.com/mpounsett/nagiosplugin/blob/main/HISTORY.txt"
+
+[tool.setuptools.dynamic]
+version = {attr = 'nagiosplugin.__version__'}
+
+[tool.setuptools.packages.find]
+include = ["nagiosplugin*"]
+
+[tool.setuptools.package-data]
+nagiosplugin = [
+    "CONTRIBUTORS.txt",
+    "HACKING.txt",
+    "HISTORY.txt",
+    "LICENSE.txt",
+    "README.txt"
+]
+"nagiosplugin.doc" = [
+    "Makefile",
+    "*.rst",
+    "*.py",
+]
+"nagiosplugin.tests" = [
+    "*.py",
+]
+
+[tool.setuptools.exclude-package-data]
+"*" = [
+    "__pycache__",
+    "*.pyc",
+    "*.pyo"
+]
+
+[dependency-groups]
+build = [
+    "twine",
+]
+dev = [
+    "setuptools",
+    "sphinx-rtd-theme",
+    "sphinx==1.8.5",
+    "tox",
+]
+lint = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.pylint]
+py-version=3.9
+
+[tool.pylint."messages control"]
+disable=[
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "deprecated-pragma",
+    "use-symbolic-message-instead"
+]
+
+[tool.ruff]
+line-length = 79
+respect-gitignore = true
+
+[tool.ruff.lint]
+# more flake8-like
+extend-select = ["E", "F", "W", "E302", "E302", "E501",]
+ignore = []
+# ignore = ["E24"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.tox]
+envlist = [
+    "clean", "bandit", "pip-audit", "ruff", "pylint", "pydocstyle",
+    "py39", "py310", "py311", "py312", "py313",
+    "stats"
+]
+skip_missing_interpreters = false
+
+[tool.tox.env_run_base]
+description = "run unit tests"
+commands = [
+    [
+        "pytest",
+        "--cov=nagiosplugin",
+        "--cov-report=html",
+        "--cov-append",
+        {replace = "posargs", default = ["tests"], extend = true}
+    ]
+]
+dependency_groups = [
+    "lint",
+]
+
+[tool.tox.env.bandit]
+description = "run bandit security scan"
+commands = [["bandit", "-c", "bandit.toml", "-r", "nagiosplugin", "-q" ]]
+deps = ["bandit"]
+ignore_errors = true
+
+[tool.tox.env.ruff]
+description = "run ruff"
+commands = [["ruff", "check", "nagiosplugin", "tests"]]
+deps = ["ruff"]
+ignore_errors = true
+
+[tool.tox.env.pip-audit]
+description = "run pip-audit"
+commands = [["pip-audit", "--skip-editable"]]
+deps = ["pip-audit"]
+ignore_errors = true
+
+[tool.tox.env.pylint]
+descriptin = "run pylint"
+commands =[["pylint", "nagiosplugin", "tests"]]
+deps = ["pylint", "numpy"]
+ignore_errors = true
+
+[tool.tox.env.pydocstyle]
+description = "run pydocstyle"
+commands = [["pydocstyle", "nagiosplugin", "tests"]]
+deps = ["pydocstyle"]
+ignore_errors = true
+
+[tool.tox.env.clean]
+description = "clean coverage data"
+commands = [["coverage", "erase"]]
+deps = ["coverage"]
+skip_install = true
+
+[tool.tox.env.stats]
+description = "generate coverage report"
+commands = [
+    ["coverage", "report"],
+    ["coverage", "html"]
+]
+deps = ["coverage"]
+skip_install = true
