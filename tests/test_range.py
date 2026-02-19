@@ -93,10 +93,10 @@ class RangeStrTest(unittest.TestCase):
         self.assertEqual('1.5:5', str(Range('1.5:5')))
 
     def test_omit_start(self):
-        self.assertEqual('6.7', str('6.7'))
+        self.assertEqual('6.7', str(Range('6.7')))
 
     def test_omit_end(self):
-        self.assertEqual('-6.5:', str('-6.5:'))
+        self.assertEqual('-6.5:', str(Range('-6.5:')))
 
     def test_neg_infinity(self):
         self.assertEqual('~:-3.0', str(Range('~:-3.0')))
