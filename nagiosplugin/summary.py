@@ -19,7 +19,7 @@ from .state import Ok
 
 
 class Summary(object):
-    """Creates a summary formtter object.
+    """Creates a summary formatter object.
 
     This base class takes no parameters in its constructor, but subclasses may
     provide more elaborate constructors that accept parameters to influence
