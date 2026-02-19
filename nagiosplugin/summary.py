@@ -6,7 +6,7 @@ class to get a status line from the check's :class:`~.result.Results`. A
 Summary object is used by :class:`~.check.Check` to obtain a suitable data
 :term:`presentation` depending on the check's overall state.
 
-Plugin authors may either stick to the default implementation  or subclass it
+Plugin authors may either stick to the default implementation or subclass it
 to adapt it to the check's domain. The status line is probably the most
 important piece of text returned from a check: It must lead directly to the
 problem in the most concise way. So while the default implementation is quite
