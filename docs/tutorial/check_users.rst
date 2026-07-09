@@ -236,6 +236,6 @@ correctly.
 
 .. _logging: http://docs.python.org/3/library/logging.html
 
-.. _Nagios plug-in development guidelines: http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN39
+.. _Nagios plug-in development guidelines: https://nagios-plugins.org/doc/guidelines.html#verbose
 
 .. vim: set spell spelllang=en:

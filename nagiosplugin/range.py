@@ -10,9 +10,7 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     omitted, infinity is assumed. To invert the match condition, prefix
     the range expression with "@".
 
-    See
-    http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT
-    for details.
+    See https://nagios-plugins.org/doc/guidelines.html#thresholds for details.
     """
 
     def __new__(cls, spec=''):
