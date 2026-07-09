@@ -9,6 +9,11 @@ support policy`_.
 
 - change: drop support for Python 2.7, 3.7, and 3.8
 
+1.4.1 (not yet released)
+------------------------
+
+- fix: correct references to the Nagios Plugin Developer Guidelines
+
 1.4.0 (2025-05-19)
 ------------------
 
