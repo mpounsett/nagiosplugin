@@ -24,9 +24,8 @@ Glossary
       condition.
 
    Nagios plugin API
-      Documents that define how a Nagios/Icinga compatible plugin must be called
-      and how it should respond. There is a `main document`_ and an appendix for
-      `Nagios 3 extensions`_.
+      `Document`_ that defines how a Nagios/Icinga compatible plugin must be
+      called and how it should respond.
 
    acquisition
       First step of check execution in the context of the nagiosplugin
@@ -57,7 +56,6 @@ Glossary
    perfdata
       See :term:`performance data`.
 
-.. _main document: http://nagiosplug.sourceforge.net/developer-guidelines.html
-.. _Nagios 3 extensions: http://nagios.sourceforge.net/docs/3_0/pluginapi.html
+.. _Document: https://nagios-plugins.org/doc/guidelines.html
 
 .. vim: set spell spelllang=en:
