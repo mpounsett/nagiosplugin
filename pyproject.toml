@@ -14,7 +14,7 @@ maintainers = [
 readme = "README.txt"
 license = { text = "ZPL-2.1" }
 keywords = ["Nagios", "Icinga", "plugin", "check", "monitoring"]
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Plugins',
@@ -22,7 +22,6 @@ classifiers = [
     'Intended Audience :: System Administrators',
     'Operating System :: Microsoft :: Windows',
     'Operating System :: POSIX',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
@@ -97,9 +96,7 @@ security = [
     "pip-audit",
 ]
 test = [
-    # pytest 9 requires Python 3.10, but the test matrix still includes 3.9.
-    "pytest<9; python_version < '3.10'",
-    "pytest>=9; python_version >= '3.10'",
+    "pytest>=9.0.3",
     "pytest-cov",
 ]
 
@@ -110,7 +107,7 @@ lint = {requires-python = ">=3.11"}
 security = {requires-python = ">=3.11"}
 
 [tool.pylint]
-py-version=3.9
+py-version=3.10
 
 [tool.pylint."messages control"]
 disable=[
@@ -139,7 +136,7 @@ convention = "pep257"
 [tool.tox]
 envlist = [
     "clean", "bandit", "pip-audit", "ruff", "pylint", "pydocstyle",
-    "py39", "py310", "py311", "py312", "py313",
+    "py310", "py311", "py312", "py313",
     "stats"
 ]
 skip_missing_interpreters = false
