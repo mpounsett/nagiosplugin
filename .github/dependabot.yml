@@ -4,6 +4,8 @@ updates:
   - package-ecosystem: uv
     directory: /
     target-branch: main
+    # Preserve Python-version-specific development-tool resolutions in uv.lock.
+    versioning-strategy: lockfile-only
     schedule:
       interval: monthly
       day: monday
