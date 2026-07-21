@@ -4,41 +4,48 @@ Contributing to Nagiosplugin
 Getting the source
 ------------------
 
-The source can be obtained via git from
-https://github.com/mpounsett/nagiosplugin.git::
+Create a fork of https://github.com/mpounsett/nagiosplugin on GitHub, then clone
+your fork and add the main repository as the ``upstream`` remote::
 
-   git clone https://github.com/mpounsett/nagiosplugin.git
+   git clone https://github.com/YOUR-USERNAME/nagiosplugin.git
+   cd nagiosplugin
+   git remote add upstream https://github.com/mpounsett/nagiosplugin.git
 
-This package supports installation in a virtualenv::
+This package supports installation in a virtual environment::
 
-   python3 -m venv .
-   pip install -e .
+   python3 -m venv .venv
+   . .venv/bin/activate
+   python -m pip install -e . --group dev
 
 
 Making Changes
 --------------
 
-This project uses the `Git-flow workflow`_, approximately as laid out by
-Vincent Driessen in 2010.  New development should be done in feature branches,
-which are branched off of the `develop` branch.  PRs should be sent to
-`upstream:develop`.
-
-.. _Git-flow workflow: https://nvie.com/posts/a-successful-git-branching-model/
+The ``main`` branch is the only long-lived branch. New development should be
+done in short-lived branches created from an up-to-date ``main`` branch. Pull
+requests should target ``upstream:main``.
 
 Consider whether your change updates or fixes any existing issues.  Include
 the appropriate "fixes" or "updates" entry in your PR description so that the
 issue is updated.   If your change does not reference an existing issue,
 consider creating an issue to link it to.
 
-Branches should be prefixed `feat/*` or `fix/*` depending on whether it is a
-new feature or a bug fix, followd by the relevant issue number, followed by a
-few keywords to describe the change. (e.g. `feat/001-add-widget-support`).
-Maintainers may create housekeeping branches prefixed by `chore/`.
+Branches should be prefixed ``feat/`` or ``fix/`` depending on whether the
+change is a new feature or a bug fix, followed by the relevant issue number and
+a few words describing the change (for example,
+``feat/001-add-widget-support``). Maintainers may create housekeeping branches
+prefixed by ``chore/``.
 
-Run the full set of tests using `tox` before sending a PR.  Your change should
-trigger no **new** errors or warnings.  Note that, at present, much of the old
-codebase gets warnings related to the `pylint` and `pydocstyle` tests.  Your
-changes must not introduce any **new** warnings from these tests.
+Push the branch to your fork and open a pull request against the main
+repository's ``main`` branch. GitHub Actions will run the supported Python test
+matrix and other required checks. A maintainer will review external
+contributions before merging them.
+
+Run the relevant tests locally before sending a PR. GitHub Actions runs the full
+supported Python matrix. Your change should trigger no **new** errors or
+warnings. Note that, at present, much of the old codebase gets warnings related
+to the ``pylint`` and ``pydocstyle`` tests. Your changes must not introduce any
+**new** warnings from these tests.
 
 If your change is a new feature, or otherwise alters the behaviour of
 `nagiosplugin`, update the relevant section of the documentation and include
@@ -55,8 +62,8 @@ this is by installing and using `pyenv`_.
 .. _pyenv: https://github.com/pyenv/pyenv
 
 Once you have `pyenv` set up, make sure you have each of the supported
-versions of python specified by the `envlist` in `tox.ini`.  This will likely
-look something like::
+versions of Python specified by the ``envlist`` in ``pyproject.toml``. This
+will likely look something like::
 
    pyenv install 3.13.14
    pyenv install 3.12.13
@@ -75,11 +82,22 @@ After doing so, run the unit tests::
 
 To limit tests to a particular python environment::
 
-   tox -e py37
+   tox -e py313
 
 Run only linting tests::
 
    tox -e ruff
+
+Run the security checks::
+
+   tox -e bandit,pip-audit
+
+Continuous integration compares Bandit results with the reviewed baseline in
+``.github/security/bandit-baseline.json``. Existing baseline findings are
+reported without blocking unrelated work, while new findings fail the required
+security check. Do not update the baseline without reviewing the finding and
+recording why it cannot be fixed immediately. ``pip-audit`` currently has no
+baseline findings, so any detected vulnerable dependency fails its check.
 
 **nagiosplugin** also includes support for test coverage reports. Coverage
 reports are updated automatically by `tox`. Open `htmlcov/index.html` to see
@@ -131,9 +149,10 @@ Begin by making sure you have the build prerequisites installed::
 
    pip install -e --group build
 
-Create a release branch from `develop`::
+Create a release branch from ``main``::
 
-   git checkout develop
+   git checkout main
+   git pull --ff-only
    git checkout -b release/0.1.2
 
 Check that all tests pass.  Apply hotfixes as necessary to pass all tests
@@ -169,34 +188,30 @@ Do a test upload with TestPyPi::
 Check on https://test.pypi.org/nagiosplugin that the package metadata looks
 correct.  If everything is fine, proceed with the next steps.
 
-Commit the updated history and version files, making sure both of the file
-changes are in the same commit.  For a new version `0.1.2`::
+Commit the updated history and version files, making sure both files are in the
+same commit. For a new version ``0.1.2``::
 
    git stage HISTORY.txt nagiosplugin/version.py
    git commit -m "Preparing release 0.1.2"
 
-Merge the release into the `main` branch and tag the release::
+Push the release branch and open a pull request against ``main``. After all
+required checks pass, merge the pull request, update your local ``main`` branch,
+and tag the merge result::
 
+   git push -u origin release/0.1.2
    git checkout main
-   git merge release/0.1.2
+   git pull --ff-only
    git tag 0.1.2
-   git push
-   git push --tags
+   git push origin 0.1.2
 
 Build the final **nagiosplugin** distribution for PyPi, and upload it::
 
    python -m build
    twine upload dist/*
 
-Merge the release back into `develop` and then delete the release branch::
-
-   git checkout develop
-   git merge release/0.1.2
-   git push
-   git branch -d release/0.1.2
-
-Go to https://readthedocs.io/ and ensure the new stable and dev releases are
-available.
+Go to https://readthedocs.io/ and ensure the new stable release and the latest
+documentation from ``main`` are available. The release branch will be deleted
+automatically after its pull request is merged.
 
 
 .. vim: set ft=rst sw=3 sts=3 et:

@@ -1,0 +1,26 @@
+{
+  "results": [
+    {
+      "code": "57     if original_function is not None:\n58         assert callable(original_function), (\n59             'Function {!r} not callable. Forgot to add \"verbose=\" keyword?'.\n60             format(original_function))\n61         return _decorate(original_function)\n",
+      "col_offset": 8,
+      "end_col_offset": 38,
+      "filename": "nagiosplugin/runtime.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
+      "line_number": 58,
+      "line_range": [
+        58,
+        59,
+        60
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b101_assert_used.html",
+      "test_id": "B101",
+      "test_name": "assert_used"
+    }
+  ]
+}
