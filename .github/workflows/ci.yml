@@ -4,7 +4,6 @@ on:
   pull_request:
   push:
     branches:
-      - develop
       - main
 
 permissions:
@@ -33,16 +32,16 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: ${{ matrix.python-version }}
+          version: "0.11.30"
+          enable-cache: true
       - name: Install test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --editable . --group lint
+        run: uv sync --locked --no-default-groups --group test
       - name: Run tests
-        run: python -m pytest tests
+        run: uv run --locked --no-sync pytest tests
 
   documentation:
     name: Documentation
@@ -53,16 +52,16 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: "3.13"
+          version: "0.11.30"
+          enable-cache: true
       - name: Install documentation dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --editable . --group docs
+        run: uv sync --locked --no-default-groups --group docs
       - name: Build documentation
-        run: make docs
+        run: uv run --locked --no-sync make docs SPHINXOPTS=-W
 
   quality:
     name: Ruff critical checks
@@ -73,17 +72,17 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: "3.13"
-      - name: Install Ruff
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install ruff
+          version: "0.11.30"
+          enable-cache: true
+      - name: Install lint dependencies
+        run: uv sync --locked --no-default-groups --group lint
       - name: Reject critical Python errors
         run: >-
-          ruff check
+          uv run --locked --no-sync ruff check
           --isolated
           --select E9,F63,F7,F82
           nagiosplugin tests
@@ -97,22 +96,22 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set up Python
-        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
         with:
           python-version: "3.13"
+          version: "0.11.30"
+          enable-cache: true
       - name: Install security tools
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --editable . --group lint bandit pip-audit
+        run: uv sync --locked --no-default-groups --group security
       - name: Reject new Bandit findings
         run: >-
-          bandit
+          uv run --locked --no-sync bandit
           --configfile bandit.toml
           --recursive nagiosplugin
           --baseline .github/security/bandit-baseline.json
       - name: Audit Python dependencies
-        run: pip-audit --skip-editable
+        run: uv run --locked --no-sync pip-audit --skip-editable
 
   required:
     name: Required
