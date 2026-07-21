@@ -59,6 +59,7 @@ def guarded(original_function=None, verbose=None):
             'Function {!r} not callable. Forgot to add "verbose=" keyword?'.
             format(original_function))
         return _decorate(original_function)
+    # Added default arguments to handle functions with no arguments
     return _decorate
 
 
