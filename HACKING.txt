@@ -68,6 +68,23 @@ Install test dependencies::
 
    uv sync --locked
 
+Development dependency compatibility
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The dependency lock contains temporary constraints which preserve the full
+runtime test matrix without making development tools part of the package's
+runtime requirements:
+
+- The ``test`` group selects ``pytest<9`` on Python 3.9 and ``pytest>=9`` on
+  newer interpreters because pytest 9 requires Python 3.10 or later. Replace
+  these marked requirements with an unconstrained ``pytest`` requirement when
+  Python 3.9 support is dropped.
+- The ``docs``, ``dev``, ``lint``, and ``security`` groups declare Python 3.11
+  or later in ``[tool.uv.dependency-groups]``. These declarations prevent
+  tooling that has dropped Python 3.9 or 3.10 from narrowing nagiosplugin's
+  runtime support. They become redundant and may be removed when the package's
+  minimum supported Python version reaches 3.11.
+
 After doing so, run the unit tests::
 
    uv run tox
