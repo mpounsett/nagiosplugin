@@ -30,15 +30,15 @@ the appropriate "fixes" or "updates" entry in your PR description so that the
 issue is updated.   If your change does not reference an existing issue,
 consider creating an issue to link it to.
 
-The project uses PEP8 as its style guide. All changes should be checked
-against PEP8 before committing, and commits **MUST** conform to PEP8 before
-sending a PR.  PEP8 tests can be run with the `tox -e ruff` command (see
-**Tests** below for details on setting up the tox environment).  PRs that
-fail PEP8 compliance will be refused.
+Branches should be prefixed `feat/*` or `fix/*` depending on whether it is a
+new feature or a bug fix, followd by the relevant issue number, followed by a
+few keywords to describe the change. (e.g. `feat/001-add-widget-support`).
+Maintainers may create housekeeping branches prefixed by `chore/`.
 
-Note that, at present, much of the old codebase gets warnings related to
-the `pylint` and `pydocstyle` tests.  Your changes must not introduce any
-**new** warnings from these tests.
+Run the full set of tests using `tox` before sending a PR.  Your change should
+trigger no **new** errors or warnings.  Note that, at present, much of the old
+codebase gets warnings related to the `pylint` and `pydocstyle` tests.  Your
+changes must not introduce any **new** warnings from these tests.
 
 If your change is a new feature, or otherwise alters the behaviour of
 `nagiosplugin`, update the relevant section of the documentation and include
@@ -58,16 +58,16 @@ Once you have `pyenv` set up, make sure you have each of the supported
 versions of python specified by the `envlist` in `tox.ini`.  This will likely
 look something like::
 
-   pyenv install 3.9.22
-   pyenv install 3.10.17
-   pyenv install 3.11.12
-   pyenv install 3.12.10
-   pyenv install 3.13.3
-   pyenv global 3.13.3 3.12.10 3.11.12 3.10.17 3.9.22 system
+   pyenv install 3.13.14
+   pyenv install 3.12.13
+   pyenv install 3.11.15
+   pyenv install 3.10.20
+   pyenv install 3.9.25
+   pyenv global 3.13.14 3.12.13 3.11.15 3.10.20 3.9.25 system
 
 Install test dependencies::
 
-   pip install -r requirements_test.txt
+   pip install -e . --group dev
 
 After doing so, run the unit tests::
 
@@ -98,7 +98,7 @@ the latest Python version supported by `nagiosplugin`.  If you are running a
 different Python version in your virtual environment, you may need to update.
 Install the necessary dependencies and then build the documentation::
 
-   pip install -r requirements_docs.txt
+   pip install -e . --group docs
    make docs
 
 HTML documentation will be built and installed in `docs/_build/html/`.  You
@@ -129,7 +129,7 @@ below examples.
 
 Begin by making sure you have the build prerequisites installed::
 
-   pip install -r requirements_build.txt
+   pip install -e --group build
 
 Create a release branch from `develop`::
 

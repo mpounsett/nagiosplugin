@@ -71,12 +71,17 @@ nagiosplugin = [
 
 [dependency-groups]
 build = [
+    "build",
     "twine",
+]
+docs = [
+    "sphinx==8.2.3",
+    "sphinx-rtd-theme",
 ]
 dev = [
     "setuptools",
     "sphinx-rtd-theme",
-    "sphinx==1.8.5",
+    "sphinx==8.2.3",
     "tox",
 ]
 lint = [
