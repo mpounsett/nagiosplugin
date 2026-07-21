@@ -147,7 +147,8 @@ below examples.
 
 Begin by making sure you have the build prerequisites installed::
 
-   pip install -e --group build
+   python -m pip install --upgrade pip
+   python -m pip install --group build
 
 Create a release branch from ``main``::
 
@@ -170,7 +171,7 @@ which you can edit down to just a list of relevant changes::
 
    git log --reverse --no-merges 0.1.1... > new-changes.txt
 
-Do a test build of the distribution for the PyPi test site::
+Do a test build of the distribution for the PyPI test site::
 
    python -m build
 
@@ -179,9 +180,9 @@ the expected files.
 
 Test your package prior to uploading::
 
-   twine check dist/dist/nagiosplugin-0.1.2.tar.gz
+   twine check --strict dist/*
 
-Do a test upload with TestPyPi::
+Do a test upload with TestPyPI::
 
    twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
@@ -204,10 +205,20 @@ and tag the merge result::
    git tag 0.1.2
    git push origin 0.1.2
 
-Build the final **nagiosplugin** distribution for PyPi, and upload it::
+Create a GitHub release using the existing tag. Add suitable release notes and
+publish the release. Publishing the GitHub release starts the trusted-publishing
+workflow::
 
-   python -m build
-   twine upload dist/*
+   gh release create 0.1.2 --verify-tag --generate-notes
+
+Approve the ``pypi`` environment deployment when prompted. GitHub Actions will
+build and check both distributions in a job without publishing credentials,
+then use a short-lived PyPI credential to upload them from the isolated publish
+job. The workflow also produces PyPI publish attestations. No long-lived PyPI
+token is stored in GitHub.
+
+Verify that the workflow completed successfully and that the new release is
+visible at https://pypi.org/project/nagiosplugin/.
 
 Go to https://readthedocs.io/ and ensure the new stable release and the latest
 documentation from ``main`` are available. The release branch will be deleted
