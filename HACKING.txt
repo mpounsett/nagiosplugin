@@ -11,11 +11,14 @@ your fork and add the main repository as the ``upstream`` remote::
    cd nagiosplugin
    git remote add upstream https://github.com/mpounsett/nagiosplugin.git
 
-This package supports installation in a virtual environment::
+Install `uv`_, then synchronize the locked development environment::
 
-   python3 -m venv .venv
-   . .venv/bin/activate
-   python -m pip install -e . --group dev
+   uv sync --locked
+
+`uv` creates and manages the project's ``.venv`` automatically. Activating the
+environment is optional; the commands below use ``uv run`` to select it.
+
+.. _uv: https://docs.astral.sh/uv/
 
 
 Making Changes
@@ -54,43 +57,32 @@ that in your PR.
 Tests
 -----
 
-**nagiosplugin** tests are run by `tox`_, which is configured to expect all of
-the supported `python` versions to be present.  The easiest way to accomplish
-this is by installing and using `pyenv`_.  
-
 .. _tox: https://tox.readthedocs.io/en/latest/
-.. _pyenv: https://github.com/pyenv/pyenv
 
-Once you have `pyenv` set up, make sure you have each of the supported
-versions of Python specified by the ``envlist`` in ``pyproject.toml``. This
-will likely look something like::
+**nagiosplugin** tests are run by `tox`_ using the versions locked in
+``uv.lock``. Install all supported Python versions with `uv`::
 
-   pyenv install 3.13.14
-   pyenv install 3.12.13
-   pyenv install 3.11.15
-   pyenv install 3.10.20
-   pyenv install 3.9.25
-   pyenv global 3.13.14 3.12.13 3.11.15 3.10.20 3.9.25 system
+   uv python install 3.9 3.10 3.11 3.12 3.13
 
 Install test dependencies::
 
-   pip install -e . --group dev
+   uv sync --locked
 
 After doing so, run the unit tests::
 
-   tox
+   uv run tox
 
 To limit tests to a particular python environment::
 
-   tox -e py313
+   uv run tox -e py313
 
 Run only linting tests::
 
-   tox -e ruff
+   uv run tox -e ruff
 
 Run the security checks::
 
-   tox -e bandit,pip-audit
+   uv run tox -e bandit,pip-audit
 
 Continuous integration compares Bandit results with the reviewed baseline in
 ``.github/security/bandit-baseline.json``. Existing baseline findings are
@@ -105,7 +97,7 @@ coverage reports.
 
 You may run the supplied examples with the local interpreter::
 
-   python3 nagiosplugin/examples/check_load.py
+   uv run python nagiosplugin/examples/check_load.py
 
 
 Documentation
@@ -116,8 +108,7 @@ the latest Python version supported by `nagiosplugin`.  If you are running a
 different Python version in your virtual environment, you may need to update.
 Install the necessary dependencies and then build the documentation::
 
-   pip install -e . --group docs
-   make docs
+   uv run --locked --no-default-groups --group docs make docs
 
 HTML documentation will be built and installed in `docs/_build/html/`.  You
 can read the documentation by opening `docs/_build/html/index.html`.
@@ -145,11 +136,6 @@ Instructions below are for a hypothetical 0.1.2 release.  Make sure you use
 the correct version numbers for your release, and don't copy and paste the
 below examples.
 
-Begin by making sure you have the build prerequisites installed::
-
-   python -m pip install --upgrade pip
-   python -m pip install --group build
-
 Create a release branch from ``main``::
 
    git checkout main
@@ -173,18 +159,20 @@ which you can edit down to just a list of relevant changes::
 
 Do a test build of the distribution for the PyPI test site::
 
-   python -m build
+   uv build --no-sources
 
 Check the contents of the packages in `dist/` to ensure they contain all of
 the expected files.
 
 Test your package prior to uploading::
 
-   twine check --strict dist/*
+   uv run --locked --no-default-groups --group build \
+      twine check --strict dist/*
 
 Do a test upload with TestPyPI::
 
-   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+   uv run --locked --no-default-groups --group build twine upload \
+      --repository-url https://test.pypi.org/legacy/ dist/*
 
 Check on https://test.pypi.org/nagiosplugin that the package metadata looks
 correct.  If everything is fine, proceed with the next steps.

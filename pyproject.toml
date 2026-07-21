@@ -71,7 +71,6 @@ nagiosplugin = [
 
 [dependency-groups]
 build = [
-    "build",
     "twine",
 ]
 docs = [
@@ -79,15 +78,32 @@ docs = [
     "sphinx-rtd-theme",
 ]
 dev = [
-    "setuptools",
-    "sphinx-rtd-theme",
-    "sphinx==8.2.3",
     "tox",
+    "tox-uv",
+    {include-group = "test"},
+    {include-group = "lint"},
+    {include-group = "security"},
+    {include-group = "docs"},
+    {include-group = "build"},
 ]
 lint = [
+    "numpy",
+    "pydocstyle",
+    "pylint",
+    "ruff",
+]
+security = [
+    "bandit",
+    "pip-audit",
+]
+test = [
     "pytest",
     "pytest-cov",
 ]
+
+[tool.uv.dependency-groups]
+docs = {requires-python = ">=3.11"}
+dev = {requires-python = ">=3.11"}
 
 [tool.pylint]
 py-version=3.9
@@ -126,6 +142,7 @@ skip_missing_interpreters = false
 
 [tool.tox.env_run_base]
 description = "run unit tests"
+runner = "uv-venv-lock-runner"
 commands = [
     [
         "pytest",
@@ -135,44 +152,42 @@ commands = [
         {replace = "posargs", default = ["tests"], extend = true}
     ]
 ]
-dependency_groups = [
-    "lint",
-]
+dependency_groups = ["test"]
 
 [tool.tox.env.bandit]
 description = "run bandit security scan"
 commands = [["bandit", "-c", "bandit.toml", "-r", "nagiosplugin", "-q" ]]
-deps = ["bandit"]
+dependency_groups = ["security"]
 ignore_errors = true
 
 [tool.tox.env.ruff]
 description = "run ruff"
 commands = [["ruff", "check", "nagiosplugin", "tests"]]
-deps = ["ruff"]
+dependency_groups = ["lint"]
 ignore_errors = true
 
 [tool.tox.env.pip-audit]
 description = "run pip-audit"
 commands = [["pip-audit", "--skip-editable"]]
-deps = ["pip-audit"]
+dependency_groups = ["security"]
 ignore_errors = true
 
 [tool.tox.env.pylint]
-descriptin = "run pylint"
+description = "run pylint"
 commands =[["pylint", "nagiosplugin", "tests"]]
-deps = ["pylint", "numpy"]
+dependency_groups = ["lint"]
 ignore_errors = true
 
 [tool.tox.env.pydocstyle]
 description = "run pydocstyle"
 commands = [["pydocstyle", "nagiosplugin", "tests"]]
-deps = ["pydocstyle"]
+dependency_groups = ["lint"]
 ignore_errors = true
 
 [tool.tox.env.clean]
 description = "clean coverage data"
 commands = [["coverage", "erase"]]
-deps = ["coverage"]
+dependency_groups = ["test"]
 skip_install = true
 
 [tool.tox.env.stats]
@@ -181,5 +196,5 @@ commands = [
     ["coverage", "report"],
     ["coverage", "html"]
 ]
-deps = ["coverage"]
+dependency_groups = ["test"]
 skip_install = true

@@ -1,6 +1,6 @@
 all:
 
-.PHONY: clean
+.PHONY: clean docs
 
 docs:
 	$(MAKE) -C docs html
