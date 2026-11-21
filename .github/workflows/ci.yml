@@ -106,7 +106,7 @@ jobs:
       - name: Reject new Bandit findings
         run: >-
           uv run --locked --no-sync bandit
-          --configfile bandit.toml
+          --configfile pyproject.toml
           --recursive nagiosplugin
           --baseline .github/security/bandit-baseline.json
       - name: Audit Python dependencies
