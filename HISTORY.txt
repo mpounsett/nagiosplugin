@@ -11,6 +11,8 @@ support policy`_.
 - linting: drop pylint and pydocstyle in favour of ruff, move bandit
   configuration into pyproject.toml, raise the line length limit to 100, and
   add a mypy configuration (#93)
+- fix: replace the ``assert`` guarding ``@guarded`` misuse with a ``TypeError``
+  so the check is not stripped under ``python -O`` (#91)
 
 1.4.1 (not yet released)
 ------------------------
