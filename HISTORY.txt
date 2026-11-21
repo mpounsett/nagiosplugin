@@ -8,6 +8,9 @@ IMPORTANT NOTE:  Please see the announcement about the new `python release
 support policy`_.
 
 - change: drop support for Python 2.7, 3.7, and 3.8
+- linting: drop pylint and pydocstyle in favour of ruff, move bandit
+  configuration into pyproject.toml, raise the line length limit to 100, and
+  add a mypy configuration (#93)
 
 1.4.1 (not yet released)
 ------------------------

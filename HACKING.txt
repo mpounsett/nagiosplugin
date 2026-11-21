@@ -46,8 +46,8 @@ contributions before merging them.
 
 Run the relevant tests locally before sending a PR. GitHub Actions runs the full
 supported Python matrix. Your change should trigger no **new** errors or
-warnings. Note that, at present, much of the old codebase gets warnings related
-to the ``pylint`` and ``pydocstyle`` tests. Your changes must not introduce any
+warnings. Note that, at present, much of the old codebase gets docstring and
+modernisation warnings from ``ruff``. Your changes must not introduce any
 **new** warnings from these tests.
 
 If your change is a new feature, or otherwise alters the behaviour of
@@ -79,6 +79,12 @@ To limit tests to a particular python environment::
 Run only linting tests::
 
    uv run tox -e ruff
+
+Static type checking with ``mypy`` is configured but not yet part of the
+default `tox` environment list, since the codebase is not fully typed. Run it
+on demand::
+
+   uv run tox -e mypy
 
 Run the security checks::
 

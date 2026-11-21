@@ -85,10 +85,11 @@ dev = [
     {include-group = "docs"},
     {include-group = "build"},
 ]
+# Lint and type-check tooling.  Tool versions come from uv.lock: tox installs
+# this group via tox-uv's uv-venv-lock-runner and CI installs the same group,
+# so neither can drift.
 lint = [
-    "numpy",
-    "pydocstyle",
-    "pylint",
+    "mypy",
     "ruff",
 ]
 security = [
@@ -106,36 +107,34 @@ dev = {requires-python = ">=3.11"}
 lint = {requires-python = ">=3.11"}
 security = {requires-python = ">=3.11"}
 
-[tool.pylint]
-py-version=3.10
-
-[tool.pylint."messages control"]
-disable=[
-    "raw-checker-failed",
-    "bad-inline-option",
-    "locally-disabled",
-    "file-ignored",
-    "suppressed-message",
-    "deprecated-pragma",
-    "use-symbolic-message-instead"
+[tool.bandit]
+exclude_dirs = [
+    "nagiosplugin/examples/"
 ]
 
 [tool.ruff]
-line-length = 79
+line-length = 100
 respect-gitignore = true
 
 [tool.ruff.lint]
-# more flake8-like
-extend-select = ["E", "F", "W", "E302", "E302", "E501",]
-ignore = []
-# ignore = ["E24"]
+# ruff's defaults plus the flake8-like set, pydocstyle (D, replacing the
+# standalone pydocstyle tool) and mccabe complexity (C901)
+extend-select = ["D", "E", "F", "W", "C901"]
+
+[tool.ruff.lint.per-file-ignores]
+# test module/class/method names are self-describing; don't require docstrings
+"tests/*" = ["D100", "D101", "D102"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
 
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+
 [tool.tox]
 envlist = [
-    "clean", "bandit", "pip-audit", "ruff", "pylint", "pydocstyle",
+    "clean", "bandit", "pip-audit", "ruff",
     "py310", "py311", "py312", "py313",
     "stats"
 ]
@@ -157,7 +156,10 @@ dependency_groups = ["test"]
 
 [tool.tox.env.bandit]
 description = "run bandit security scan"
-commands = [["bandit", "-c", "bandit.toml", "-r", "nagiosplugin", "-q" ]]
+commands = [
+    ["bandit", "-c", "pyproject.toml", "-b", ".github/security/bandit-baseline.json",
+     "-r", "nagiosplugin", "-q"]
+]
 dependency_groups = ["security"]
 ignore_errors = true
 
@@ -173,16 +175,12 @@ commands = [["pip-audit", "--skip-editable"]]
 dependency_groups = ["security"]
 ignore_errors = true
 
-[tool.tox.env.pylint]
-description = "run pylint"
-commands =[["pylint", "nagiosplugin", "tests"]]
-dependency_groups = ["lint"]
-ignore_errors = true
-
-[tool.tox.env.pydocstyle]
-description = "run pydocstyle"
-commands = [["pydocstyle", "nagiosplugin", "tests"]]
-dependency_groups = ["lint"]
+# not in envlist; run on demand with `tox -e mypy` until the codebase is typed
+[tool.tox.env.mypy]
+description = "run mypy static type check"
+commands = [["mypy", "nagiosplugin", "tests"]]
+# needs the project and the test deps installed so imports resolve to real types
+dependency_groups = ["lint", "test"]
 ignore_errors = true
 
 [tool.tox.env.clean]
