@@ -110,3 +110,19 @@ class ResultsTest(unittest.TestCase):
     def test_add_should_fail_unless_result_passed(self):
         with self.assertRaises(ValueError):
             Results(True)
+
+    def test_by_state_lookup_does_not_corrupt_most_significant_state(self):
+        warn_result = Result(Warn, 'low disk')
+        results = Results(warn_result)
+        self.assertEqual([], results.by_state[Critical])
+        self.assertNotIn(Critical, results.by_state)
+        self.assertEqual(Warn, results.most_significant_state)
+        self.assertEqual([warn_result], results.most_significant)
+        self.assertEqual([warn_result], list(results))
+
+    def test_empty_by_state_lookup_keeps_empty_most_significant(self):
+        results = Results()
+        self.assertEqual([], results.by_state[Ok])
+        self.assertEqual([], results.most_significant)
+        with self.assertRaises(ValueError):
+            _ = results.most_significant_state

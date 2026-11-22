@@ -88,6 +88,13 @@ class ScalarResult(Result):  # pragma: no cover
         return tuple.__new__(cls, (state, hint, metric))
 
 
+class _StateResultDict(dict):
+    """Mapping from service state to result lists without mutating on lookup."""
+
+    def __missing__(self, key):
+        return []
+
+
 class Results:
     """Container for result sets.
 
@@ -102,7 +109,7 @@ class Results:
 
     def __init__(self, *results):
         self.results = []
-        self.by_state = collections.defaultdict(list)
+        self.by_state = _StateResultDict()
         self.by_name = {}
         if results:
             self.add(*results)
@@ -120,7 +127,7 @@ class Results:
                 raise ValueError(
                     'trying to add non-Result to Results container', result)
             self.results.append(result)
-            self.by_state[result.state].append(result)
+            self.by_state.setdefault(result.state, []).append(result)
             try:
                 self.by_name[result.metric.name] = result
             except AttributeError:
@@ -171,7 +178,7 @@ class Results:
         :returns: :obj:`~nagiosplugin.state.ServiceState` object
         :raises ValueError: if no results are present
         """
-        return max(self.by_state.keys())
+        return max(state for state, items in self.by_state.items() if items)
 
     @property
     def most_significant(self):
