@@ -34,6 +34,15 @@ class RangeParseTest(unittest.TestCase):
         self.assertEqual(r.start, 0)
         self.assertEqual(r.end, 42)
 
+    def test_zero_int_equals_zero_str(self):
+        self.assertEqual(Range(0), Range('0'))
+        r = Range(0)
+        self.assertEqual(r.start, 0)
+        self.assertEqual(r.end, 0)
+
+    def test_zero_float_equals_zero_str(self):
+        self.assertEqual(Range(0.0), Range('0.0'))
+
     def test_float(self):
         r = Range(0.12)
         self.assertFalse(r.invert)

@@ -19,7 +19,8 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         :param spec: may be either a string, an int, or another
             Range object.
         """
-        spec = spec or ''
+        if spec is None:
+            spec = ''
         if isinstance(spec, Range):
             return super(Range, cls).__new__(
                 cls, spec.invert, spec.start, spec.end)
