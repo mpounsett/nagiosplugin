@@ -104,7 +104,7 @@ class RuntimeExceptionTest(RuntimeTestBase):
         self.assertEqual(0, self.r.verbose)
 
     def test_guarded_no_keyword(self):
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(TypeError):
             @guarded(0)
             def main():
                 pass

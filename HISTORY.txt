@@ -23,6 +23,8 @@ Development and testing changes:
 ------------------------
 
 - fix: correct references to the Nagios Plugin Developer Guidelines
+- fix: replace the ``assert`` guarding ``@guarded`` misuse with a ``TypeError``
+  so the check is not stripped under ``python -O`` (#91)
 
 1.4.0 (2025-05-19)
 ------------------

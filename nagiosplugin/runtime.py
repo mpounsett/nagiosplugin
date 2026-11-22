@@ -55,9 +55,10 @@ def guarded(original_function=None, verbose=None):
                 runtime._handle_exception()
         return wrapper
     if original_function is not None:
-        assert callable(original_function), (
-            'Function {!r} not callable. Forgot to add "verbose=" keyword?'.
-            format(original_function))
+        if not callable(original_function):
+            raise TypeError(
+                'Function {!r} not callable. Forgot to add "verbose=" keyword?'.
+                format(original_function))
         return _decorate(original_function)
     return _decorate
 
