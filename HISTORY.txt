@@ -7,7 +7,14 @@ Release History
 IMPORTANT NOTE:  Please see the announcement about the new `python release
 support policy`_.
 
-- change: drop support for Python 2.7, 3.7, and 3.8
+- change: drop support for Python 2.7, 3.7, 3.8, 3.9, and 3.10 (#66, #105, #127)
+- change: add support for Python 3.14, and 3.15 (#127)
+
+Development and testing changes:
+
+- build: documentation builds now run in a tox environment pinned to the
+  newest Python version ReadTheDocs supports, so local, CI, and ReadTheDocs
+  builds all use the same interpreter
 - linting: drop pylint and pydocstyle in favour of ruff, move bandit
   configuration into pyproject.toml, raise the line length limit to 100, and
   add a mypy configuration (#93)

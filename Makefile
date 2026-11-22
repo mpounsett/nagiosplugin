@@ -3,7 +3,8 @@ all:
 .PHONY: clean docs
 
 docs:
-	$(MAKE) -C docs html
+	# Run from the tox environment so that the correct Python version is used
+	uv run tox -e docs
 
 clean:
 	rm -f 

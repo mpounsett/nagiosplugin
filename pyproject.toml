@@ -14,7 +14,7 @@ maintainers = [
 readme = "README.txt"
 license = { text = "ZPL-2.1" }
 keywords = ["Nagios", "Icinga", "plugin", "check", "monitoring"]
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Environment :: Plugins',
@@ -22,10 +22,11 @@ classifiers = [
     'Intended Audience :: System Administrators',
     'Operating System :: Microsoft :: Windows',
     'Operating System :: POSIX',
-    'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+    'Programming Language :: Python :: 3.15',
     'Topic :: Software Development :: Libraries :: Python Modules',
     'Topic :: System :: Monitoring',
 ]
@@ -101,12 +102,6 @@ test = [
     "pytest-cov",
 ]
 
-[tool.uv.dependency-groups]
-docs = {requires-python = ">=3.11"}
-dev = {requires-python = ">=3.11"}
-lint = {requires-python = ">=3.11"}
-security = {requires-python = ">=3.11"}
-
 [tool.bandit]
 exclude_dirs = [
     "nagiosplugin/examples/"
@@ -129,13 +124,13 @@ extend-select = ["D", "E", "F", "W", "C901"]
 convention = "pep257"
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 ignore_missing_imports = true
 
 [tool.tox]
 envlist = [
     "clean", "bandit", "pip-audit", "ruff",
-    "py310", "py311", "py312", "py313",
+    "py311", "py312", "py313", "py314", "py315",
     "stats"
 ]
 skip_missing_interpreters = false
@@ -196,4 +191,13 @@ commands = [
     ["coverage", "html"]
 ]
 dependency_groups = ["test"]
+skip_install = true
+
+# Pinned to 3.14 to match .readthedocs.yaml and the CI docs job; ReadTheDocs
+# does not offer 3.15 yet.
+[tool.tox.env.docs]
+description = "build HTML documentation"
+base_python = ["python3.14"]
+commands = [["sphinx-build", "-W", "-b", "html", "-d", "docs/_build/doctrees", "docs", "docs/_build/html"]]
+dependency_groups = ["docs"]
 skip_install = true

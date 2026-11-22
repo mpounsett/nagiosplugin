@@ -62,7 +62,7 @@ Tests
 **nagiosplugin** tests are run by `tox`_ using the versions locked in
 ``uv.lock``. Install all supported Python versions with `uv`::
 
-   uv python install 3.10 3.11 3.12 3.13
+   uv python install 3.11 3.12 3.13 3.14 3.15
 
 Install test dependencies::
 
@@ -105,29 +105,17 @@ You may run the supplied examples with the local interpreter::
 
    uv run python nagiosplugin/examples/check_load.py
 
-Development Dependency Compatibility
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The dependency lock contains temporary constraints which preserve the full
-runtime test matrix without making development tools part of the package's
-runtime requirements:
-
-- The ``docs``, ``dev``, ``lint``, and ``security`` groups declare Python 3.11
-  or later in ``[tool.uv.dependency-groups]``. These declarations prevent
-  tooling that has dropped Python 3.10 from narrowing nagiosplugin's runtime
-  support. They become redundant and may be removed when the package's minimum
-  supported Python version reaches 3.11.
-
-
 Documentation
 -------------
 
-The documentation depends on Sphinx.  The Sphinx configuration is tested against
-the latest Python version supported by `nagiosplugin`.  If you are running a
-different Python version in your virtual environment, you may need to update.
+The documentation depends on Sphinx.  Since ReadTheDocs doesn't necessarily
+support the latest Python version, doc builds in development, CI, and in the
+`.readthedocs.yaml` config are all pinned to the same Python version
+(occasionally updated to the latest version ReadTheDocs supports).
+
 Install the necessary dependencies and then build the documentation::
 
-   uv run --locked --no-default-groups --group docs make docs
+   make docs
 
 HTML documentation will be built and installed in `docs/_build/html/`.  You
 can read the documentation by opening `docs/_build/html/index.html`.
