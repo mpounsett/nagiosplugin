@@ -113,3 +113,7 @@ nagiosplugin.result
    .. automethod:: __len__
    .. automethod:: __getitem__
    .. automethod:: __contains__
+   .. automethod:: add
+   .. autoattribute:: most_significant_state
+   .. autoattribute:: most_significant
+   .. autoattribute:: first_significant
