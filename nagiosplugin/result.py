@@ -98,6 +98,30 @@ class Results:
 
     The constructor accepts an arbitrary number of result objects and
     adds them to the container.
+
+    To query by state, iterate over the container (results are yielded in
+    order of decreasing significance) or use
+    :attr:`most_significant_state`, :attr:`most_significant`, and
+    :attr:`first_significant`. For example::
+
+        criticals = [r for r in results if r.state == Critical]
+        if results.most_significant_state == Critical:
+            ...
+
+    .. attribute:: by_state
+
+       Internal storage mapping each :class:`~.state.ServiceState` to the
+       list of results in that state. It is a
+       :class:`collections.defaultdict`, so **looking up a state that has no
+       results inserts an empty entry**, which then makes
+       :attr:`most_significant_state` report that state. Treat this attribute
+       as private, and prefer the query methods above. If you must read it
+       directly, use ``results.by_state.get(state, [])``.
+
+    .. attribute:: by_name
+
+       Internal storage mapping metric names to results. Prefer
+       ``results[name]`` and ``name in results``.
     """
 
     def __init__(self, *results):

@@ -9,6 +9,9 @@ support policy`_.
 
 - change: drop support for Python 2.7, 3.7, 3.8, 3.9, and 3.10 (#66, #105, #127)
 - change: add support for Python 3.14, and 3.15 (#127)
+- docs: document that ``Results.by_state`` should be treated as a private
+  attribute, and that looking up an absent state inserts an empty entry which
+  alters the output of ``most_significant_state`` (#131, #47 wontfix)
 
 Development and testing changes:
 
