@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
+import os.path as p
 import re
 import subprocess
 import sys
-import os.path as p
 
 try:
     from importlib.resources import files as resource_files
@@ -32,8 +31,7 @@ class ExamplesTest(unittest.TestCase):
         out, err = proc.communicate()
         self.assertEqual(err.decode(), '')
         self.assertTrue(re.match(regexp, out.decode()) is not None,
-                        '"{0}" does not match "{1}"'.format(
-                            out.decode(), regexp))
+                        f'"{out.decode()}" does not match "{regexp}"')
         self.assertEqual(0, proc.returncode)
 
     def test_check_load(self):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Domain model for data :term:`acquisition`.
 
 :class:`Resource` is the base class for the plugin's :term:`domain
@@ -13,7 +12,7 @@ itself.
 """
 
 
-class Resource(object):
+class Resource:
     """Abstract base class for custom domain models.
 
     Subclasses may add arguments to the constructor to parametrize

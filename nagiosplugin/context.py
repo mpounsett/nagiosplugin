@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Metadata about metrics to perform data :term:`evaluation`.
 
 This module contains the :class:`Context` class, which is the base for
@@ -16,10 +15,10 @@ evaluation or performance data logic.
 from .performance import Performance
 from .range import Range
 from .result import Result
-from .state import Ok, Warn, Critical
+from .state import Critical, Ok, Warn
 
 
-class Context(object):
+class Context:
 
     def __init__(self, name, fmt_metric=None, result_cls=Result):
         """Creates generic context identified by `name`.
@@ -72,7 +71,7 @@ class Context(object):
             (may optionally be consulted)
         :returns: :class:`~.performance.Performance` object or `None`
         """
-        return None
+        return
 
     def describe(self, metric):
         """Provides human-readable metric description.
@@ -118,7 +117,7 @@ class ScalarContext(Context):
         :param critical: Critical threshold as
             :class:`~nagiosplugin.range.Range` object or range string.
         """
-        super(ScalarContext, self).__init__(name, fmt_metric, result_cls)
+        super().__init__(name, fmt_metric, result_cls)
         self.warning = Range(warning)
         self.critical = Range(critical)
 

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.result import Result, Results
-from nagiosplugin.state import Ok, Warn, Critical, Unknown
 import nagiosplugin
+from nagiosplugin.result import Result, Results
+from nagiosplugin.state import Critical, Ok, Unknown, Warn
 
 try:
     import unittest2 as unittest

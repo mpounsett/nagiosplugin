@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Performance data (perfdata) representation.
 
@@ -49,7 +48,7 @@ class Performance(collections.namedtuple('Performance', [
         """
         if "'" in label or "=" in label:
             raise RuntimeError('label contains illegal characters', label)
-        return super(Performance, cls).__new__(
+        return super().__new__(
             cls, label, value, zap_none(uom), zap_none(warn), zap_none(crit),
             zap_none(min), zap_none(max))
 

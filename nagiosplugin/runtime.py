@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
 """Functions and classes to interface with the system.
 
 This module contains the :class:`Runtime` class that handles exceptions,
 timeouts and logging. Plugin authors should not use Runtime directly,
 but decorate the plugin's main function with :func:`~.runtime.guarded`.
 """
-from __future__ import unicode_literals, print_function
 
+import functools
 import io
 import logging
 import numbers
 import sys
-import functools
 import traceback
 
-from .output import Output
 from .error import Timeout
+from .output import Output
 from .platform import with_timeout
 
 
@@ -49,21 +47,19 @@ def guarded(original_function=None, verbose=None):
                 return func(*args, **kwds)
             except Timeout as exc:
                 runtime._handle_exception(
-                    'Timeout: check execution aborted after {0}'.format(
-                        exc))
+                    f'Timeout: check execution aborted after {exc}')
             except Exception:
                 runtime._handle_exception()
         return wrapper
     if original_function is not None:
         if not callable(original_function):
             raise TypeError(
-                'Function {!r} not callable. Forgot to add "verbose=" keyword?'.
-                format(original_function))
+                f'Function {original_function!r} not callable. Forgot to add "verbose=" keyword?')
         return _decorate(original_function)
     return _decorate
 
 
-class Runtime(object):
+class Runtime:
 
     instance = None
     check = None
@@ -76,7 +72,7 @@ class Runtime(object):
 
     def __new__(cls):
         if not cls.instance:
-            cls.instance = super(Runtime, cls).__new__(cls)
+            cls.instance = super().__new__(cls)
         return cls.instance
 
     def __init__(self):
@@ -97,7 +93,7 @@ class Runtime(object):
                 exc_type, value)[0].strip())
         if self.verbose > 0:
             self.output.add_longoutput(traceback.format_exc())
-        print('{0}'.format(self.output), end='', file=self.stdout)
+        print(f'{self.output}', end='', file=self.stdout)
         self.exitcode = 3
         self.sysexit()
 
@@ -135,7 +131,7 @@ class Runtime(object):
             with_timeout(self.timeout, self.run, check)
         else:
             self.run(check)
-        print('{0}'.format(self.output), end='', file=self.stdout)
+        print(f'{self.output}', end='', file=self.stdout)
         self.sysexit()
 
     def sysexit(self):

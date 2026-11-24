@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-# vim: set fileencoding=utf-8:
 
-from __future__ import unicode_literals, print_function
-from nagiosplugin.output import Output
-import nagiosplugin
 import io
 import logging
 import unittest
+
+import nagiosplugin
+from nagiosplugin.output import Output
 
 
 class FakeCheck:
@@ -66,7 +64,7 @@ class OutputTest(unittest.TestCase):
         check.summary_str = 'utf-8 ümłäúts'
         check.perfdata = []
         o.add(check)
-        self.assertEqual('FAKE OK - utf-8 ümłäúts\n', '{0}'.format(o))
+        self.assertEqual('FAKE OK - utf-8 ümłäúts\n', f'{o}')
 
     def test_add_check_singleline(self):
         o = Output(self.logchan)

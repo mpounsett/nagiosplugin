@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 
 def filter_output(output, filtered):
-    """ Filters out characters from output """
+    """Filters out characters from output"""
     for char in filtered:
         output = output.replace(char, '')
     return output
 
 
-class Output(object):
+class Output:
 
     ILLEGAL = '|'
 
@@ -77,6 +75,5 @@ class Output(object):
 
     @staticmethod
     def _illegal_chars_warning(where, removed_chars):
-        hex_chars = ', '.join('0x{0:x}'.format(ord(c)) for c in removed_chars)
-        return 'warning: removed illegal characters ({0}) from {1}'.format(
-            hex_chars, where)
+        hex_chars = ', '.join(f'0x{ord(c):x}' for c in removed_chars)
+        return f'warning: removed illegal characters ({hex_chars}) from {where}'

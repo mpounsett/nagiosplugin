@@ -44,8 +44,7 @@ class Users(nagiosplugin.Resource):
                 users.append(line.split()[0].decode())
         except OSError:
             raise nagiosplugin.CheckError(
-                'cannot determine number of users ({0} failed)'.format(
-                    self.who_cmd))
+                f'cannot determine number of users ({self.who_cmd} failed)')
         return users
 
     def probe(self):

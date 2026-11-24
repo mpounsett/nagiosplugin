@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.summary import Summary
-import nagiosplugin
 import unittest
+
+import nagiosplugin
+from nagiosplugin.summary import Summary
 
 
 class SummaryTest(unittest.TestCase):

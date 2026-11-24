@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # nagiosplugin documentation build configuration file, created by
 # sphinx-quickstart on Tue Aug 17 21:49:47 2010.
@@ -196,8 +195,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples (source start
 # file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ('index', 'nagiosplugin.tex', u'nagiosplugin Documentation',
-     u'Flying Circus Internet Operations GmbH', 'manual'),
+    ('index', 'nagiosplugin.tex', 'nagiosplugin Documentation',
+     'Flying Circus Internet Operations GmbH', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -240,7 +239,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'nagiosplugin', u'nagiosplugin Documentation',
+  ('index', 'nagiosplugin', 'nagiosplugin Documentation',
    'Flying Circus Internet Operations GmbH', 'nagiosplugin',
    'Class library for writing Nagios (Icinga) plugins',
    'Miscellaneous'),
@@ -259,10 +258,10 @@ texinfo_documents = [
 # -- Options for Epub output --------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'nagiosplugin'
+epub_title = 'nagiosplugin'
 epub_author = 'Flying Circus Internet Operations GmbH'
 epub_publisher = 'Flying Circus Internet Operations GmbH'
-epub_copyright = u'Flying Circus Internet Operations GmbH'
+epub_copyright = 'Flying Circus Internet Operations GmbH'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

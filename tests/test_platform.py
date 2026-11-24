@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.platform import with_timeout
-import nagiosplugin
 import time
+
+import nagiosplugin
+from nagiosplugin.platform import with_timeout
 
 try:
     import unittest2 as unittest

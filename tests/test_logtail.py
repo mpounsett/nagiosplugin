@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.logtail import LogTail
-import nagiosplugin
 import tempfile
+
+import nagiosplugin
+from nagiosplugin.logtail import LogTail
 
 try:
     import unittest2 as unittest
@@ -34,9 +34,8 @@ class LogTailTest(unittest.TestCase):
         with LogTail(self.lf.name, self.cookie) as tail:
             self.assertEqual(b'second line\n', next(tail))
         # no write
-        with LogTail(self.lf.name, self.cookie) as tail:
-            with self.assertRaises(StopIteration):
-                next(tail)
+        with LogTail(self.lf.name, self.cookie) as tail, self.assertRaises(StopIteration):
+            next(tail)
 
     def test_offer_same_content_again_after_exception(self):
         self.lf.write(b'first line\n')

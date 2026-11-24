@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.multiarg import MultiArg
 import unittest
+
+from nagiosplugin.multiarg import MultiArg
 
 
 class MultiargTest(unittest.TestCase):

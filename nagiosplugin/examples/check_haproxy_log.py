@@ -23,6 +23,7 @@ import numpy
 
 import nagiosplugin
 
+
 class HAProxyLog(nagiosplugin.Resource):
     """haproxy.log parser.
 
