@@ -32,6 +32,9 @@ support policy`_.
 - docs: document that ``Results.by_state`` should be treated as a private
   attribute, and that looking up an absent state inserts an empty entry which
   alters the output of ``most_significant_state`` (#131, #47 wontfix)
+- docs: rename ``HISTORY.txt`` to ``CHANGELOG.txt`` and ``HACKING.txt`` to
+  ``CONTRIBUTING.txt``, and document the changelog format and expectations
+  for pull requests (#136)
 
 Development and Testing:
 
