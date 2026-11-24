@@ -16,8 +16,9 @@ context manager to get it opened and committed automatically.
 import codecs
 import json
 import os
+from collections import UserDict
+from tempfile import TemporaryFile
 
-from .compat import TemporaryFile, UserDict
 from .platform import flock_exclusive
 
 
