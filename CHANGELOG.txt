@@ -1,5 +1,22 @@
-Release History
-===============
+Changelog
+=========
+
+All notable changes to this project are documented in this file.
+
+The format is based on `Keep a Changelog`_, and this project's versioning is
+based on `PEP 440`_.
+
+Each release has its own section, newest first, with unreleased changes at the
+top.  Each notable change gets one entry in the section for the release it
+will ship in, written for users of the library rather than as a copy of the
+commit log.  Start the entry with the type of change (``new``, ``change``,
+``deprecated``, ``removed``, ``fix``, ``security``, ``docs``, ``build``, or
+``lint``) and end it with the relevant issue or pull request number.  Changes
+that only affect development of the project itself (build, lint) go under
+a "Development and Testing" section.
+
+.. _Keep a Changelog: https://keepachangelog.com/en/1.1.0/
+.. _PEP 440: https://peps.python.org/pep-0440/
 
 1.5.0 (not yet released)
 ------------------------
@@ -15,13 +32,16 @@ support policy`_.
 - docs: document that ``Results.by_state`` should be treated as a private
   attribute, and that looking up an absent state inserts an empty entry which
   alters the output of ``most_significant_state`` (#131, #47 wontfix)
+- docs: rename ``HISTORY.txt`` to ``CHANGELOG.txt`` and ``HACKING.txt`` to
+  ``CONTRIBUTING.txt``, and document the changelog format and expectations
+  for pull requests (#136)
 
-Development and testing changes:
+Development and Testing:
 
 - build: documentation builds now run in a tox environment pinned to the
   newest Python version ReadTheDocs supports, so local, CI, and ReadTheDocs
   builds all use the same interpreter
-- linting: drop pylint and pydocstyle in favour of ruff, move bandit
+- lint: drop pylint and pydocstyle in favour of ruff, move bandit
   configuration into pyproject.toml, raise the line length limit to 100, and
   add a mypy configuration (#93)
 
@@ -36,29 +56,35 @@ support policy`_.
 - new: add check name to Check constructor (Simon Meggle)
 - change: drop support for Python 3.4, 3.5, and 3.6 (#65)
 - change: add support for Python 3.11, 3.12, and 3.13 (#65)
+- change: tests use importlib where available in place of deprecated
+  pkg_resources (#50)
 - fix: correct reference to class ~.performace.Performance in
   Context.performance docstring (Josef Friedrich)
-- fix: tests use importlib where available in place of deprecated
-  pkg_resources (#50)
-- fix: build environment updates to support py2.7 (#64)
-- doc: additional text explaining the naming of the Warn state class (#26)
-- doc: updated document building for newer Sphinx (#72)
-- doc: updated document building for new readthedocs.io deployment process
+- docs: additional text explaining the naming of the Warn state class (#26)
+
+Development and Testing:
+
+- build: build environment updates to support py2.7 (#64)
+- build: updated document building for newer Sphinx (#72)
+- build: updated document building for new readthedocs.io deployment process
   (#79)
-- linting: replaced some elif statements occluded by return statements (no-else-return)
-- linting: cleaned up "inconsistent-return-statements" errors
-- linting: replace flake8 with ruff (#60)
-- linting: add security tests with pip-audit and bandit (#61)
+- lint: replaced some elif statements occluded by return statements (no-else-return)
+- lint: cleaned up "inconsistent-return-statements" errors
+- lint: replace flake8 with ruff (#60)
+- lint: add security tests with pip-audit and bandit (#61)
 
 1.3.3 (2022-02-07)
 ------------------
 
-- new: adding support for newer python releases (3.8, 3.9, 3.10)
-- fix: various typos in docstrings (#39, )
+- change: adding support for newer python releases (3.8, 3.9, 3.10)
+- fix: various typos in docstrings (#39)
 - fix: change use of deprecated upload-dir to upload_dir in setup.cfg (#34)
 - fix: Runtime class now sets None for stdout by default (#24)
 - fix: corrected argument order in several calls to super() (#18)
-- cleanup: many bits of code tidying to eliminate linter warnings
+
+Development and Testing:
+
+- lint: many bits of code tidying to eliminate linter warnings
 
 
 1.3.2 (2019-11-09)

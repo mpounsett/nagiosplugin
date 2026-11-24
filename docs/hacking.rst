@@ -1,1 +1,1 @@
-.. include:: ../HACKING.txt
+.. include:: ../CONTRIBUTING.txt

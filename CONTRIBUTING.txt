@@ -54,6 +54,16 @@ If your change is a new feature, or otherwise alters the behaviour of
 `nagiosplugin`, update the relevant section of the documentation and include
 that in your PR.
 
+Every PR should include an entry in the appropriate section of
+`CHANGELOG.txt`.  See the note at the top of that file for the format.
+
+Pull Request Quality
+--------------------
+
+Pull requests of low quality may be refused without a full explanation.
+Repeatedly opening low quality pull requests may result in a ban from the
+project.
+
 Tests
 -----
 
@@ -153,12 +163,12 @@ Check that all tests pass.  Apply hotfixes as necessary to pass all tests
 before continuing.
 
 Update the version number in `nagiosplugin/version.py`, and update the version
-release date in the `HISTORY.txt` file::
+release date in the `CHANGELOG.txt` file::
 
    sed -i '' -e 's/\(__VERSION__ =\).*/\1 "0.1.2"/' nagiosplugin/version.py
-   sed -i '' -e 's/0.1.2 (unreleased)/0.1.2 (2019-11-07)/' HISTORY.txt
+   sed -i '' -e 's/0.1.2 (unreleased)/0.1.2 (2019-11-07)/' CHANGELOG.txt
 
-You may need to update the `HISTORY.txt` file with additional changes.  You
+You may need to update the `CHANGELOG.txt` file with additional changes.  You
 can get a list of commits since the last release by generating a reverse log,
 which you can edit down to just a list of relevant changes::
 
@@ -184,10 +194,10 @@ Do a test upload with TestPyPI::
 Check on https://test.pypi.org/nagiosplugin that the package metadata looks
 correct.  If everything is fine, proceed with the next steps.
 
-Commit the updated history and version files, making sure both files are in the
+Commit the updated changelog and version files, making sure both files are in the
 same commit. For a new version ``0.1.2``::
 
-   git stage HISTORY.txt nagiosplugin/version.py
+   git stage CHANGELOG.txt nagiosplugin/version.py
    git commit -m "Preparing release 0.1.2"
 
 Push the release branch and open a pull request against ``main``. After all
