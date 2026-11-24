@@ -37,7 +37,7 @@ Documentation = "https://nagiosplugin.readthedocs.io/"
 Download = "https://pypi.org/project/nagiosplugin/"
 Source = "https://github.com/mpounsett/nagiosplugin"
 Issues = "https://github.com/mpounsett/nagiosplugin/issues"
-Changelog = "https://github.com/mpounsett/nagiosplugin/blob/main/HISTORY.txt"
+Changelog = "https://github.com/mpounsett/nagiosplugin/blob/main/CHANGELOG.txt"
 
 [tool.setuptools.dynamic]
 version = {attr = 'nagiosplugin.__version__'}
@@ -48,8 +48,8 @@ include = ["nagiosplugin*"]
 [tool.setuptools.package-data]
 nagiosplugin = [
     "CONTRIBUTORS.txt",
-    "HACKING.txt",
-    "HISTORY.txt",
+    "CONTRIBUTING.txt",
+    "CHANGELOG.txt",
     "LICENSE.txt",
     "README.txt"
 ]

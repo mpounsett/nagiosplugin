@@ -17,7 +17,7 @@ breaking change, or have other security implications?
 
 ## Checklist
 
-- [ ] I have read and followed the [contribution guide](https://github.com/mpounsett/nagiosplugin/blob/main/HACKING.txt)
+- [ ] I have read and followed the [contribution guide](https://github.com/mpounsett/nagiosplugin/blob/main/CONTRIBUTING.txt)
 - [ ] Tests were added or updated where appropriate
-- [ ] Documentation and history were updated where appropriate
+- [ ] Documentation and the changelog were updated where appropriate
 - [ ] The PR title clearly describes the change
