@@ -48,7 +48,7 @@ Development and Testing:
   GitHub.
 - build: remove setuptools ``package-data`` and ``exclude-package-data``
   settings left over from ``setup.py`` that matched no files; the contents of
-  the sdist and wheel are unchanged
+  the sdist and wheel are unchanged (#152)
 
 1.4.0 (2025-05-19)
 ------------------
