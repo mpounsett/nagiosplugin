@@ -26,6 +26,8 @@ support policy`_.
 
 - change: drop support for Python 2.7, 3.7, 3.8, 3.9, and 3.10 (#66, #105, #127)
 - change: add support for Python 3.14, and 3.15 (#127)
+- change: ``nagiosplugin.compat`` is marked as Deprecated, and will be removed
+  no earlier than October 2028 (#142)
 - fix: correct references to the Nagios Plugin Developer Guidelines
 - fix: replace the ``assert`` guarding ``@guarded`` misuse with a ``TypeError``
   so the check is not stripped under ``python -O`` (#91)

@@ -4,6 +4,15 @@ This module contains imports and functions that help mask Python 2/3
 compatibility issues.
 """
 import tempfile
+import warnings
+
+warnings.warn(
+    "nagiosplugin.compat is deprecated since version 1.5.0 "
+    "and will be removed no earlier than October 2028. "
+    "See <https://github.com/mpounsett/nagiosplugin/issues/142> for details.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 # UserDict
 try:
