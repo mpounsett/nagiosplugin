@@ -46,6 +46,9 @@ Development and Testing:
   add a mypy configuration (#93)
 - lint: ``scripts/ruff_md.py`` added to format ruff statistics output for
   GitHub.
+- build: remove setuptools ``package-data`` and ``exclude-package-data``
+  settings left over from ``setup.py`` that matched no files; the contents of
+  the sdist and wheel are unchanged
 
 1.4.0 (2025-05-19)
 ------------------
