@@ -12,6 +12,8 @@ support policy`_.
 - fix: correct references to the Nagios Plugin Developer Guidelines
 - fix: replace the ``assert`` guarding ``@guarded`` misuse with a ``TypeError``
   so the check is not stripped under ``python -O`` (#91)
+- fix: ``Range(0)`` and ``Range(0.0)`` now give the range ``0:0`` like
+  ``Range('0')``, instead of the empty range ``0:inf`` (#83)
 - docs: document that ``Results.by_state`` should be treated as a private
   attribute, and that looking up an absent state inserts an empty entry which
   alters the output of ``most_significant_state`` (#131, #47 wontfix)
