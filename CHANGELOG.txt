@@ -44,6 +44,8 @@ Development and Testing:
 - lint: drop pylint and pydocstyle in favour of ruff, move bandit
   configuration into pyproject.toml, raise the line length limit to 100, and
   add a mypy configuration (#93)
+- lint: ``scripts/ruff_md.py`` added to format ruff statistics output for
+  GitHub.
 
 1.4.0 (2025-05-19)
 ------------------
