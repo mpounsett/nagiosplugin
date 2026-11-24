@@ -52,6 +52,8 @@ Development and Testing:
 - build: remove the unreachable ``pkg_resources`` fallback from the example
   tests; ``importlib.resources`` is always available on supported Pythons
   (#153)
+- build: ``cookie.py`` imports ``UserDict`` and ``TemporaryFile`` from the
+  standard library instead of the deprecated ``compat`` module (#154)
 
 1.4.0 (2025-05-19)
 ------------------
