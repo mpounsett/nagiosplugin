@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Controller logic for check execution.
 
 This module contains the :class:`Check` class which orchestrates the
@@ -19,14 +18,13 @@ from .metric import Metric
 from .resource import Resource
 from .result import Result, Results
 from .runtime import Runtime
-from .state import Ok, Unknown, ServiceState
+from .state import Ok, ServiceState, Unknown
 from .summary import Summary
-
 
 _log = logging.getLogger(__name__)
 
 
-class Check(object):
+class Check:
 
     def __init__(self, *objects, **kwargs):
         """Creates and configures a check.
@@ -71,8 +69,7 @@ class Check(object):
             elif isinstance(obj, Results):
                 self.results = obj
             else:
-                raise TypeError('cannot add type {0} to check'.format(
-                    type(obj)), obj)
+                raise TypeError(f'cannot add type {type(obj)} to check', obj)
         return self
 
     def _evaluate_resource(self, resource):

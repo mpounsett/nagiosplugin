@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.context import Context, ScalarContext, Contexts
 import nagiosplugin
+from nagiosplugin.context import Context, Contexts, ScalarContext
 
 try:
     import unittest2 as unittest
@@ -21,7 +20,7 @@ class ContextTest(unittest.TestCase):
 
     def test_fmt_callable(self):
         def format_metric(metric, context):
-            return '{0} formatted by {1}'.format(metric.name, context.name)
+            return f'{metric.name} formatted by {context.name}'
 
         m1 = nagiosplugin.Metric('foo', 1, 's', min=0)
         c = Context('describe_callable', fmt_metric=format_metric)

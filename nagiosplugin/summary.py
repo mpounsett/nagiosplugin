@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Create status line from results.
 
 This module contains the :class:`Summary` class which serves as base
@@ -14,11 +13,10 @@ usable, plugin authors should consider subclassing to provide a specific
 implementation that gets the output to the point.
 """
 
-from __future__ import unicode_literals
 from .state import Ok
 
 
-class Summary(object):
+class Summary:
     """Creates a summary formatter object.
 
     This base class takes no parameters in its constructor, but subclasses may
@@ -41,7 +39,7 @@ class Summary(object):
         :param results: :class:`~nagiosplugin.result.Results` container
         :returns: status line
         """
-        return '{0}'.format(results[0])
+        return f'{results[0]}'
 
     # It might be possible to re-implement this as a @staticmethod,
     # but this might be an API-breaking change, so it should probably stay in
@@ -59,7 +57,7 @@ class Summary(object):
         :param results: :class:`~.result.Results` container
         :returns: status line
         """
-        return '{0}'.format(results.first_significant)
+        return f'{results.first_significant}'
 
     # It might be possible to re-implement this as a @staticmethod,
     # but this might be an API-breaking change, so it should probably stay in
@@ -80,7 +78,7 @@ class Summary(object):
         for result in results:
             if result.state == Ok:
                 continue
-            msgs.append('{0}: {1}'.format(result.state, result))
+            msgs.append(f'{result.state}: {result}')
         return msgs
 
     # It might be possible to re-implement this as a @staticmethod,

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Access previously unseen parts of a growing file.
 
 LogTail builds on :class:`~.cookie.Cookie` to access new lines of a
@@ -12,7 +11,7 @@ instances may share the same cookie.
 import os
 
 
-class LogTail(object):
+class LogTail:
 
     def __init__(self, path, cookie):
         """Creates new LogTail context.

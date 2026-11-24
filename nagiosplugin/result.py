@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Outcomes from evaluating metrics in contexts.
 
 The :class:`Result` class is the base class for all evaluation results.
@@ -10,7 +9,6 @@ accomodate for special needs. :class:`~.context.Context` constructors
 accept custom Result subclasses in the `result_cls` parameter.
 """
 
-from __future__ import unicode_literals
 import collections
 import numbers
 import warnings
@@ -54,7 +52,7 @@ class Result(collections.namedtuple('Result', 'state hint metric')):
             desc = None
 
         if self.hint and desc:
-            return '{0} ({1})'.format(desc, self.hint)
+            return f'{desc} ({self.hint})'
         if self.hint:
             return self.hint
         if desc:

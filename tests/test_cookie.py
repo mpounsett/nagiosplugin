@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals, print_function
-from nagiosplugin.cookie import Cookie
 import codecs
 import os
 import tempfile
+
+from nagiosplugin.cookie import Cookie
 
 try:
     import unittest2 as unittest
@@ -59,9 +58,8 @@ class CookieTest(unittest.TestCase):
         self.assertTrue(True)
 
     def test_close_within_with_block_fails(self):
-        with self.assertRaises(IOError):
-            with Cookie(self.tf.name) as c:
-                c.close()
+        with self.assertRaises(IOError), Cookie(self.tf.name) as c:
+            c.close()
 
     def test_multiple_commit(self):
         c = Cookie(self.tf.name)

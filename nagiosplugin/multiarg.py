@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-class MultiArg(object):
+class MultiArg:
 
     def __init__(self, args, fill=None, splitchar=','):
         if isinstance(args, list):

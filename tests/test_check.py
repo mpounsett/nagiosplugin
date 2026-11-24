@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-# vim: set fileencoding=utf-8:
 
-from __future__ import unicode_literals
-from nagiosplugin.check import Check
 import nagiosplugin
+from nagiosplugin.check import Check
 
 try:
     import unittest2 as unittest

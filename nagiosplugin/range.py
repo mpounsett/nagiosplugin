@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import collections
 
 
@@ -21,13 +20,13 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         """
         spec = spec or ''
         if isinstance(spec, Range):
-            return super(Range, cls).__new__(
+            return super().__new__(
                 cls, spec.invert, spec.start, spec.end)
         if (isinstance(spec, int) or isinstance(spec, float)):
             start, end, invert = 0, spec, False
         start, end, invert = cls._parse(str(spec))
         cls._verify(start, end)
-        return super(Range, cls).__new__(cls, invert, start, end)
+        return super().__new__(cls, invert, start, end)
 
     @classmethod
     def _parse(cls, spec):
@@ -85,9 +84,9 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         if self.start == float('-inf'):
             result.append('~:')
         elif not omit_zero_start or self.start != 0:
-            result.append(('%s:' % self.start))
+            result.append('%s:' % self.start)
         if self.end != float('inf'):
-            result.append(('%s' % self.end))
+            result.append('%s' % self.end)
         return ''.join(result)
 
     def __str__(self):
@@ -101,4 +100,4 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     @property
     def violation(self):
         """Human-readable description why a value does not match."""
-        return 'outside range {0}'.format(self._format(False))
+        return f'outside range {self._format(False)}'

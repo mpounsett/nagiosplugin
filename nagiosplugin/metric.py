@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Structured representation for data points.
 
 This module contains the :class:`Metric` class whose instances are
@@ -7,8 +6,8 @@ Typically, :class:`~.resource.Resource` objects emit a list of metrics
 as result of their :meth:`~.resource.Resource.probe` methods.
 """
 
-import numbers
 import collections
+import numbers
 
 
 class Metric(collections.namedtuple(

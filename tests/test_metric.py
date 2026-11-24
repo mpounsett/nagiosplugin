@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.metric import Metric
 import nagiosplugin
+from nagiosplugin.metric import Metric
 
 try:
     import unittest2 as unittest

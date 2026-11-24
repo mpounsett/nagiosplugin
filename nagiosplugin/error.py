@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Exceptions with special meanings for nagiosplugin."""
 
 
@@ -11,7 +10,6 @@ class CheckError(RuntimeError):
     exit with an UNKNOWN (3) status.
     """
 
-    pass
 
 
 class Timeout(RuntimeError):
@@ -22,4 +20,3 @@ class Timeout(RuntimeError):
     the plugin exits with an UNKNOWN (3) status.
     """
 
-    pass

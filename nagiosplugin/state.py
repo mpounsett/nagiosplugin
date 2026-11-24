@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Classes to represent check outcomes.
 
 This module defines :class:`ServiceState` which is the abstract base class
@@ -16,7 +15,7 @@ import functools
 
 def worst(states):
     """Reduce list of *states* to the most significant state."""
-    return functools.reduce(lambda a, b: a if a > b else b, states, Ok)
+    return functools.reduce(lambda a, b: max(b, a), states, Ok)
 
 
 class ServiceState(collections.namedtuple('ServiceState', 'code text')):

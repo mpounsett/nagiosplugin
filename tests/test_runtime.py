@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
-from nagiosplugin.runtime import Runtime, guarded
-from nagiosplugin.compat import StringIO
-import nagiosplugin
 import logging
+
+import nagiosplugin
+from nagiosplugin.compat import StringIO
+from nagiosplugin.runtime import Runtime, guarded
 
 try:
     import unittest2 as unittest
@@ -11,7 +11,7 @@ except ImportError:  # pragma: no cover
 
 
 def make_check():
-    class Check(object):
+    class Check:
         summary_str = 'summary'
         verbose_str = 'long output'
         name = 'check'
@@ -68,7 +68,7 @@ class RuntimeTest(RuntimeTestBase):
 class RuntimeExceptionTest(RuntimeTestBase):
 
     def setUp(self):
-        super(RuntimeExceptionTest, self).setUp()
+        super().setUp()
 
     def run_main_with_exception(self, exc):
         @guarded
