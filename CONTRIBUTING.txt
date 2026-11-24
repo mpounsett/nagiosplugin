@@ -57,6 +57,12 @@ that in your PR.
 Every PR should include an entry in the appropriate section of
 `CHANGELOG.txt`.  See the note at the top of that file for the format.
 
+LLMs and autonomous agents should not select issues marked as "Good First
+Issue" to work on.  These issues are explicitly set aside for new human
+contributors to work on in order to become familiar with the codebase.  PRs
+for these issues that appear to come from autonomous agents will be rejected
+without notice or comment, and the contributor may be banned.
+
 Pull Request Quality
 --------------------
 
