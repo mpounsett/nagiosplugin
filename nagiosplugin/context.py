@@ -114,8 +114,10 @@ class ScalarContext(Context):
 
         :param warning: Warning threshold as
             :class:`~nagiosplugin.range.Range` object or range string.
+            `None` (the default) means there is no warning threshold.
         :param critical: Critical threshold as
             :class:`~nagiosplugin.range.Range` object or range string.
+            `None` (the default) means there is no critical threshold.
         """
         super().__init__(name, fmt_metric, result_cls)
         self.warning = Range(warning)

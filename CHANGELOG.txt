@@ -21,13 +21,34 @@ a "Development and Testing" section.
 1.5.0 (not yet released)
 ------------------------
 
-IMPORTANT NOTE:  Please see the announcement about the new `python release
+IMPORTANT NOTE: Please see the announcement about the new `python release
 support policy`_.
+
+IMPORTANT NOTE: The changes for #15 and #83 correct unexpected or buggy
+``Range`` behaviour, but could affect plugins written to work around those
+issues.  Check that your plugins are not relying on the incorrect range spec
+behaviour before upgrading.
 
 - change: drop support for Python 2.7, 3.7, 3.8, 3.9, and 3.10 (#66, #105, #127)
 - change: add support for Python 3.14, and 3.15 (#127)
 - change: ``nagiosplugin.compat`` is marked as Deprecated, and will be removed
   no earlier than October 2028 (#142)
+- change: an empty range specification (``Range('')``, ``Range(None)``, or
+  an omitted ``ScalarContext`` threshold) is now equivalent to
+  ``Range('~:')``. Previously this was equivalent to ``Range('0:')``, which
+  would cause a negative metric to unexpectedly produce a WARNING or CRITICAL
+  result.  Plugins that rely on an empty threshold to alert on negative values
+  must now pass ``'0:'`` explicitly.  ``str(Range('0:'))`` now returns
+  ``'0:'`` rather than ``''`` so that the two ranges are distinguishable (#15)
+- fix: ``Range(0)`` and ``Range(0.0)`` were treated as ``Range('')`` and
+  produced the unbounded range ``0:inf`` instead of ``0:0``; a threshold such
+  as ``critical=0`` could therefore never trigger.  Numeric specs are now used
+  directly rather than converted through a string, which also makes floats
+  with an exponent in their repr (e.g. ``1e20``) and ``float('inf')`` usable
+  as specs.  ``Range(False)``, which was previously equivalent to
+  ``Range('')``, now raises ``TypeError``; pass ``None`` or ``''`` for no
+  range.  A ``NaN`` bound now raises ``ValueError`` instead of silently
+  matching every value (#83, #128)
 - fix: correct references to the Nagios Plugin Developer Guidelines
 - fix: replace the ``assert`` guarding ``@guarded`` misuse with a ``TypeError``
   so the check is not stripped under ``python -O`` (#91)

@@ -46,6 +46,14 @@ class ScalarContextTest(unittest.TestCase):
         self.assertEqual(nagiosplugin.Range(), c.warning)
         self.assertEqual(nagiosplugin.Range(), c.critical)
 
+    def test_none_threshold_never_triggers(self):
+        # Issue #15: a negative value must not trip an omitted threshold.
+        c = ScalarContext('ctx', warning='-10:10')
+        m = nagiosplugin.Metric('sens1', -3)
+        self.assertEqual(nagiosplugin.Result(nagiosplugin.Ok, None, m),
+                         c.evaluate(m, None))
+        self.assertEqual('sens1=-3;-10:10', str(c.performance(m, None)))
+
 
 class ContextsTest(unittest.TestCase):
 
