@@ -8,15 +8,23 @@ except ImportError:  # pragma: no cover
 
 class RangeParseTest(unittest.TestCase):
 
-    def test_empty_range_is_zero_to_infinity(self):
+    def test_empty_range_is_unbounded(self):
         r = Range('')
         self.assertFalse(r.invert)
-        self.assertEqual(r.start, 0)
+        self.assertEqual(r.start, float('-inf'))
         self.assertEqual(r.end, float('inf'))
+        self.assertIn(-3, r)
+        self.assertIn(0, r)
+        self.assertIn(10**30, r)
 
     def test_null_range(self):
         self.assertEqual(Range(), Range(''))
         self.assertEqual(Range(), Range(None))
+        self.assertEqual(Range(), Range('~:'))
+
+    def test_empty_range_differs_from_zero_start(self):
+        self.assertNotEqual(Range(''), Range('0:'))
+        self.assertNotIn(-1, Range('0:'))
 
     def test_explicit_start_end(self):
         r = Range('0.5:4')
@@ -38,6 +46,36 @@ class RangeParseTest(unittest.TestCase):
         self.assertFalse(r.invert)
         self.assertEqual(r.start, 0)
         self.assertEqual(r.end, 0.12)
+
+    def test_zero_int_equals_zero_str(self):
+        self.assertEqual(Range(0), Range('0'))
+        r = Range(0)
+        self.assertFalse(r.invert)
+        self.assertEqual(r.start, 0)
+        self.assertEqual(r.end, 0)
+        self.assertEqual(str(r), '0')
+        self.assertEqual(r.violation, 'outside range 0:0')
+        self.assertIn(0, r)
+        self.assertNotIn(1, r)
+
+    def test_zero_float_equals_zero_str(self):
+        self.assertEqual(Range(0.0), Range('0.0'))
+        self.assertEqual(Range(0.0).end, 0.0)
+
+    def test_float_with_exponent_repr(self):
+        self.assertEqual(Range(1e20).end, 1e20)
+        self.assertEqual(Range(1e-7).end, 1e-7)
+
+    def test_infinity_end_is_zero_start(self):
+        self.assertEqual(Range(float('inf')), Range('0:'))
+
+    def test_fail_if_nan(self):
+        self.assertRaises(ValueError, Range, float('nan'))
+        self.assertRaises(ValueError, Range, 'nan')
+
+    def test_bool_should_raise(self):
+        self.assertRaises(TypeError, Range, False)
+        self.assertRaises(TypeError, Range, True)
 
     def test_spec_with_unknown_type_should_raise(self):
         with self.assertRaises(ValueError):
@@ -82,11 +120,21 @@ class RangeParseTest(unittest.TestCase):
     def test_repr(self):
         self.assertEqual("Range('2:3')", repr(Range('2:3')))
 
+    def test_repr_round_trips(self):
+        for spec in ('', '~:', '0:', '0', '5:', '~:5', '@', '@3:7', '2.5:4'):
+            r = Range(spec)
+            self.assertEqual(r, eval(repr(r)), spec)
+
 
 class RangeStrTest(unittest.TestCase):
 
     def test_empty(self):
         self.assertEqual('', str(Range()))
+        self.assertEqual('', str(Range('~:')))
+
+    def test_zero_start_is_not_omitted_without_end(self):
+        self.assertEqual('0:', str(Range('0:')))
+        self.assertEqual('0:', str(Range(float('inf'))))
 
     def test_explicit_start_stop(self):
         self.assertEqual('1.5:5', str(Range('1.5:5')))
@@ -113,4 +161,7 @@ class RangeStrTest(unittest.TestCase):
         self.assertEqual('outside range 0:4', Range('4').violation)
 
     def test_violation_empty_range(self):
-        self.assertEqual('outside range 0:', Range('').violation)
+        self.assertEqual('outside range ~:', Range('').violation)
+
+    def test_violation_zero_start(self):
+        self.assertEqual('outside range 0:', Range('0:').violation)

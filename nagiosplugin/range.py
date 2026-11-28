@@ -1,4 +1,5 @@
 import collections
+import math
 
 
 class Range(collections.namedtuple('Range', 'invert start end')):
@@ -9,22 +10,31 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     omitted, infinity is assumed. To invert the match condition, prefix
     the range expression with "@".
 
+    An empty range specification (or `None`) is unbounded in both
+    directions, like "~:", and so matches every value. Use it for a
+    threshold that should never trigger.
+
     See https://nagios-plugins.org/doc/guidelines.html#thresholds for details.
     """
 
     def __new__(cls, spec=''):
         """Creates a Range object according to `spec`.
 
-        :param spec: may be either a string, an int, or another
-            Range object.
+        :param spec: may be either a string, an int, a float, or another
+            Range object. `None` is treated the same as the empty string.
         """
-        spec = spec or ''
+        if spec is None:
+            spec = ''
         if isinstance(spec, Range):
             return super().__new__(
                 cls, spec.invert, spec.start, spec.end)
-        if (isinstance(spec, int) or isinstance(spec, float)):
+        elif isinstance(spec, bool):
+            raise TypeError(
+                'bool is not a valid range spec; use None or "" for no range')
+        elif isinstance(spec, (int, float)):
             start, end, invert = 0, spec, False
-        start, end, invert = cls._parse(str(spec))
+        else:
+            start, end, invert = cls._parse(str(spec))
         cls._verify(start, end)
         return super().__new__(cls, invert, start, end)
 
@@ -34,6 +44,8 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         if spec.startswith('@'):
             invert = True
             spec = spec[1:]
+        if spec == '':
+            return float('-inf'), float('inf'), invert
         if ':' in spec:
             start, end = spec.split(':')
         else:
@@ -56,6 +68,8 @@ class Range(collections.namedtuple('Range', 'invert start end')):
     @staticmethod
     def _verify(start, end):
         """Throws ValueError if the range is not consistent."""
+        if math.isnan(start) or math.isnan(end):
+            raise ValueError('range bounds must not be NaN')
         if start > end:
             raise ValueError('start %s must not be greater than end %s' % (
                              start, end))
@@ -78,14 +92,19 @@ class Range(collections.namedtuple('Range', 'invert start end')):
         return self.match(value)
 
     def _format(self, omit_zero_start=True):
+        # The unbounded range "~:" is rendered as "" so that performance data
+        # shows no threshold at all. A zero start may only be omitted when
+        # there is an end, since "0:" and "" are different ranges.
+        unbounded_end = self.end == float('inf')
         result = []
         if self.invert:
             result.append('@')
         if self.start == float('-inf'):
-            result.append('~:')
-        elif not omit_zero_start or self.start != 0:
+            if not unbounded_end or not omit_zero_start:
+                result.append('~:')
+        elif not omit_zero_start or self.start != 0 or unbounded_end:
             result.append('%s:' % self.start)
-        if self.end != float('inf'):
+        if not unbounded_end:
             result.append('%s' % self.end)
         return ''.join(result)
 
