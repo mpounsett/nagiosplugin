@@ -1,7 +1,7 @@
 import logging
+from io import StringIO
 
 import nagiosplugin
-from nagiosplugin.compat import StringIO
 from nagiosplugin.runtime import Runtime, guarded
 
 try:
